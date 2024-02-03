@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "condo-management",
-    "slug": "condo-management",
+    "name": "condo-management-mobile",
+    "slug": "condo-management-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

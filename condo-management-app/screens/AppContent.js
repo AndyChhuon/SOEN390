@@ -7,9 +7,8 @@ import {
 import LoginScreen from "./auth/loginScreen";
 import SignupScreen from "./auth/signupScreen";
 import ProfileScreen from "./profile/profileScreen";
-import type { RootStackParamList } from "../constants/types";
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator();
 
 const AppContent = () => {
   return (
@@ -21,7 +20,7 @@ const AppContent = () => {
           gestureEnabled: false,
         }}
       >
-        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Register" component={SignupScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       </Stack.Navigator>

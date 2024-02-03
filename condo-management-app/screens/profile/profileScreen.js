@@ -1,19 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import type { RootStackParamList } from "../../constants/types";
+
 import useAuth from "../../hooks/useAuth";
 
-type ProfileScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "ProfileScreen"
->;
-
-type Props = {
-  navigation: ProfileScreenNavigationProp;
-};
-
-export default function ProfileScreen({ navigation }: Props) {
+export default function ProfileScreen({ navigation }) {
   const { user } = useAuth();
   return (
     <View style={styles.container}>

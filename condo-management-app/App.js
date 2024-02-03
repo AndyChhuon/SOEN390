@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppContent from "./screens/AppContent";
 import { AuthProvider } from "./hooks/useAuth";
 import * as Font from "expo-font";
-
+import { View } from "react-native";
 const App = () => {
+  const [isInitialized, setIsInitialized] = useState(false);
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
@@ -20,16 +21,20 @@ const App = () => {
         Play_Bold: require("./assets/fonts/Play-Bold.ttf"),
         RethinkSans: require("./assets/fonts/RethinkSans-VariableFont_wght.ttf"),
       });
+
+      setIsInitialized(true);
     }
     loadFont();
   }, []);
 
-  return (
+  return isInitialized ? (
     <NavigationContainer>
       <AuthProvider>
         <AppContent />
       </AuthProvider>
     </NavigationContainer>
+  ) : (
+    <View></View>
   );
 };
 
