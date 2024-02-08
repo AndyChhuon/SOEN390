@@ -22,22 +22,69 @@ import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { MaterialIcons} from "@expo/vector-icons";
 import AwesomeButton from "react-native-really-awesome-button";
 import useAuth from "../../hooks/useAuth";
-import defaultProfilePic from "../../assets/pfp_default.png";
+import { ref, update, onValue } from 'firebase/database';
+import { db } from "../../config/firebaseConfig";
 
 const Profile = ({ navigation }) => {
   const { user } = useAuth();
 
+
+
   const [state, setState] = useState({
-    username: user.username,
     userEmail: user.email,
-    firstname: user.firstName,
-    lastName: user.lastName,
-    phoneNumber: user.phoneNumber||null,
-    streetAddress: user.streetAddress ||null,
-    postalcode: user.postalCode ||null,
-    stateProvince: user.stateProvince ||null,
-    city: user.city||null,
+    firstName: user.firstName||"",
+    lastName: user.lastName||"",
+    phoneNumber: user.phoneNumber||"",
+    streetAddress: user.streetAddress ||"",
+    postalcode: user.postalCode ||"",
+    stateProvince: user.stateProvince ||"",
+    city: user.city||"",
   });
+
+  //cleans db entries if undefined
+  const cleanObject = (obj) => {
+    Object.keys(obj).forEach(key => {
+      if (obj[key] === undefined) {
+        delete obj[key];
+      }
+    });
+    return obj;
+  };
+
+  const saveProfileData = () => {
+    if (user && user.uid) {
+      const userProfileRef = ref(db, `users/${user.uid}`);
+      const cleanedState = cleanObject({ ...state });
+      update(userProfileRef, cleanedState)
+        
+        .catch((error) => console.error("Error updating profile: ", error));
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (user && user.uid) {
+        const userProfileRef = ref(db, `users/${user.uid}`);
+        onValue(userProfileRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            setState(prevState => ({
+              ...prevState,
+              ...data,
+            }));
+          }
+        }, {
+        });
+      }
+    };
+  
+    fetchProfileData();
+  }, [user, db]);
+  
+
+
+
   height, width;
   const styles = createStyles(height);
 
@@ -79,11 +126,11 @@ const Profile = ({ navigation }) => {
       >
        <View style={{height: height, margin: 5}}>
         
-       <View style={{...styles.card,width: width * 0.8, }}>
+       <View style={{...styles.card,width: width * 0.8, alignSelf: "center"}}>
         <View style={{ flex: 1}}>
         <View style={{flexDirection: "row", margin: 2, padding:10, alignItems: "center"}}>
           <FaHouse style={{color: Colors.whiteColor}} />
-          <Text style={{...Fonts.whiteColor20SemiBold, margin: 10}}>Tenants</Text>
+          <Text style={{...Fonts.whiteColor20SemiBold, margin: 10}}>My Properties</Text>
         </View>
           {TenantsView()}
 
@@ -91,8 +138,8 @@ const Profile = ({ navigation }) => {
 
       </View>
 
-
-       <View style={{...styles.card,width: width * 0.8, }}>
+      <View>
+       <View style={{...styles.card,width: width * 0.8, alignSelf: "center"}}>
         <View style={{ flex: 1}}>
           {FirstNameTextField()}
           {LastNameTextField()}
@@ -105,10 +152,15 @@ const Profile = ({ navigation }) => {
           {Province()}
           {City()}
         </View>
+        
+      </View>
+      <View style={{...styles.card,width: width * 0.8,  alignSelf: "center"}}>
+      {SaveProfileButton()}
+      </View>
       </View>
 
       
-      <View style={{...styles.card,width: width * 0.8, }}>
+      <View style={{...styles.card,width: width * 0.8, alignSelf: "center" }}>
         <View style={{ flex: 1, alignItems: 'flex-start' }}>
         <Text
             style={{
@@ -165,16 +217,16 @@ const Profile = ({ navigation }) => {
 
   function ChangePassword() {
     return (
-      <View style={{ flex: 1, width: '100%' }}> {/* Adjusted to ensure full width */}
+      <View style={{ flex: 1, width: '100%' }}> 
         <AwesomeButton
           activeOpacity={0.9}
           onPress={async (next) => {
             ChangePasswordClick();
             next();
           }}
-          width={null} // Set to null or remove if AwesomeButton automatically expands
-          stretch={true} // If AwesomeButton supports a stretch prop, use it to fill the width
-          backgroundColor={Colors.secondaryGoldColor}
+          width={null} 
+          stretch={true} 
+          backgroundColor={Colors.darkBlue}
           raiseLevel={5}
           borderRadius={20}
           backgroundShadow={Colors.grayColor}
@@ -193,6 +245,36 @@ const Profile = ({ navigation }) => {
     );
   }
 
+  function SaveProfileButton() {
+    return (
+      <View style={{ flex: 1, width: '100%' }}> 
+        <AwesomeButton
+          activeOpacity={0.9}
+          onPress={async (next) => {
+            saveProfileData();
+            next();
+          }}
+          width={null} 
+          stretch={true} 
+          backgroundColor={Colors.secondaryGoldColor}
+          raiseLevel={5}
+          borderRadius={20}
+          backgroundShadow={Colors.grayColor}
+          progress
+        >
+          <Text
+            style={{
+              ...Fonts.whiteColor20SemiBold,
+              textAlign: "center",
+            }}
+          >
+            Save Changes
+          </Text>
+        </AwesomeButton>
+      </View>
+    );
+  }
+
   function TenantsView() {
     const input = useRef();
     return (
@@ -200,11 +282,7 @@ const Profile = ({ navigation }) => {
         <View
           style={styles.textFieldWrapStyle}
         >
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => input.current.focus()}
-          >
-          </TouchableOpacity>
+
         </View>
         <View
           style={{
@@ -212,6 +290,75 @@ const Profile = ({ navigation }) => {
             marginBottom: (7 * height) / 880,
           }}
         >
+
+        <View style={{flexDirection: "row"}}>
+        <View style={{...styles.card,width: width * 0.3}}>
+                <Image
+                 source={{uri: "https://s3.amazonaws.com/usmsswimages/5336/40759/3.jpg"}}
+                 style={{width: 200, height: 200}}
+                ></Image>
+
+                <View style={{flexDirection: "column", padding: 10}}>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor}}
+                >
+                  Address: 2155 Rue Test
+                </Text>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor}}
+                >
+                  Occupied: Yes
+                </Text>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor }}
+                >
+                 Rent Paid: Yes
+
+                </Text>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor }}
+                >
+                  Tickets Open: 0
+                </Text>
+
+                </View>
+
+        </View>
+
+        <View style={{...styles.card,width: width * 0.3}}>
+                <Image
+                 source={{uri: "https://thevaughnrealestategroup.com/wp-content/uploads/2017/11/Brickell-Wind-Condo-View.jpg"}}
+                 style={{width: 200, height: 200}}
+                ></Image>
+
+                <View style={{flexDirection: "column", padding: 10}}>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor}}
+                >
+                  Address: 2155 Rue Test
+                </Text>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor}}
+                >
+                  Occupied: Yes
+                </Text>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor }}
+                >
+                 Rent Paid: Yes
+
+                </Text>
+                <Text
+                  style={{ ...Fonts.parentColor14Medium, color: Colors.whiteColor }}
+                >
+                  Tickets Open: 0
+                </Text>
+
+                </View>
+
+        </View>
+
+        </View>
         </View>
       </View>
     );
@@ -223,7 +370,9 @@ const Profile = ({ navigation }) => {
     return (
       <View>
         <View
-          style={styles.textFieldWrapStyle}
+          style={
+           styles.textFieldWrapStyle
+          }
         >
           <TouchableOpacity
             activeOpacity={0.9}
@@ -233,10 +382,10 @@ const Profile = ({ navigation }) => {
           </TouchableOpacity>
           <TextInput
             ref={input}
-             width={0.9 * width}
+            width={0.9 * width}
             onChangeText={(value) => updateState({ firstName: value })}
             placeholder="First Name"
-            value={user.firstName}
+            value={state.firstName}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -283,7 +432,7 @@ const Profile = ({ navigation }) => {
             width={0.9 * width}
             onChangeText={(value) => updateState({ lastName: value })}
             placeholder="Last Name"
-            value={user.lastName}
+            value={state.lastName}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -330,7 +479,7 @@ const Profile = ({ navigation }) => {
             width={0.9 * width}
             onChangeText={(value) => updateState({ phoneNumber: value })}
             placeholder="ex. (123)-456-789"
-            value={user.phoneNumber}
+            value={state.phoneNumber}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -376,7 +525,7 @@ const Profile = ({ navigation }) => {
             ref={input}
             onChangeText={(value) => updateState({ streetAddress: value })}
             placeholder="Street Address"
-            value={user.streetAddress}
+            value={state.streetAddress}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -422,7 +571,7 @@ const Profile = ({ navigation }) => {
             width={0.9 * width}
             onChangeText={(value) => updateState({ postalcode: value })}
             placeholder="Postal Code"
-            value={user.postalcode}
+            value={state.postalcode}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -469,7 +618,7 @@ const Profile = ({ navigation }) => {
             width={0.9 * width}
             onChangeText={(value) => updateState({ stateProvince: value })}
             placeholder="Province"
-            value={user.stateProvince}
+            value={state.stateProvince}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -516,7 +665,7 @@ const Profile = ({ navigation }) => {
             width={0.9 * width}
             onChangeText={(value) => updateState({ city: value })}
             placeholder="City"
-            value={user.city}
+            value={state.city}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -575,6 +724,7 @@ const Profile = ({ navigation }) => {
               paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
             }}
             selectionColor={Colors.primaryColor}
+            editable={false}
           />
         </View>
         <View
@@ -600,14 +750,14 @@ const Profile = ({ navigation }) => {
         }}
       >
         <Image
-        source={{ uri: user.profilePicUrl || defaultProfilePic }}
-        
-      />
+          source={{ uri: `https://eu.ui-avatars.com/api/?name=${state.firstName}+${state.lastName}` }}
+          style={{ width: 100, height: 100, borderRadius: 50, margin: 10 }}
+        />
         <Text style={{ ...Fonts.whiteColor26SemiBold }}>
           Welcome
         </Text>
         <Text style={{ ...Fonts.whiteColor14Medium }}>
-          {user.firstNameLastName || "First Last Name Placeholder"}
+          {state.firstName}{" "+state.lastName}
         </Text>
       </View>
     );
@@ -633,7 +783,21 @@ function createStyles(height) {
       padding: 30, 
       marginVertical: 10, 
       marginHorizontal: 40,
-      alignSelf: 'center', 
+      alignSelf: "center",
+    },
+    cardProperties: {
+      flexDirection: 'column',
+      backgroundColor: Colors.bodyBackColor, 
+      borderRadius: 10,
+      shadowColor: "#000", 
+      shadowOffset: { width: 0, height: 2 }, 
+      shadowOpacity: 0.25, 
+      shadowRadius: 3.84, 
+      elevation: 5, 
+      padding: 30, 
+      marginVertical: 10, 
+      marginHorizontal: 40,
+      alignSelf: "center",
     },
     textFieldWrapStyle: {
       flexDirection: "row",

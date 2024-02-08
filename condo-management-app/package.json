@@ -12,6 +12,8 @@
     "@expo/metro-runtime": "~3.1.1",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@react-native-async-storage/async-storage": "^1.21.0",
+    "@react-native-firebase/app": "^18.8.0",
+    "@react-native-firebase/database": "^18.8.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "expo": "~50.0.4",
