@@ -86,6 +86,7 @@ const NotificationPage = ({navigation}) => {
             <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "center"}}>Payments</Text>
          </View>
       </View>
+      <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "left"}}>$12,945.12</Text>
       </View>
 
       </View>
