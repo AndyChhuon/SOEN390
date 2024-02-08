@@ -244,3 +244,46 @@ export const Colors = {
 export const Sizes = {
   fixPadding: 10.0,
 };
+
+export const Cards={
+  card: {
+    flexDirection: 'row',
+    backgroundColor: Colors.bodyBackColor, 
+    borderRadius: 10,
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84, 
+    elevation: 5, 
+    padding: 30, 
+    marginVertical: 10, 
+    marginHorizontal: 40,
+    alignSelf: "center",
+  },
+  cardProperties: {
+    flexDirection: 'column',
+    backgroundColor: Colors.bodyBackColor, 
+    borderRadius: 10,
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84, 
+    elevation: 5, 
+    padding: 30, 
+    marginVertical: 10, 
+    marginHorizontal: 40,
+    alignSelf: "center",},
+
+  cardNotification: {
+    flexDirection: 'column',
+    borderRadius: 2,
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.5, 
+    shadowRadius: 3.84, 
+    elevation: 10, 
+    padding: 30, 
+    marginVertical: 10, 
+    marginHorizontal: 40,
+    }
+}
