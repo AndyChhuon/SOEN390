@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import Card from '../Components/Card';
 import PropertyCard from "../Components/Property";
+import Payment from "../Components/Payment";
 import { IoMdPerson } from "react-icons/io";
 import { GoBellFill } from "react-icons/go";
 import { FaHouse } from "react-icons/fa6";
@@ -86,9 +87,16 @@ const NotificationPage = ({navigation}) => {
             <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "center"}}>Payments</Text>
          </View>
       </View>
-      <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "left"}}>$12,945.12</Text>
+      <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "left"}}>$7,283</Text>
+      
+      <ScrollView contentContainerStyle={{flexGrow:1, height: height}}>
+      <Payment name={"John Smith"} width={width} rentPaid={"Yes"} amount={3000}></Payment>
+      <Payment name={"Will Smith"} width={width} rentPaid={"Yes"} amount={2459}></Payment>
+      <Payment name={"Sam Smith"} width={width} rentPaid={"Yes"} amount={1224}></Payment>
+      <Payment name={"Tom Smith"} width={width} rentPaid={"Yes"} amount={600}></Payment>
+      </ScrollView>
       </View>
-
+     
       </View>
     
       </KeyboardAvoidingView>
