@@ -21,6 +21,6 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "serve": "node dist/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --forceExit --detectOpenHandles"
   }
 }
