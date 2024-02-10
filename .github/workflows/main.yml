@@ -15,6 +15,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "serviceAccountKeys.json"
+          json: ${{ secrets.SERVICE_ACCOUNT_KEYS }}
+          dir: "condo-backend/src/secrets"
       - name: Install Dependencies
         run: npm install
         working-directory: condo-backend
