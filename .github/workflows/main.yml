@@ -1,6 +1,9 @@
 name: Condo-Backend CI/CD
 
-on: push
+on:
+  push:
+    paths:
+      - "condo-backend/**"
 
 jobs:
   build:
@@ -9,11 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Use Node
-
         uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install Dependencies
         run: npm install
+        working-directory: condo-backend
       - name: Run Tests
         run: npm test
+        working-directory: condo-backend
