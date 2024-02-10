@@ -1,4 +1,4 @@
-const { app } = require("../src/index");
+const { app } = require("../src/app");
 const superTest = require("supertest");
 const request = superTest(app);
 import { describe, expect, test } from "@jest/globals";
