@@ -25,6 +25,7 @@ app.post("/updateUserValues", (req: Request, res: Response) => {
 
 app.post("/initializeUser", (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.email) {
+    console.log("test");
     initializeUser(req.body.tokenId, req.body.email, res);
   } else {
     res.status(400).send("Invalid request");
