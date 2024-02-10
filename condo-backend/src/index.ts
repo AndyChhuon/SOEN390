@@ -30,3 +30,5 @@ app.post("/initializeUser", (req: Request, res: Response) => {
     res.status(400).send("Invalid request");
   }
 });
+
+export { app };

@@ -7,9 +7,9 @@
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "types": ["express"]
+      "types": ["express"],
 
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "test/**/*.ts"],
     "exclude": ["node_modules"]
 }
