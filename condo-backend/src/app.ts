@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.post("/updateUserValues", (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.userValues) {
+    console.log("Calling updateUserValues endpoint");
     const userValues = parseJSONOrString(req.body.userValues);
     updateUserValues(req.body.tokenId, userValues, res);
   } else {
@@ -20,7 +21,7 @@ app.post("/updateUserValues", (req: Request, res: Response) => {
 
 app.post("/initializeUser", (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.email) {
-    console.log("initializeUser");
+    console.log("Calling initializeUser endpoint");
     initializeUser(req.body.tokenId, req.body.email, res);
   } else {
     res.status(400).send("Invalid request");

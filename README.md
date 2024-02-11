@@ -1,12 +1,13 @@
 # Condo Management App Description
+
 SOEN 390 Project Winter 2024. Condo Management Application.
 
-
 ## Objective
+
 Build a condo management application
 
-
 ## Team Members
+
 - Amar Mahmoud (@Amar-Mahmoud)
 - Andy Chhuon (@AndyChhuon)
 - Camila-Paz Vejar-Rojas (@camilavejar)
@@ -19,8 +20,11 @@ Build a condo management application
 - Nusrath Zaman (@nusrath-z)
 
 ## Technologies
+
 **FERN Stack**
+
 - Front-End (Client):
+
   - [React](https://reactnative.dev/)
   - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/javascript)
 
@@ -30,17 +34,20 @@ Build a condo management application
   - [Firebase](https://firebase.google.com/)
 
 ## Coding Style
+
 TBD
 
 ## Setup
 
 ### Backend Setup
+
 1. Clone this repo: `https://github.com/AndyChhuon/SOEN390.git`
 2. CD into this repo and into condo-backend: `cd ./SOEN390/condo-backend`
 3. Install dependencies: `npm install`
-4. Run the app: `npm start`
+4. Run the app: `npm run start:dev`
 
 ### Frontend Setup
+
 1. Clone this repo: `https://github.com/AndyChhuon/SOEN390.git`
 2. CD into this repo and into condo-management-app: `cd ./SOEN390/condo-management-app`
 3. Install dependencies: `npm install`

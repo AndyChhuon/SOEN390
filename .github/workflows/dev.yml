@@ -1,4 +1,4 @@
-name: Condo-Backend CI/CD
+name: Condo-Backend Push Workflow - Build and run tests
 
 on:
   push:
@@ -25,15 +25,3 @@ jobs:
       - name: Run Tests
         run: npm test
         working-directory: condo-backend
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "sleepy-bastion-87226 " #Must be unique in Heroku
-          heroku_email: "chhuonandy@gmail.com"
-          appdir: "condo-backend" #path to the directory of the app

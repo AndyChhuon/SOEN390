@@ -1,0 +1,41 @@
+name: Condo-Backend Master Workflow - Build and deploy to production
+on:
+  pull_request:
+    types: closed
+    paths:
+      - "condo-backend/**"
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      SERVICE_ACCOUNT_KEYS: ${{ secrets.SERVICE_ACCOUNT_KEYS }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: condo-backend
+      - name: Run Tests
+        run: npm test
+        working-directory: condo-backend
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "sleepy-bastion-87226 " #Must be unique in Heroku
+          heroku_email: "chhuonandy@gmail.com"
+          appdir: "condo-backend" #path to the directory of the app
