@@ -5,7 +5,25 @@ const express = require("express");
 const app = express();
 const { updateUserValues, initializeUser } = require("./firebase/userService");
 const { parseJSONOrString } = require("./utils/utils");
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+
+// Custom error handling middleware
+const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
+};
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  throw new Error("Something went wrong!");
+});
+
+// Use the custom error handling middleware
+app.use(errorHandler);
 
 app.use(express.json());
 
