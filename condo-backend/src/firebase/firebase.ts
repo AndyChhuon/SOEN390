@@ -17,19 +17,18 @@ const getIdFromToken = async (idToken: String) => {
 };
 
 const db = admin.database();
-const usersRef = db.ref("users");
 
 const updateUserValuesDB = (id: String, userValues: Object) => {
-  usersRef.child(id).update(userValues);
+  db.ref("users").child(id).update(userValues);
 };
 
 const userExists = async (id: String) => {
-  const snapshot = await usersRef.child(id).once("value");
+  const snapshot = await db.ref("users").child(id).once("value");
   return snapshot.exists();
 };
 
 const getUserValues = async (id: String) => {
-  const snapshot = await usersRef.child(id).once("value");
+  const snapshot = await db.ref("users").child(id).once("value");
   return snapshot.val();
 };
 

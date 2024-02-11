@@ -1,7 +1,13 @@
+import { describe, expect, test } from "@jest/globals";
+
 const { app } = require("../src/app");
 const superTest = require("supertest");
 const request = superTest(app);
-import { describe, expect, test } from "@jest/globals";
+
+const dotenv = require("dotenv");
+dotenv.config({
+  path: "__tests__/.env",
+});
 
 describe("Test updateUserValues with no tokenId", () => {
   test("It should return an invalid request", async () => {
