@@ -11,9 +11,14 @@ app.use(express.json());
 
 app.post("/updateUserValues", (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.userValues) {
-    console.log("Calling updateUserValues endpoint");
-    const userValues = parseJSONOrString(req.body.userValues);
-    updateUserValues(req.body.tokenId, userValues, res);
+    try {
+      console.log("Calling updateUserValues endpoint");
+      const userValues = parseJSONOrString(req.body.userValues);
+      updateUserValues(req.body.tokenId, userValues, res);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("Internal server error");
+    }
   } else {
     res.status(400).send("Invalid request");
   }
@@ -21,8 +26,13 @@ app.post("/updateUserValues", (req: Request, res: Response) => {
 
 app.post("/initializeUser", (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.email) {
-    console.log("Calling initializeUser endpoint");
-    initializeUser(req.body.tokenId, req.body.email, res);
+    try {
+      console.log("Calling initializeUser endpoint");
+      initializeUser(req.body.tokenId, req.body.email, res);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("Internal server error");
+    }
   } else {
     res.status(400).send("Invalid request");
   }
