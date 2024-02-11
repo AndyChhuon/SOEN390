@@ -15,6 +15,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+      - name: "Create env file"
+        run: |
+          touch .env
+          echo SERVICE_ACCOUNT_KEYS=${{ secrets.SERVICE_ACCOUNT_KEYS }} >> .env
+          cat .env
+        working-directory: condo-backend
       - name: Install Dependencies
         run: npm install
         working-directory: condo-backend
