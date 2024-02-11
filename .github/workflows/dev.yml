@@ -1,4 +1,4 @@
-name: Condo-Backend CI/CD
+name: Condo-Backend Push Workflow - Build and run tests
 
 on:
   push:
@@ -9,19 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      SERVICE_ACCOUNT_KEYS: ${{ secrets.SERVICE_ACCOUNT_KEYS }}
+
     steps:
       - uses: actions/checkout@v4
       - name: Use Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: create-json
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.3
-        with:
-          name: "serviceAccountKeys.json"
-          json: ${{ secrets.SERVICE_ACCOUNT_KEYS }}
-          dir: "condo-backend/src/secrets"
+
       - name: Install Dependencies
         run: npm install
         working-directory: condo-backend
