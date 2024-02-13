@@ -22,19 +22,18 @@ import { useNavigation } from "@react-navigation/native";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // TODO: dynamically get this info
+  const [user, setUser] = useState(null);
   const navigation = useNavigation();
   const [userValues, setUserValues] = useState({});
+  const herokuBackendUrl =
+    "https://sleepy-bastion-87226-0172f309845e.herokuapp.com";
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
-
-        getIdToken(user).then((idToken) => {
-          console.log(idToken);
-          navigation.navigate("ProfileScreen");
-        });
+        getUservalues(user);
+        navigation.navigate("BottomNavigator");
       } else {
         navigation.navigate("Register");
         //check purchases was initialized
@@ -48,6 +47,27 @@ export const AuthProvider = ({ children }) => {
       unsubscribe();
     };
   }, []);
+
+  const getUservalues = async (user) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idToken: tokenId,
+        email: user.email,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setUserValues(data.userValues);
+        });
+      }
+    });
+  };
 
   function emailLogin(setError, email, password, isRegister = false) {
     signInWithEmailAndPassword(auth, email, password)
