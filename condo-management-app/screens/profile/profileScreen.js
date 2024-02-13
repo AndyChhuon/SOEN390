@@ -15,21 +15,16 @@ import {
   ScrollView,
 } from "react-native";
 import { IoMdPerson } from "react-icons/io";
-import { GoBellFill } from "react-icons/go";
-import { FaHouse } from "react-icons/fa6";
 import { FaHouseChimneyUser } from "react-icons/fa6";
 import { MdOutlinePhone } from "react-icons/md";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import AwesomeButton from "react-native-really-awesome-button";
 import useAuth from "../../hooks/useAuth";
-import { ref, update, onValue } from "firebase/database";
-import { db } from "../../config/firebaseConfig";
 import PropertyCard from "../Components/Property";
-import { useNavigation } from "@react-navigation/native";
 
 const Profile = ({ navigation }) => {
-  const { user, userValues } = useAuth();
+  const { user, userValues, updateProfileInfo } = useAuth();
 
   useEffect(() => {
     document.title = "My Profile";
@@ -60,11 +55,8 @@ const Profile = ({ navigation }) => {
   //saves profile data to db
   const saveProfileData = () => {
     if (user && user.uid) {
-      const userProfileRef = ref(db, `users/${user.uid}`);
       const cleanedState = CleanUndefinedEntries({ ...state });
-      update(userProfileRef, cleanedState)
-        .then(() => console.log("Updated Profile Information"))
-        .catch((error) => console.error("Error updating profile: ", error));
+      updateProfileInfo(cleanedState);
     }
   };
 
@@ -72,7 +64,7 @@ const Profile = ({ navigation }) => {
   useEffect(() => {
     setState({
       ...state,
-      userValues,
+      ...userValues,
     });
   }, [userValues]);
 

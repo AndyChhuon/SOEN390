@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
   const navigation = useNavigation();
   const [userValues, setUserValues] = useState({});
   const herokuBackendUrl =
-    "https://sleepy-bastion-87226-0172f309845e.herokuapp.com";
+    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; // localhost:8080
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -51,14 +51,35 @@ export const AuthProvider = ({ children }) => {
   const getUservalues = async (user) => {
     const tokenId = await getIdToken(user);
 
-    fetch(herokuBackendUrl + "/user", {
+    fetch(herokuBackendUrl + "/initializeUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        idToken: tokenId,
+        tokenId: tokenId,
         email: user.email,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setUserValues(data.userValues);
+        });
+      }
+    });
+  };
+
+  const updateProfileInfo = async (newState) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/updateUserValues", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        userValues: newState,
       }),
     }).then((res) => {
       if (res.ok) {
@@ -86,7 +107,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const emailSignup = (setError, email, password) => {
-    console.log("emailSignup");
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in successfully
@@ -107,8 +127,10 @@ export const AuthProvider = ({ children }) => {
       user,
       emailLogin,
       emailSignup,
+      updateProfileInfo,
+      userValues,
     }),
-    [user]
+    [user, userValues]
   );
 
   return (
