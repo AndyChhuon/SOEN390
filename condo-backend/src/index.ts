@@ -6,7 +6,7 @@ app.use((err: any, req: any, res: any, next: any) => {
     return next(err);
   }
   console.error(err);
-  res.status(500).send("Oh no!");
+  res.status(500).send("Something went wrong!");
 });
 
 app.listen(process.env.PORT || PORT, () => {
