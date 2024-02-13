@@ -9,12 +9,12 @@ import { Request, Response } from "express";
 
 app.use(express.json());
 
-app.post("/updateUserValues", (req: Request, res: Response) => {
+app.post("/updateUserValues", async (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.userValues) {
     try {
       console.log("Calling updateUserValues endpoint");
       const userValues = parseJSONOrString(req.body.userValues);
-      updateUserValues(req.body.tokenId, userValues, res);
+      await updateUserValues(req.body.tokenId, userValues, res);
     } catch (e) {
       console.log(e);
       res.status(500).send("Internal server error");
@@ -24,11 +24,11 @@ app.post("/updateUserValues", (req: Request, res: Response) => {
   }
 });
 
-app.post("/initializeUser", (req: Request, res: Response) => {
+app.post("/initializeUser", async (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.email) {
     try {
       console.log("Calling initializeUser endpoint");
-      initializeUser(req.body.tokenId, req.body.email, res);
+      await initializeUser(req.body.tokenId, req.body.email, res);
     } catch (e) {
       console.log(e);
       res.status(500).send("Internal server error");
