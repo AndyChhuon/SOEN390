@@ -2,12 +2,14 @@
 // Runs on http://localhost:8080
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const { updateUserValues, initializeUser } = require("./firebase/userService");
 const { parseJSONOrString } = require("./utils/utils");
 import { Request, Response } from "express";
 
 app.use(express.json());
+app.use(cors());
 
 app.post("/updateUserValues", async (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.userValues) {

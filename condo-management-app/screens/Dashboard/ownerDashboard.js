@@ -16,7 +16,7 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import Card from '../Components/Card';
+import Card from "../Components/Card";
 import PropertyCard from "../Components/Property";
 import Payment from "../Components/Payment";
 import { IoMdPerson } from "react-icons/io";
@@ -24,87 +24,138 @@ import { GoBellFill } from "react-icons/go";
 import { FaHouse } from "react-icons/fa6";
 import { FaHouseChimneyUser } from "react-icons/fa6";
 import { MdOutlinePhone } from "react-icons/md";
-import { MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const NotificationPage = ({navigation}) => {
+const NotificationPage = ({ navigation }) => {
   height, width;
   const [wasPopped, setWasPopped] = useState(false);
-  const [windowDimensions, setWindowDimensions] = useState(Dimensions.get('window'));
+  const [windowDimensions, setWindowDimensions] = useState(
+    Dimensions.get("window")
+  );
   const { width, height } = windowDimensions;
   const styles = createStyles(height);
-
-  
-
 
   useEffect(() => {
     const onChange = ({ window }) => {
       setWindowDimensions(window);
     };
 
-    Dimensions.addEventListener('change', onChange);
-    return () => Dimensions.removeEventListener('change', onChange);
+    Dimensions.addEventListener("change", onChange);
+    return () => Dimensions.removeEventListener("change", onChange);
   }, []);
 
-  function backArrow() {
-    return (
-      <View style={{ ...styles.backArrowWrapStyle }}>
-        <MaterialIcons
-          name="chevron-left"
-          color={Colors.whiteColor}
-          size={26}
-          onPress={() => {
-            if (wasPopped) return;
-            setWasPopped(true);
-            navigation.pop();
-          }}
-        />
-      </View>
-    );
-  }
-
   const content = (
-    <SafeAreaView style={{backgroundColor: Colors.bodyBackColor2}}>
-      {backArrow()}
-    <ScrollView contentContainerStyle={{flexGrow:1, height: height}}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1, justifyContent: "flex-start"
-        }} >
-      <View>
-      <View style={{...Cards.card,width: width *0.9 , alignSelf: "center", flexDirection: "column"}}>
-        <View style={{ flex: 1, }}>
-          <View style={{flexDirection: "row", margin: 2, padding:10, alignItems: "center"}}>
-            <FaHouse style={{color: Colors.whiteColor}} />
-            <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "center"}}>My Properties</Text>
-         </View>
-      </View>
-      {TenantsView()}
-      </View>
-      <View style={{...Cards.card,width: width *0.9 , alignSelf: "center", flexDirection: "column"}}>
-        <View style={{ flex: 1, }}>
-          <View style={{flexDirection: "row", margin: 2, padding:10, alignItems: "center"}}>
-            <FaHouse style={{color: Colors.whiteColor}} />
-            <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "center"}}>Payments</Text>
-         </View>
-      </View>
-      <Text style={{...Fonts.whiteColor20SemiBold, margin: 10, alignSelf: "left"}}>$7,283</Text>
-      
-      <ScrollView contentContainerStyle={{flexGrow:1, height: height}}>
-      <Payment name={"John Smith"} width={width} rentPaid={"Yes"} amount={3000}></Payment>
-      <Payment name={"Will Smith"} width={width} rentPaid={"Yes"} amount={2459}></Payment>
-      <Payment name={"Sam Smith"} width={width} rentPaid={"Yes"} amount={1224}></Payment>
-      <Payment name={"Tom Smith"} width={width} rentPaid={"Yes"} amount={600}></Payment>
-      </ScrollView>
-      </View>
-     
-      </View>
-    
-      </KeyboardAvoidingView>
-    </ScrollView>
-    </SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={{ flex: 1, justifyContent: "flex-start" }}
+        >
+          <View>
+            <View
+              style={{
+                ...Cards.card,
+                width: width * 0.9,
+                alignSelf: "center",
+                flexDirection: "column",
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 2,
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <FaHouse style={{ color: Colors.whiteColor }} />
+                  <Text
+                    style={{
+                      ...Fonts.whiteColor20SemiBold,
+                      margin: 10,
+                      alignSelf: "center",
+                    }}
+                  >
+                    My Properties
+                  </Text>
+                </View>
+              </View>
+              {TenantsView()}
+            </View>
+            <View
+              style={{
+                ...Cards.card,
+                width: width * 0.9,
+                alignSelf: "center",
+                flexDirection: "column",
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 2,
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <FaHouse style={{ color: Colors.whiteColor }} />
+                  <Text
+                    style={{
+                      ...Fonts.whiteColor20SemiBold,
+                      margin: 10,
+                      alignSelf: "center",
+                    }}
+                  >
+                    Payments
+                  </Text>
+                </View>
+              </View>
+              <Text
+                style={{
+                  ...Fonts.whiteColor20SemiBold,
+                  margin: 10,
+                  alignSelf: "left",
+                }}
+              >
+                $7,283
+              </Text>
 
+              <ScrollView
+                contentContainerStyle={{ flexGrow: 1, height: height }}
+              >
+                <Payment
+                  name={"John Smith"}
+                  width={width}
+                  rentPaid={"Yes"}
+                  amount={3000}
+                ></Payment>
+                <Payment
+                  name={"Will Smith"}
+                  width={width}
+                  rentPaid={"Yes"}
+                  amount={2459}
+                ></Payment>
+                <Payment
+                  name={"Sam Smith"}
+                  width={width}
+                  rentPaid={"Yes"}
+                  amount={1224}
+                ></Payment>
+                <Payment
+                  name={"Tom Smith"}
+                  width={width}
+                  rentPaid={"Yes"}
+                  amount={600}
+                ></Payment>
+              </ScrollView>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </SafeAreaView>
   );
-  
 
   if (Platform.OS === "web") {
     return content;
@@ -118,45 +169,65 @@ const NotificationPage = ({navigation}) => {
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
-
-    
-
-    
   }
   function TenantsView() {
     const input = useRef();
     return (
       <View>
-        <View
-          style={styles.textFieldWrapStyle}
-        >
-
-        </View>
+        <View style={styles.textFieldWrapStyle}></View>
         <View
           style={{
             marginHorizontal: Sizes.fixPadding * 2.0,
             marginBottom: (7 * height) / 880,
           }}
         >
-
-    <ScrollView >
-      <View style={{ flexDirection: "column", height: height }}>
-        <PropertyCard width={width} Occupied="Yes" addressText="1412 Test Road" rentPaid="Yes" ticketsOpen="0" imageURL="https://thevaughnrealestategroup.com/wp-content/uploads/2017/11/Brickell-Wind-Condo-View.jpg" />
-        <PropertyCard width={width} Occupied="Yes" addressText="1412 Test Road" rentPaid="Yes" ticketsOpen="0" imageURL={"https://media.brstatic.com/2017/10/17165457/what-to-know-before-you-buy-a-condo.jpg"} />
-        <PropertyCard width={width} Occupied="Yes" addressText="1412 Test Road" rentPaid="Yes" ticketsOpen="0" imageURL={"http://hawaiihome.me/wp-content/uploads/2017/05/DSC08635-1-e1493843332549.jpg"} />
-        <PropertyCard width={width} Occupied="Yes" addressText="1412 Test Road" rentPaid="Yes" ticketsOpen="0" />
-        {/* Add more PropertyCard components as needed */}
-      </View>
-    </ScrollView>
+          <ScrollView>
+            <View style={{ flexDirection: "column", height: height }}>
+              <PropertyCard
+                width={width}
+                Occupied="Yes"
+                addressText="1412 Test Road"
+                rentPaid="Yes"
+                ticketsOpen="0"
+                imageURL="https://thevaughnrealestategroup.com/wp-content/uploads/2017/11/Brickell-Wind-Condo-View.jpg"
+              />
+              <PropertyCard
+                width={width}
+                Occupied="Yes"
+                addressText="1412 Test Road"
+                rentPaid="Yes"
+                ticketsOpen="0"
+                imageURL={
+                  "https://media.brstatic.com/2017/10/17165457/what-to-know-before-you-buy-a-condo.jpg"
+                }
+              />
+              <PropertyCard
+                width={width}
+                Occupied="Yes"
+                addressText="1412 Test Road"
+                rentPaid="Yes"
+                ticketsOpen="0"
+                imageURL={
+                  "http://hawaiihome.me/wp-content/uploads/2017/05/DSC08635-1-e1493843332549.jpg"
+                }
+              />
+              <PropertyCard
+                width={width}
+                Occupied="Yes"
+                addressText="1412 Test Road"
+                rentPaid="Yes"
+                ticketsOpen="0"
+              />
+              {/* Add more PropertyCard components as needed */}
+            </View>
+          </ScrollView>
         </View>
       </View>
-    );}
+    );
   }
-
-  
+};
 
 export default NotificationPage;
-
 
 function createStyles(height) {
   return StyleSheet.create({
