@@ -5,6 +5,10 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const { updateUserValues, initializeUser } = require("./firebase/userService");
+const {
+  addPropertiesOwned,
+  addPropertyFile,
+} = require("./firebase/propertyProfileService");
 const { parseJSONOrString } = require("./utils/utils");
 import { Request, Response } from "express";
 
@@ -37,6 +41,27 @@ app.post("/initializeUser", async (req: Request, res: Response) => {
     }
   } else {
     res.status(400).send("Invalid request");
+  }
+});
+
+app.post("/addPropertyFile", async (req: Request, res: Response) => {
+  try {
+    console.log("Calling addPropertyFile endpoint");
+    const response = await addPropertyFile(req, res);
+    res.status(200).send(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Internal server error");
+  }
+});
+
+app.post("/addProperty", async (req: Request, res: Response) => {
+  try {
+    console.log("Calling addProperty endpoint");
+    await addPropertiesOwned(req.body.tokenId, req.body.propertyValues, res);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Internal server error");
   }
 });
 

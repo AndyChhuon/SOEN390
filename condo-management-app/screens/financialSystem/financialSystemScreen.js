@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { FaHouse } from "react-icons/fa6";
 
-const ReservationScreen = ({ navigation }) => {
+const FinancialSystemScreen = ({ navigation }) => {
   height, width;
   const [wasPopped, setWasPopped] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState(
@@ -87,7 +87,7 @@ const ReservationScreen = ({ navigation }) => {
   }
 };
 
-export default ReservationScreen;
+export default FinancialSystemScreen;
 
 function createStyles(height) {
   return StyleSheet.create({});

@@ -11,7 +11,7 @@ import { Colors, Sizes, Fonts } from "../constants/styles";
 import NotificationPage from "../screens/Notifications_Page/notificationPage";
 import ProfileScreen from "../screens/profile/profileScreen";
 import ownerDashboard from "../screens/Dashboard/ownerDashboard";
-import ReservationScreen from "../screens/reservation/reservationScreen";
+import PropertyProfileScreen from "../screens/propertyProfile/propertyProfileScreen";
 import financialSystemScreen from "../screens/financialSystem/financialSystemScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
@@ -89,12 +89,12 @@ const TabNavigator = ({ route }) => {
         />
 
         <Tab.Screen
-          name={"Reservation"}
-          component={ReservationScreen}
+          name={"propertyProfile"}
+          component={PropertyProfileScreen}
           options={{
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
-                icon: require("../assets/images/icons/reservation.png"),
+                icon: require("../assets/images/icons/propertyProfile.png"),
                 focused: focused,
                 size: 38,
               }),
