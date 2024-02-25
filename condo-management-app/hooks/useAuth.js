@@ -25,7 +25,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
   const [userValues, setUserValues] = useState({});
-  const herokuBackendUrl = "http://localhost:8080"; // sleepy-bastion-87226-0172f309845e.herokuapp.com
+  const herokuBackendUrl =
+    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; // localhost:8080
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
