@@ -9,7 +9,11 @@ const {
   getUserValues,
 } = require("../firebase/firebase");
 
-AWS.config.update({ region: "us-west-2" });
+AWS.config.update({
+  region: "us-west-2",
+  accessKeyId: "accessKeyId",
+  secretAccessKey: "secretAccessKey",
+});
 
 const getDataFromRequest = (req: any): any =>
   new Promise(async (resolve, reject) => {
