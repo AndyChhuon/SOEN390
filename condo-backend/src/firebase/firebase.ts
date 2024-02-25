@@ -22,6 +22,26 @@ const updateUserValuesDB = (id: String, userValues: Object) => {
   db.ref("users").child(id).update(userValues);
 };
 
+const addToPropertiesOwned = async (id: String, propertyValues: Object) => {
+  const key = db
+    .ref("users")
+    .child(`${id}/propertiesOwned`)
+    .push(propertyValues)
+    .getKey();
+  return key;
+};
+
+const addToPropertyFiles = (
+  id: String,
+  propertyID: String,
+  fileType: string,
+  fileUrl: String
+) => {
+  db.ref("users")
+    .child(`${id}/propertiesOwned/${propertyID}/files`)
+    .update({ [fileType]: fileUrl });
+};
+
 const userExists = async (id: String) => {
   const snapshot = await db.ref("users").child(id).once("value");
   return snapshot.exists();
@@ -32,4 +52,11 @@ const getUserValues = async (id: String) => {
   return snapshot.val();
 };
 
-export { getIdFromToken, updateUserValuesDB, userExists, getUserValues };
+export {
+  getIdFromToken,
+  updateUserValuesDB,
+  userExists,
+  getUserValues,
+  addToPropertiesOwned,
+  addToPropertyFiles,
+};

@@ -122,12 +122,76 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const addProperty = async (propertyValues) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/addProperty", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        propertyValues: propertyValues,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          if (!userValues.propertiesOwned) {
+            userValues.propertiesOwned = {};
+          }
+          setUserValues({
+            ...userValues,
+            propertiesOwned: {
+              ...userValues.propertiesOwned,
+              ...data.newPropertyOwned,
+            },
+          });
+        });
+      }
+    });
+  };
+
+  const addPropertyFile = async (dataForm) => {
+    const tokenId = await getIdToken(user);
+    dataForm.append("tokenId", tokenId);
+    fetch(herokuBackendUrl + "/addPropertyFile", {
+      method: "POST",
+      body: dataForm,
+      redirect: "follow",
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          if (!userValues.propertiesOwned[dataForm.get("propertyID")]) {
+            userValues.propertiesOwned[dataForm.get("propertyID")].files = {};
+          }
+          setUserValues({
+            ...userValues,
+            propertiesOwned: {
+              ...userValues.propertiesOwned,
+              [dataForm.get("propertyID")]: {
+                ...userValues.propertiesOwned[dataForm.get("propertyID")],
+                files: {
+                  ...userValues.propertiesOwned[dataForm.get("propertyID")]
+                    .files,
+                  ...data.newFileUploaded,
+                },
+              },
+            },
+          });
+        });
+      }
+    });
+  };
+
   const memoedValue = useMemo(
     () => ({
       user,
       emailLogin,
       emailSignup,
       updateProfileInfo,
+      addProperty,
+      addPropertyFile,
       userValues,
     }),
     [user, userValues]

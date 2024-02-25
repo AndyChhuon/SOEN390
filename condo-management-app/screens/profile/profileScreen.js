@@ -68,7 +68,6 @@ const Profile = ({ navigation }) => {
     });
   }, [userValues]);
 
-  height, width;
   const styles = createStyles(height);
 
   const [windowDimensions, setWindowDimensions] = useState(

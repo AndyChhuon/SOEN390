@@ -10,7 +10,7 @@ import ProfileScreen from "./profile/profileScreen";
 import NotificationPage from "./Notifications_Page/notificationPage";
 import ownerDashboard from "./Dashboard/ownerDashboard";
 import BottomTabBarScreen from "../navigator/bottomTabBar";
-import ReservationScreen from "./reservation/reservationScreen";
+import PropertyProfileScreen from "./propertyProfile/propertyProfileScreen";
 import financialSystemScreen from "./financialSystem/financialSystemScreen";
 
 const Stack = createStackNavigator();
@@ -29,7 +29,10 @@ const AppContent = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="BottomNavigator" component={BottomTabBarScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
+        <Stack.Screen
+          name="PropertyProfileScreen"
+          component={PropertyProfileScreen}
+        />
         <Stack.Screen name="Notifications" component={NotificationPage} />
         <Stack.Screen name="Dashboard" component={ownerDashboard} />
         <Stack.Screen
