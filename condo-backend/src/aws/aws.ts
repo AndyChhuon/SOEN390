@@ -11,8 +11,6 @@ const {
 
 AWS.config.update({
   region: "us-west-2",
-  accessKeyId: "accessKeyId",
-  secretAccessKey: "secretAccessKey",
 });
 
 const getDataFromRequest = (req: any): any =>
