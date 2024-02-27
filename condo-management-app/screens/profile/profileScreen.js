@@ -203,7 +203,7 @@ const Profile = ({ navigation }) => {
           }}
           width={null}
           stretch={true}
-          backgroundColor={Colors.darkBlue}
+          backgroundColor={Colors.secondaryGoldColor}
           raiseLevel={5}
           borderRadius={20}
           backgroundShadow={Colors.grayColor}

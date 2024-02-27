@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
-
+import {ThemedButton} from "react-native-really-awesome-button";
 import {
   SafeAreaView,
   View,
@@ -15,9 +15,9 @@ import {
   ScrollView,
   Button,
   Alert,
+  Image,
+  Linking,
 } from "react-native";
-import { IoMdPerson } from "react-icons/io";
-import { FaHouse } from "react-icons/fa6";
 import * as DocumentPicker from "expo-document-picker";
 import useAuth from "../../hooks/useAuth";
 
@@ -39,6 +39,7 @@ const PropertyProfileScreen = ({ navigation }) => {
     lockerCount: "",
     Address: "",
   });
+
 
   //clears db entries if undefined
   const CleanUndefinedEntries = (obj) => {
@@ -70,6 +71,7 @@ const PropertyProfileScreen = ({ navigation }) => {
       // accept pdf
       type: "application/pdf",
     });
+    
 
     if (!result.canceled) {
       const dataForm = new FormData();
@@ -79,102 +81,134 @@ const PropertyProfileScreen = ({ navigation }) => {
       const file = assets[0];
       dataForm.append("file", file.file);
       dataForm.append("propertyID", propertyId);
-      dataForm.append("fileType", "condo-file-test");
+      dataForm.append("fileType", "condo-file");
       addPropertyFile(dataForm);
     }
   };
+
+
+  const downloadFile = (fileUrl) => {
+    Linking.canOpenURL(fileUrl)
+      .then((supported) => {
+        if (!supported) {
+          console.log("Can't handle url: " + fileUrl);
+        } else {
+          return Linking.openURL(fileUrl);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
+  };
+  
+
+  const titleMappings = {
+    propertyName: "Property Name",
+    Address: "Address",
+    owner: "Owner",
+    location: "Location",
+    unitCount: "Unit Count",
+    parkingCount: "Number of Parking Spots",
+    lockerCount: "Number of Lockers",
+  };
+
+  
 
   const addFilesToProperty = () => {
     return Object.keys(userValues.propertiesOwned).map((propertyId) => (
       <View
         key={propertyId}
-        style={{
-          marginRight: 20,
-          padding: 20,
-          border: "1px solid white",
+        style={{padding: 20, 
+          backgroundColor: Colors.bodyBackColor,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          borderBottomColor: "#000",
+          borderBottomWidth: 1,
+          shadowOpacity: 0.6,
+          shadowRadius: 5,
+          elevation: 5,
         }}
       >
-        <Text
-          key="id"
-          style={{
-            color: "white",
-          }}
-        >
-          id: {propertyId}
-        </Text>
-        {Object.entries(userValues.propertiesOwned[propertyId]).map(
-          ([key, value]) => {
-            if (key !== "files") {
+        
+        {Object.entries(userValues.propertiesOwned[propertyId]).map(([key, value]) => {
+            if (key !== "files" && titleMappings[key]) {
+              const formattedValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString();
               return (
-                <Text
-                  key={key}
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  {key}: {JSON.stringify(value)}
-                </Text>
+                <View key={key} style={styles.propertyItem}>
+                  <Text style={styles.title}>
+                    {titleMappings[key]}:
+                  </Text>
+                  <Text style={styles.value}>
+                    {formattedValue}
+                  </Text>
+                </View>
               );
             } else {
               return Object.entries(value).map(([fileId, file]) => {
                 return (
-                  <Text
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text
                     key={fileId}
-                    style={{
-                      color: "white",
-                    }}
+                    style={styles.title}
                   >
-                    {fileId}: {JSON.stringify(file)}
+                    
+                    File(s): {/*JSON.stringify(file, null, 2)*/}
                   </Text>
+                  <TouchableOpacity onPress={() => downloadFile(file)}>
+                    <Text
+                      style={{textDecorationLine: "underline", color: "#fff", margin: 2}}
+                    >
+                      Download
+                    </Text>
+                  </TouchableOpacity>
+                  </View>
                 );
               });
             }
+            
           }
         )}
+            <Text
+              key="id"
+              style={styles.title}
+            >
+              Property ID: {propertyId}
+            </Text>
+
+            
 
         <View>
-          <Button
-            title="pick file"
-            onPress={() => handleFile(propertyId)}
-          ></Button>
+          <ThemedButton name="bruce"
+          type="secondary"
+          onPress={async() => await handleFile(propertyId)}
+          style={{marginTop: 10}}
+          raiseLevel={4}
+          >
+            Upload File
+          </ThemedButton>
         </View>
       </View>
     ));
   };
-
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
-          <View>
-            <View
-              style={{
-                ...Cards.card,
-                width: width * 0.9,
-                alignSelf: "center",
-                flexDirection: "column",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  paddingBottom: 10,
-                  alignItems: "center",
-                }}
-              >
-                <FaHouse style={{ color: Colors.whiteColor }} />
+          <View
+            style={{margin: 10, alignContent: "center"}}>
                 <Text
                   style={{
                     ...Fonts.whiteColor20SemiBold,
-                    margin: 10,
-                    alignSelf: "center",
+                    margin: 20,
+                    alignSelf: "left",
                   }}
                 >
                   Property Profile System
                 </Text>
-              </View>
+
               <View style={{ flex: 1, flexDirection: "row", height: "auto" }}>
                 <View style={{ flex: 1 }}>
                   <View>
@@ -210,7 +244,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                         }}
                       ></Text>
                     </View>
-                  </View>
+
                   <View>
                     <View style={styles.textFieldWrapStyle}>
                       <TextInput
@@ -353,24 +387,47 @@ const PropertyProfileScreen = ({ navigation }) => {
                 </View>
               </View>
               <View>
-                <Button
-                  title="Add property"
-                  onPress={addPropertyProfile}
-                ></Button>
               </View>
+              
             </View>
+            
           </View>
-          <ScrollView
-            horizontal={true}
-            style={{
-              backgroundColor: Colors.bodyBackColor,
-              height: "auto",
-              width: width * 0.9,
-              alignSelf: "center",
-            }}
+          <ThemedButton
+            name="bruce"
+            type="primary"
+            style={[{ marginLeft: 30, marginRight: 20 }]}
+            onPress={() => addPropertyProfile()}
+            raiseLevel={4}
           >
-            {"propertiesOwned" in userValues && addFilesToProperty()}
-          </ScrollView>
+            Add Property
+          </ThemedButton>
+
+          
+          <View
+          style={{
+            margin: 30,
+          }}
+          >
+            <Text
+                style={{
+                  ...Fonts.whiteColor20SemiBold,
+                  margin: 20,
+                }}
+              >
+                Listed Properties
+            </Text>
+            <ScrollView
+              horizontal={false}
+              style={{
+                height: height,
+              }}
+            >
+              
+              {"propertiesOwned" in userValues && addFilesToProperty()}
+            </ScrollView>
+
+          </View>
+          
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -399,5 +456,20 @@ function createStyles(height) {
       paddingHorizontal: Sizes.fixPadding + 2.0,
       marginHorizontal: Sizes.fixPadding * 2.0,
     },
+
+    propertyItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 4,
+    },
+    title: {
+      fontWeight: '600',
+      color: 'white',
+      marginRight: 10,
+    },
+    value: {
+      color: 'white',
+    },
+
   });
 }

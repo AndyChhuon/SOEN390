@@ -135,15 +135,14 @@ const TabNavigator = ({ route }) => {
     return (
       <View
         style={{
-          backgroundColor: focused ? "#f7983a" : "#4935b7",
-          borderColor: focused ? Colors.goldColor : "#5760b5",
-          borderWidth: 1,
+          
           ...styles.bottomTabBarItemWrapStyle,
         }}
       >
         <Image
           source={icon}
           style={{
+            tintColor: Colors.whiteColor,
             width: (size * height) / 880,
             height: (size * height) / 880,
             resizeMode: "contain",
@@ -169,6 +168,7 @@ function createStyles(height) {
     bottomTabBarItemWrapStyle: {
       width: (40.0 * height) / 880,
       height: (40.0 * height) / 880,
+      marginBottom: 20,
       borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
@@ -188,10 +188,11 @@ function createStyles(height) {
       borderTopWidth: (2 * height) / 880,
       height: (70 * height) / 880,
       paddingTop: 15,
+      paddingBott: 10,
       borderTopColor: "#7b8c95",
       elevation: (3.0 * height) / 880,
       shadowColor: Colors.primaryColor,
-      backgroundColor: "#120d28",
+      backgroundColor: Colors.bodyBackColor,
     },
   });
 }
