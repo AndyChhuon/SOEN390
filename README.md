@@ -44,7 +44,8 @@ TBD
 1. Clone this repo: `https://github.com/AndyChhuon/SOEN390.git`
 2. CD into this repo and into condo-backend: `cd ./SOEN390/condo-backend`
 3. Install dependencies: `npm install`
-4. Run the app: `npm run start:dev`
+4. Add the .env file (under secrets channel on Slack) to the root folder (condo-backend)
+5. Run the app: `npm run start:dev`
 
 ### Frontend Setup
 
