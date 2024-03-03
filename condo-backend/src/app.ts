@@ -56,12 +56,16 @@ app.post("/addPropertyFile", async (req: Request, res: Response) => {
 });
 
 app.post("/addProperty", async (req: Request, res: Response) => {
-  try {
-    console.log("Calling addProperty endpoint");
-    await addPropertiesOwned(req.body.tokenId, req.body.propertyValues, res);
-  } catch (e) {
-    console.log(e);
-    res.status(500).send("Internal server error");
+  if (req.body.tokenId && req.body.propertyValues) {
+    try {
+      console.log("Calling addProperty endpoint");
+      await addPropertiesOwned(req.body.tokenId, req.body.propertyValues, res);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("Internal server error");
+    }
+  } else {
+    res.status(400).send("Invalid request");
   }
 });
 
