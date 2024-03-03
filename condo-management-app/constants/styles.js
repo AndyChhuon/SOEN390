@@ -29,6 +29,12 @@ export const Fonts = {
     fontFamily: "SF_Compact_Display_Medium",
   },
 
+  grayColor16Regular: {
+    color: "#949494",
+    fontSize: 16,
+    fontFamily: "SF_Compact_Display_Regular",
+  },
+
   primaryColor14Regular: {
     color: "#8C31FF",
     fontSize: 14,
@@ -166,6 +172,12 @@ export const Fonts = {
     fontFamily: "SF_Compact_Display_SemiBold",
   },
 
+  whiteColor30SemiBold: {
+    color: "#FFFFFF",
+    fontSize: 30,
+    fontFamily: "SF_Compact_Display_SemiBold",
+  },
+
   whiteColor16Bold: {
     color: "#FFFFFF",
     fontSize: 16,
@@ -202,6 +214,8 @@ export const Fonts = {
 
 export const Colors = {
   lightBodyBackColor: "#e5c99f",
+  deepblackColor: "#001021",
+  deepcard: "#034748",
   bodyBackColor: "#253542",
   bodyBackColor2: "#212f36",
   blackColor: "#000000",
@@ -285,5 +299,19 @@ export const Cards={
     padding: 30, 
     marginVertical: 10, 
     marginHorizontal: 40,
+    },
+    cardProperty: {
+      flexDirection: 'row',
+      backgroundColor: Colors.bodyBackColor, 
+      borderRadius: 10,
+      shadowColor: "#000", 
+      shadowOffset: { width: 0, height: 2 }, 
+      shadowOpacity: 0.25, 
+      shadowRadius: 3.84, 
+      elevation: 5, 
+      padding: 30, 
+      marginVertical: 10, 
+      marginHorizontal: 40,
+      alignSelf: "center",
     }
 }
