@@ -96,7 +96,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           return Linking.openURL(fileUrl);
         }
       })
-      .catch((err) => console.error('An error occurred', err));
+      .catch((err) => console.error('An error occurred downloading the file', err));
   };
   
 
@@ -136,10 +136,10 @@ const PropertyProfileScreen = ({ navigation }) => {
               const formattedValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString();
               return (
                 <View key={key} style={styles.propertyItem}>
-                  <Text style={styles.title}>
+                  <Text style={styles.sizing}>
                     {titleMappings[key]}:
                   </Text>
-                  <Text style={styles.value}>
+                  <Text style={styles.content}>
                     {formattedValue}
                   </Text>
                 </View>
@@ -150,14 +150,14 @@ const PropertyProfileScreen = ({ navigation }) => {
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text
                     key={fileId}
-                    style={styles.title}
+                    style={styles.sizing}
                   >
                     
                     File(s): {/*JSON.stringify(file, null, 2)*/}
                   </Text>
                   <TouchableOpacity onPress={() => downloadFile(file)}>
                     <Text
-                      style={{textDecorationLine: "underline", color: "#fff", margin: 2}}
+                      style={styles.sizingUnderline}
                     >
                       Download
                     </Text>
@@ -171,7 +171,11 @@ const PropertyProfileScreen = ({ navigation }) => {
         )}
             <Text
               key="id"
-              style={styles.title}
+              style={{ 
+                fontSize: 16,
+                fontWeight: '600',
+                color: 'white',
+                marginRight: 10, }}
             >
               Property ID: {propertyId}
             </Text>
@@ -179,14 +183,18 @@ const PropertyProfileScreen = ({ navigation }) => {
             
 
         <View>
+        <TouchableOpacity>
           <ThemedButton name="bruce"
           type="secondary"
           onPress={async() => await handleFile(propertyId)}
           style={{marginTop: 10}}
-          raiseLevel={4}
+          textSize={16}
+          raiseLevel={5}
+          width={width*0.3}
           >
             Upload File
           </ThemedButton>
+          </TouchableOpacity>
         </View>
       </View>
     ));
@@ -394,10 +402,12 @@ const PropertyProfileScreen = ({ navigation }) => {
           </View>
           <ThemedButton
             name="bruce"
-            type="primary"
+            type="secondary"
             style={[{ marginLeft: 30, marginRight: 20 }]}
             onPress={() => addPropertyProfile()}
             raiseLevel={4}
+            fontSize={16}
+            textSize={16}
           >
             Add Property
           </ThemedButton>
@@ -411,7 +421,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             <Text
                 style={{
                   ...Fonts.whiteColor20SemiBold,
-                  margin: 20,
+                  marginBottom: 10,
                 }}
               >
                 Listed Properties
@@ -419,15 +429,13 @@ const PropertyProfileScreen = ({ navigation }) => {
             <ScrollView
               horizontal={false}
               style={{
-                height: height,
-              }}
-            >
+                height: height*0.87,
+                marginBottom: 55,
+              }}>
               
               {"propertiesOwned" in userValues && addFilesToProperty()}
             </ScrollView>
-
           </View>
-          
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -468,6 +476,23 @@ function createStyles(height) {
       marginRight: 10,
     },
     value: {
+      color: 'white',
+    },
+
+    sizing:{ 
+      fontSize: 16,
+      fontWeight: '600',
+      color: 'white',
+      marginRight: 6, },
+
+    sizingUnderline:{ 
+      fontSize: 16,
+      color: 'white',
+      marginRight: 6, 
+      textDecorationLine: 'underline'},
+
+    content:{ 
+      fontSize: 16,
       color: 'white',
     },
 
