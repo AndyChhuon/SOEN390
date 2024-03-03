@@ -138,8 +138,8 @@ const PropertyProfileScreen = ({ navigation }) => {
     setExpanded(!expanded);
 
     Animated.timing(animation, {
-      toValue: expanded ? 0 : 475,
-      duration: 600,
+      toValue: expanded ? 0 : 450,
+      duration: 400,
       useNativeDriver: false,
     }).start();
   };
@@ -167,7 +167,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           position: "relative",
         }}
       >
-        <View style={{ justifyContent: "center", flexWrap: "wrap",  }}>
+        <View style={{ justifyContent: "center", flexWrap: "wrap" }}>
           <TouchableOpacity
             onPress={() => handleCondoPicture(propertyId)}
             style={{ width: "100%" }}
@@ -193,7 +193,7 @@ const PropertyProfileScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            marginTop: 20,
+            marginTop: "7%",
             width: "100%",
             marginLeft: width > 600 ? 0 : 20,
           }}
@@ -252,7 +252,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             <ThemedButton
               name="bruce"
               type="primary"
-              width={width > 600 ? width * 0.12 : width * 0.8}
+              width={width > 600 ? width * 0.2 : width * 0.8}
               raiseLevel={2}
               borderRadius={10}
               style={{
@@ -286,7 +286,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 600 ? width * 0.12 : width * 0.8}
+              width={width > 600 ? width * 0.2 : width * 0.8}
               style={{
                 marginRight: 20,
                 alignSelf: "flex-start",
@@ -577,7 +577,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           >
             <Text
               style={{
-                ...Fonts.whiteColor20SemiBold,
+                ...Fonts.whiteColor22Bold,
                 marginBottom: 10,
                 marginTop: 5,
               }}

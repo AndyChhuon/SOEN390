@@ -15,11 +15,14 @@ import {
   ScrollView,
 } from "react-native";
 import { IoMdPerson } from "react-icons/io";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { FaHouseChimneyUser } from "react-icons/fa6";
 import { MdOutlinePhone } from "react-icons/md";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import AwesomeButton from "react-native-really-awesome-button";
+import { ThemedButton } from "react-native-really-awesome-button";
 import useAuth from "../../hooks/useAuth";
 import PropertyCard from "../Components/Property";
 
@@ -97,60 +100,67 @@ const Profile = ({ navigation }) => {
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
-        <View style={{}}>{Title()}</View>
+        <View>{Title()}</View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1, justifyContent: "flex-start" }}
+          style={{ flex: 1, justifyContent: "center" }}
         >
-          <View style={{ height: height, margin: 5 }}>
-            <View>
-              <View
+          <View style={{ margin: 10, alignContent: "center" }}>
+         <View
+              style={{
+                justifyContent: "space-between",
+                margin: 20,
+                marginBottom: 20,
+              }}
+            >
+            <View style={{ marginLeft: "5%", marginBottom: "2%" }}>
+              <Text
                 style={{
-                  ...Cards.card,
-                  width: width * 0.8,
-                  alignSelf: "center",
+                  ...Fonts.whiteColor22Bold,
                 }}
               >
-                <View style={{ flex: 1 }}>
-                  {FirstNameTextField()}
-                  {LastNameTextField()}
-                  {userEmailTextField()}
-                  {PhoneNumberTextField()}
-                </View>
-                <View style={{ flex: 1 }}>
-                  {StreetAddressTextField()}
-                  {PostalCode()}
-                  {Province()}
-                  {City()}
-                </View>
-              </View>
-              <View
-                style={{
-                  ...Cards.card,
-                  width: width * 0.8,
-                  alignSelf: "center",
-                }}
-              >
-                {SaveProfileButton()}
-              </View>
+                Manage Your Profile
+              </Text>
+            </View>
+            <View
+              style={{
+                alignSelf: "center",
+                flex: 1,
+                flexDirection: "column",
+                alignContent: "center",
+                width: width * 0.95,
+                height: height,
+                borderBottomColor: Colors.bodyBackColor,
+                marginBottom: "1%",
+                marginTop: "1%",
+                borderBottomWidth: 2,
+                
+              }}
+            >
+              {FirstNameTextField()}
+              {LastNameTextField()}
+              {userEmailTextField()}
+              {PhoneNumberTextField()}
+              {StreetAddressTextField()}
+              {PostalCode()}
+              {Province()}
+              {City()}
+              {SaveProfileButton()}
             </View>
 
-            <View
-              style={{ ...Cards.card, width: width * 0.8, alignSelf: "center" }}
-            >
-              <View style={{ flex: 1, alignItems: "flex-start" }}>
-                <Text
-                  style={{
-                    ...Fonts.whiteColor20SemiBold,
-                    textAlign: "center",
-                    margin: 5,
-                  }}
-                >
-                  Password
-                </Text>
+            <View style={{ marginLeft: "5%", marginBottom: "2%" }}>
+              <Text
+                style={{
+                  ...Fonts.whiteColor22Bold,
+                }}
+              >
+                Reset Your Password
+              </Text>
+              <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
                 {ChangePassword()}
               </View>
             </View>
+          </View>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -174,7 +184,7 @@ const Profile = ({ navigation }) => {
   function backArrow() {
     return (
       <View style={{ ...styles.backArrowWrapStyle }}>
-        <MaterialIcons
+        <FontAwesome5
           name="chevron-left"
           color={Colors.whiteColor}
           size={26}
@@ -194,60 +204,66 @@ const Profile = ({ navigation }) => {
 
   function ChangePassword() {
     return (
-      <View style={{ flex: 1, width: "100%" }}>
-        <AwesomeButton
-          activeOpacity={0.9}
-          onPress={async (next) => {
-            ChangePasswordClick();
-            next();
+      <View style={{ width: "100%" }}>
+        <ThemedButton
+          name="bruce"
+          type="primary"
+          raiseLevel={2}
+          borderRadius={10}
+          style={{
           }}
-          width={null}
-          stretch={true}
-          backgroundColor={Colors.secondaryGoldColor}
-          raiseLevel={5}
-          borderRadius={20}
-          backgroundShadow={Colors.grayColor}
-          progress
+          onPress={() => ChangePassword()}
         >
+          <MaterialIcon
+            style={{ marginRight: 15 }}
+            name="password"
+            size={26}
+            color="#fff"
+          />
           <Text
             style={{
-              ...Fonts.whiteColor20SemiBold,
-              textAlign: "center",
+              ...Fonts.primaryColor16SemiBold,
+              color: Colors.whiteColor,
             }}
           >
             Change Password
           </Text>
-        </AwesomeButton>
+        </ThemedButton>
       </View>
     );
   }
 
   function SaveProfileButton() {
     return (
-      <View style={{ flex: 1, width: "100%" }}>
-        <AwesomeButton
-          activeOpacity={0.9}
-          onPress={async (next) => {
-            saveProfileData();
-            next();
+      <View style={{ margin: 15 }}>
+        <ThemedButton
+          name="bruce"
+          type="primary"
+          raiseLevel={2}
+          borderRadius={10}
+          style={{
+            borderRadius: 5,
+            padding: 10,
           }}
-          width={null}
-          stretch={true}
-          backgroundColor={Colors.secondaryGoldColor}
-          raiseLevel={5}
-          borderRadius={20}
-          backgroundShadow={Colors.grayColor}
-          progress
+          onPress={async () => {
+            saveProfileData();
+          }}
         >
+          <FontAwesome5
+            style={{ marginRight: 15 }}
+            name="save"
+            size={26}
+            color="#fff"
+          />
           <Text
             style={{
-              ...Fonts.whiteColor20SemiBold,
-              textAlign: "center",
+              ...Fonts.primaryColor16SemiBold,
+              color: Colors.whiteColor,
             }}
           >
             Save Changes
           </Text>
-        </AwesomeButton>
+        </ThemedButton>
       </View>
     );
   }
@@ -304,56 +320,6 @@ const Profile = ({ navigation }) => {
             View Dashboard
           </Text>
         </AwesomeButton>
-      </View>
-    );
-  }
-
-  function TenantsView() {
-    const input = useRef();
-    return (
-      <View>
-        <View style={styles.textFieldWrapStyle}></View>
-        <View
-          style={{
-            marginHorizontal: Sizes.fixPadding * 2.0,
-            marginBottom: (7 * height) / 880,
-          }}
-        >
-          <ScrollView>
-            <View style={{ flexDirection: "column", height: 400 }}>
-              <PropertyCard
-                width={width}
-                Occupied="Yes"
-                addressText="1412 Test Road"
-                rentPaid="Yes"
-                ticketsOpen="0"
-                imageURL="https://thevaughnrealestategroup.com/wp-content/uploads/2017/11/Brickell-Wind-Condo-View.jpg"
-              />
-              <PropertyCard
-                width={width}
-                Occupied="Yes"
-                addressText="1412 Test Road"
-                rentPaid="Yes"
-                ticketsOpen="0"
-              />
-              <PropertyCard
-                width={width}
-                Occupied="Yes"
-                addressText="1412 Test Road"
-                rentPaid="Yes"
-                ticketsOpen="0"
-              />
-              <PropertyCard
-                width={width}
-                Occupied="Yes"
-                addressText="1412 Test Road"
-                rentPaid="Yes"
-                ticketsOpen="0"
-              />
-              {/* Add more PropertyCard components as needed */}
-            </View>
-          </ScrollView>
-        </View>
       </View>
     );
   }
@@ -691,23 +657,32 @@ const Profile = ({ navigation }) => {
       <View
         style={{
           marginVertical: (Sizes.fixPadding * 4.0 * height) / 880,
-          alignItems: "center",
           zIndex: 1,
-          marginLeft: "auto",
-          marginRight: "auto",
+          marginLeft: Sizes.fixPadding * 3.0,
+          alignItems: "flex-start",
         }}
       >
-        <Image
-          source={{
-            uri: `https://eu.ui-avatars.com/api/?name=${state.firstName}+${state.lastName}`,
-          }}
-          style={{ width: 100, height: 100, borderRadius: 50, margin: 10 }}
-        />
-        <Text style={{ ...Fonts.whiteColor26SemiBold }}>Welcome</Text>
-        <Text style={{ ...Fonts.whiteColor14Medium }}>
-          {state.firstName}
-          {" " + state.lastName}
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image
+            source={{
+              uri: `https://eu.ui-avatars.com/api/?name=${state.firstName[0]}+${state.lastName[0]}`,
+            }}
+            style={{ width: 75, height: 75, borderRadius: 50, margin: 10 }}
+          />
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              height: 75,
+              alignItems: "flex-start",
+            }}
+          >
+            <Text style={[{ ...Fonts.whiteColor26SemiBold }]}>Welcome</Text>
+            <Text style={{ ...Fonts.whiteColor14Medium }}>
+              {state.firstName} {" " + state.lastName}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }
