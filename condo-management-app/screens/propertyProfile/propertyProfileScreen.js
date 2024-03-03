@@ -86,6 +86,26 @@ const PropertyProfileScreen = ({ navigation }) => {
     }
   };
 
+  const handleCondoPicture = async (propertyId) => {
+    let result = await DocumentPicker.getDocumentAsync({
+      type: "application/image",
+    });
+    
+
+    if (!result.canceled) {
+      const dataForm = new FormData();
+      const assets = result.assets;
+      if (!assets) return;
+
+      const file = assets[0];
+      dataForm.append("file", file.file);
+      dataForm.append("propertyID", propertyId);
+      dataForm.append("fileType", "condoimage");
+      addPropertyFile(dataForm);
+    }
+  };
+
+
 
   const downloadFile = (fileUrl) => {
     Linking.canOpenURL(fileUrl)
@@ -116,7 +136,8 @@ const PropertyProfileScreen = ({ navigation }) => {
     return Object.keys(userValues.propertiesOwned).map((propertyId) => (
       <View
         key={propertyId}
-        style={{padding: 20, 
+        style={{
+          padding: 30,
           backgroundColor: Colors.bodyBackColor,
           shadowColor: '#000',
           shadowOffset: {
@@ -128,10 +149,23 @@ const PropertyProfileScreen = ({ navigation }) => {
           shadowOpacity: 0.6,
           shadowRadius: 5,
           elevation: 5,
+          flexDirection: 'row', // Align children horizontally
         }}
       >
-        
-        {Object.entries(userValues.propertiesOwned[propertyId]).map(([key, value]) => {
+        {/* Image to the left with height matching its parent */}
+        <View style={{ height: '100%', justifyContent: 'center' }}>
+        <TouchableOpacity onPress={() => handleCondoPicture(propertyId)}>
+          <Image
+            source={{ uri: userValues.propertiesOwned[propertyId].files ? userValues.propertiesOwned[propertyId].files.condoimage : 'https://placehold.co/400x400?text=Upload+Image' }}
+            style={{ width: 250, height: 250, margin: 20, resizeMode: 'contain' }} // Added border for visibility
+          />
+        </TouchableOpacity>
+
+        </View>
+  
+        {/* Content on the right */}
+        <View style={{ flex: 1, marginTop:15 }}>
+          {Object.entries(userValues.propertiesOwned[propertyId]).map(([key, value]) => {
             if (key !== "files" && titleMappings[key]) {
               const formattedValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString();
               return (
@@ -145,60 +179,39 @@ const PropertyProfileScreen = ({ navigation }) => {
                 </View>
               );
             } else {
-              return Object.entries(value).map(([fileId, file]) => {
-                return (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text
-                    key={fileId}
-                    style={styles.sizing}
-                  >
-                    
-                    File(s): {/*JSON.stringify(file, null, 2)*/}
-                  </Text>
-                  <TouchableOpacity onPress={() => downloadFile(file)}>
-                    <Text
-                      style={styles.sizingUnderline}
-                    >
-                      Download
-                    </Text>
-                  </TouchableOpacity>
-                  </View>
-                );
-              });
+              return null; // Exclude files from right-side details
             }
-            
-          }
-        )}
-            <Text
-              key="id"
-              style={{ 
-                fontSize: 16,
-                fontWeight: '600',
-                color: 'white',
-                marginRight: 10, }}
-            >
-              Property ID: {propertyId}
-            </Text>
-
-            
-
-        <View>
-        <TouchableOpacity>
-          <ThemedButton name="bruce"
-          type="secondary"
-          onPress={async() => await handleFile(propertyId)}
-          style={{marginTop: 10}}
-          textSize={16}
-          raiseLevel={5}
-          width={width*0.3}
+          })}
+          <Text
+            key="id"
+            style={{
+              fontSize: 16,
+              fontWeight: '600',
+              color: 'white',
+              marginRight: 10,
+            }}
           >
-            Upload File
-          </ThemedButton>
+            Property ID: {propertyId}
+          </Text>
+    
+          <TouchableOpacity>
+            <ThemedButton name="bruce"
+              type="secondary"
+              onPress={async () => await handleFile(propertyId)}
+              style={{ marginTop: 10 }}
+              textSize={16}
+              raiseLevel={5}
+              width={width * 0.3}
+            >
+              Add File to Property
+            </ThemedButton>
           </TouchableOpacity>
         </View>
       </View>
     ));
   };
+  
+
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
@@ -400,6 +413,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             </View>
             
           </View>
+          <View>
           <ThemedButton
             name="bruce"
             type="secondary"
@@ -411,8 +425,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           >
             Add Property
           </ThemedButton>
-
-          
+          </View>
           <View
           style={{
             margin: 30,
