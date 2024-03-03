@@ -16,6 +16,7 @@ import financialSystemScreen from "../screens/financialSystem/financialSystemScr
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
+import PropertyScreen from "../screens/propertyPage/propertyPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -87,7 +88,6 @@ const TabNavigator = ({ route }) => {
               }),
           }}
         />
-
         <Tab.Screen
           name={"propertyProfile"}
           component={PropertyProfileScreen}
@@ -135,7 +135,6 @@ const TabNavigator = ({ route }) => {
     return (
       <View
         style={{
-          
           ...styles.bottomTabBarItemWrapStyle,
         }}
       >

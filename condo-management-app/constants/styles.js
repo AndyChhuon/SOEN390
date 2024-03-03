@@ -29,6 +29,12 @@ export const Fonts = {
     fontFamily: "SF_Compact_Display_Medium",
   },
 
+  grayColor16Regular: {
+    color: "#949494",
+    fontSize: 16,
+    fontFamily: "SF_Compact_Display_Regular",
+  },
+
   primaryColor14Regular: {
     color: "#8C31FF",
     fontSize: 14,

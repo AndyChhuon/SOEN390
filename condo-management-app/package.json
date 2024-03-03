@@ -28,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^5.0.1",
     "react-native": "0.73.2",
+    "react-native-date-picker": "^4.3.7",
     "react-native-really-awesome-button": "^2.0.4",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
