@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { ThemedButton } from "react-native-really-awesome-button";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 import {
   SafeAreaView,
   View,
@@ -247,63 +250,101 @@ const PropertyProfileScreen = ({ navigation }) => {
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
           <View style={{ margin: 10, alignContent: "center" }}>
-            <Text
-              style={{
-                ...Fonts.whiteColor30SemiBold,
-                margin: 20,
-                marginBottom: 40,
-                alignSelf: "left",
-              }}
-            >
-              Manage Your Properties
-            </Text>
             <View
               style={{
-                margin: 15,
-                alignContent: "center",
-                backgroundColor: Colors.bodyBackColor,
-                borderRadius: 15,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                margin: 20,
+                marginBottom: 40,
               }}
             >
-              <View
+              <Text
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-end", // Align children to the right.
-                  alignItems: "flex-start", // Align children to the top.
-                  borderRadius: 10,
-                  margin: 15,
+                  ...Fonts.whiteColor30SemiBold,
                 }}
               >
-                <TouchableOpacity onPress={() => toggleExpansion()}>
-                  <Image
-                    source={require("../../assets/images/icons/add.png")}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      resizeMode: "contain",
-                      borderRadius: 10,
-                      tintColor: "white",
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity>
-                <Animated.View
-                  style={{ height: animation, overflow: "hidden" }}
+                Manage Your Properties
+              </Text>
+              <ThemedButton
+                name="bruce"
+                type="primary"
+                style={{
+                  marginRight: 20,
+                  alignSelf: "flex-start",
+                  raiseLevel: 2,
+                  textSize: 20,
+                  borderRadius: 5,
+                }}
+                onPress={() => toggleExpansion()}
+                width={width * 0.12}
+              >
+                <Text
+                  style={{
+                    ...Fonts.primaryColor22SemiBold,
+                    color: Colors.whiteColor,
+                  }}
                 >
-                  <View
-                    style={{ flex: 1, flexDirection: "row", marginBottom: 15 }}
-                  >
-                    <View style={{ flex: 1, marginBottom: 15 }}>
+                  List a Property
+                </Text>
+                <Icon
+                  name="add-circle-outline"
+                  size={30}
+                  color="white"
+                  style={{ marginLeft: 15 }}
+                />
+              </ThemedButton>
+            </View>
+
+            <TouchableOpacity>
+              <Animated.View style={{ height: animation, overflow: "hidden" }}>
+                <View
+                  style={{ flex: 1, flexDirection: "row", marginBottom: 15 }}
+                >
+                  <View style={{ flex: 1, marginBottom: 15 }}>
+                    <View>
+                      <View style={styles.textFieldWrapStyle}>
+                        <TextInput
+                          width={0.9 * width}
+                          onChangeText={(value) =>
+                            updateState({ propertyName: value })
+                          }
+                          placeholder="Property Name"
+                          value={state.propertyName}
+                          placeholderTextColor={Colors.grayColor}
+                          style={{
+                            ...Fonts.whiteColor16Medium,
+                            flex: 1,
+                            marginLeft: Sizes.fixPadding + 2.0,
+                            paddingVertical:
+                              ((Sizes.fixPadding + 7.0) * height) / 880,
+                          }}
+                          selectionColor={Colors.primaryColor}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          marginHorizontal: Sizes.fixPadding * 2.0,
+                          marginBottom: (7 * height) / 880,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...Fonts.parentColor14Medium,
+                            color: Colors.errorColor,
+                          }}
+                        ></Text>
+                      </View>
+
                       <View>
                         <View style={styles.textFieldWrapStyle}>
                           <TextInput
                             width={0.9 * width}
                             onChangeText={(value) =>
-                              updateState({ propertyName: value })
+                              updateState({ unitCount: value })
                             }
-                            placeholder="Property Name"
-                            value={state.propertyName}
+                            placeholder="Unit Count"
+                            value={state.unitCount}
                             placeholderTextColor={Colors.grayColor}
                             style={{
                               ...Fonts.whiteColor16Medium,
@@ -328,170 +369,141 @@ const PropertyProfileScreen = ({ navigation }) => {
                             }}
                           ></Text>
                         </View>
-
-                        <View>
-                          <View style={styles.textFieldWrapStyle}>
-                            <TextInput
-                              width={0.9 * width}
-                              onChangeText={(value) =>
-                                updateState({ unitCount: value })
-                              }
-                              placeholder="Unit Count"
-                              value={state.unitCount}
-                              placeholderTextColor={Colors.grayColor}
-                              style={{
-                                ...Fonts.whiteColor16Medium,
-                                flex: 1,
-                                marginLeft: Sizes.fixPadding + 2.0,
-                                paddingVertical:
-                                  ((Sizes.fixPadding + 7.0) * height) / 880,
-                              }}
-                              selectionColor={Colors.primaryColor}
-                            />
-                          </View>
-                          <View
-                            style={{
-                              marginHorizontal: Sizes.fixPadding * 2.0,
-                              marginBottom: (7 * height) / 880,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                ...Fonts.parentColor14Medium,
-                                color: Colors.errorColor,
-                              }}
-                            ></Text>
-                          </View>
-                        </View>
-                        <View>
-                          <View style={styles.textFieldWrapStyle}>
-                            <TextInput
-                              width={0.9 * width}
-                              onChangeText={(value) =>
-                                updateState({ Address: value })
-                              }
-                              placeholder="Address"
-                              value={state.Address}
-                              placeholderTextColor={Colors.grayColor}
-                              style={{
-                                ...Fonts.whiteColor16Medium,
-                                flex: 1,
-                                marginLeft: Sizes.fixPadding + 2.0,
-                                paddingVertical:
-                                  ((Sizes.fixPadding + 7.0) * height) / 880,
-                              }}
-                              selectionColor={Colors.primaryColor}
-                            />
-                          </View>
-                          <View
-                            style={{
-                              marginHorizontal: Sizes.fixPadding * 2.0,
-                              marginBottom: (7 * height) / 880,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                ...Fonts.parentColor14Medium,
-                                color: Colors.errorColor,
-                              }}
-                            ></Text>
-                          </View>
-                        </View>
                       </View>
-                      <View style={{ flex: 1 }}>
-                        <View>
-                          <View style={styles.textFieldWrapStyle}>
-                            <TextInput
-                              width={0.9 * width}
-                              onChangeText={(value) =>
-                                updateState({ parkingCount: value })
-                              }
-                              placeholder="Parking Count"
-                              value={state.parkingCount}
-                              placeholderTextColor={Colors.grayColor}
-                              style={{
-                                ...Fonts.whiteColor16Medium,
-                                flex: 1,
-                                marginLeft: Sizes.fixPadding + 2.0,
-                                paddingVertical:
-                                  ((Sizes.fixPadding + 7.0) * height) / 880,
-                              }}
-                              selectionColor={Colors.primaryColor}
-                            />
-                          </View>
-                          <View
+                      <View>
+                        <View style={styles.textFieldWrapStyle}>
+                          <TextInput
+                            width={0.9 * width}
+                            onChangeText={(value) =>
+                              updateState({ Address: value })
+                            }
+                            placeholder="Address"
+                            value={state.Address}
+                            placeholderTextColor={Colors.grayColor}
                             style={{
-                              marginHorizontal: Sizes.fixPadding * 2.0,
-                              marginBottom: (7 * height) / 880,
+                              ...Fonts.whiteColor16Medium,
+                              flex: 1,
+                              marginLeft: Sizes.fixPadding + 2.0,
+                              paddingVertical:
+                                ((Sizes.fixPadding + 7.0) * height) / 880,
                             }}
-                          >
-                            <Text
-                              style={{
-                                ...Fonts.parentColor14Medium,
-                                color: Colors.errorColor,
-                              }}
-                            ></Text>
-                          </View>
+                            selectionColor={Colors.primaryColor}
+                          />
                         </View>
-                        <View>
-                          <View style={styles.textFieldWrapStyle}>
-                            <TextInput
-                              width={0.9 * width}
-                              onChangeText={(value) =>
-                                updateState({ lockerCount: value })
-                              }
-                              placeholder="Locker Count"
-                              value={state.lockerCount}
-                              placeholderTextColor={Colors.grayColor}
-                              style={{
-                                ...Fonts.whiteColor16Medium,
-                                flex: 1,
-                                marginLeft: Sizes.fixPadding + 2.0,
-                                paddingVertical:
-                                  ((Sizes.fixPadding + 7.0) * height) / 880,
-                              }}
-                              selectionColor={Colors.primaryColor}
-                            />
-                          </View>
-
-                          <View
+                        <View
+                          style={{
+                            marginHorizontal: Sizes.fixPadding * 2.0,
+                            marginBottom: (7 * height) / 880,
+                          }}
+                        >
+                          <Text
                             style={{
-                              marginHorizontal: Sizes.fixPadding * 2.0,
-                              marginBottom: (7 * height) / 880,
+                              ...Fonts.parentColor14Medium,
+                              color: Colors.errorColor,
                             }}
-                          >
-                            <Text
-                              style={{
-                                ...Fonts.parentColor14Medium,
-                                color: Colors.errorColor,
-                              }}
-                            ></Text>
-                          </View>
+                          ></Text>
                         </View>
                       </View>
                     </View>
-                    <View></View>
+                    <View style={{ flex: 1 }}>
+                      <View>
+                        <View style={styles.textFieldWrapStyle}>
+                          <TextInput
+                            width={0.9 * width}
+                            onChangeText={(value) =>
+                              updateState({ parkingCount: value })
+                            }
+                            placeholder="Parking Count"
+                            value={state.parkingCount}
+                            placeholderTextColor={Colors.grayColor}
+                            style={{
+                              ...Fonts.whiteColor16Medium,
+                              flex: 1,
+                              marginLeft: Sizes.fixPadding + 2.0,
+                              paddingVertical:
+                                ((Sizes.fixPadding + 7.0) * height) / 880,
+                            }}
+                            selectionColor={Colors.primaryColor}
+                          />
+                        </View>
+                        <View
+                          style={{
+                            marginHorizontal: Sizes.fixPadding * 2.0,
+                            marginBottom: (7 * height) / 880,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...Fonts.parentColor14Medium,
+                              color: Colors.errorColor,
+                            }}
+                          ></Text>
+                        </View>
+                      </View>
+                      <View>
+                        <View style={styles.textFieldWrapStyle}>
+                          <TextInput
+                            width={0.9 * width}
+                            onChangeText={(value) =>
+                              updateState({ lockerCount: value })
+                            }
+                            placeholder="Locker Count"
+                            value={state.lockerCount}
+                            placeholderTextColor={Colors.grayColor}
+                            style={{
+                              ...Fonts.whiteColor16Medium,
+                              flex: 1,
+                              marginLeft: Sizes.fixPadding + 2.0,
+                              paddingVertical:
+                                ((Sizes.fixPadding + 7.0) * height) / 880,
+                            }}
+                            selectionColor={Colors.primaryColor}
+                          />
+                        </View>
+
+                        <View
+                          style={{
+                            marginHorizontal: Sizes.fixPadding * 2.0,
+                            marginBottom: (7 * height) / 880,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...Fonts.parentColor14Medium,
+                              color: Colors.errorColor,
+                            }}
+                          ></Text>
+                        </View>
+                      </View>
+                    </View>
                   </View>
-                  <View>
-                    <ThemedButton
-                      name="bruce"
-                      type="secondary"
-                      style={[
-                        { marginLeft: 20, marginRight: 20, marginBottom: 20 },
-                      ]}
-                      onPress={() => addPropertyProfile()}
-                      raiseLevel={2}
-                      fontSize={16}
-                      textSize={16}
-                      borderRadius={5}
-                      width={width * 0.2}
+                  <View></View>
+                </View>
+                <View>
+                  <ThemedButton
+                    name="bruce"
+                    type="primary"
+                    style={[
+                      { marginLeft: 15, marginRight: 20, marginBottom: 20 },
+                    ]}
+                    onPress={() => toggleExpansion()}
+                    raiseLevel={2}
+                    textSize={20}
+                    borderRadius={5}
+                    width={width * 0.12}
+                  >
+                    <Text
+                      style={{
+                        ...Fonts.primaryColor22SemiBold,
+                        color: Colors.whiteColor,
+                      }}
                     >
                       Add Property
-                    </ThemedButton>
-                  </View>
-                </Animated.View>
-              </TouchableOpacity>
-            </View>
+                    </Text>
+                  </ThemedButton>
+                </View>
+              </Animated.View>
+            </TouchableOpacity>
           </View>
 
           <View
