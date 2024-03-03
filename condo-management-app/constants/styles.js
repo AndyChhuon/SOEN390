@@ -166,6 +166,12 @@ export const Fonts = {
     fontFamily: "SF_Compact_Display_SemiBold",
   },
 
+  whiteColor30SemiBold: {
+    color: "#FFFFFF",
+    fontSize: 30,
+    fontFamily: "SF_Compact_Display_SemiBold",
+  },
+
   whiteColor16Bold: {
     color: "#FFFFFF",
     fontSize: 16,
@@ -202,6 +208,8 @@ export const Fonts = {
 
 export const Colors = {
   lightBodyBackColor: "#e5c99f",
+  deepblackColor: "#001021",
+  deepcard: "#034748",
   bodyBackColor: "#253542",
   bodyBackColor2: "#212f36",
   blackColor: "#000000",
