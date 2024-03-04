@@ -18,6 +18,7 @@ const getDataFromRequest = (req: any): any =>
     const form = new multiparty.Form();
     await form.parse(req, async (err: any, fields: any, files: any) => {
       if (err) reject(err);
+      if (!fields) return reject("No fields found in form data.");
       if (!fields.tokenId) {
         return reject("tokenId was not found in form data.");
       }
