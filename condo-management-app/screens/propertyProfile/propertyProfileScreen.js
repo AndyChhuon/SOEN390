@@ -149,11 +149,11 @@ const PropertyProfileScreen = ({ navigation }) => {
       <View
         key={propertyId}
         style={{
-          padding: 10,
+          padding: 20,
           backgroundColor: Colors.bodyBackColor,
           borderBottomColor: "#000",
           borderBottomWidth: 0,
-          height: width > 600 ? 400 : 925,
+          height: width > 600 ? height*0.5 : height*0.95,
           marginBottom: 10,
           borderRadius: 10,
           elevation: 2,
@@ -165,6 +165,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           shadowOffset: { width: 2, height: 2 },
           flexDirection: width > 600 ? "row" : "column",
           position: "relative",
+          alignContent: "center",
         }}
       >
         <View style={{ justifyContent: "center", flexWrap: "wrap" }}>
@@ -179,9 +180,8 @@ const PropertyProfileScreen = ({ navigation }) => {
                   "https://placehold.co/400x400?text=Upload+Image",
               }}
               style={{
-                width: width > 600 ? 250 : width * 0.8, // Adjust image width based on screen size
-                height: width > 600 ? 250 : width * 0.8, // Adjust image height based on screen size
-                margin: 20,
+                width: width > 600 ? 250 : width * 0.65, // Adjust image width based on screen size
+                height: width > 600 ? 250 : width * 0.65, // Adjust image height based on screen size
                 resizeMode: "cover",
                 borderRadius: 10,
                 elevation: 5,
@@ -193,9 +193,9 @@ const PropertyProfileScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            marginTop: "7%",
+            marginTop: "3%",
             width: "100%",
-            marginLeft: width > 600 ? 0 : 20,
+            marginLeft: width > 600 ? 30 : 0,
           }}
         >
           {Object.entries(userValues.propertiesOwned[propertyId]).map(
@@ -244,19 +244,18 @@ const PropertyProfileScreen = ({ navigation }) => {
 
           <View
             style={{
-              flexDirection: width > 500 ? "row" : "column",
-              marginTop: 25,
+              flexDirection: width > 600 ? "row" : "column",
+              marginTop: 20,
               flexWrap: "wrap",
             }}
           >
             <ThemedButton
               name="bruce"
               type="primary"
-              width={width > 600 ? width * 0.2 : width * 0.8}
+              width={width > 600 ? width * 0.2 : width * 0.7}
               raiseLevel={2}
               borderRadius={10}
               style={{
-                marginRight: 20,
                 alignSelf: "flex-start",
                 borderRadius: 5,
                 padding: 10,
@@ -286,9 +285,9 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 600 ? width * 0.2 : width * 0.8}
+              width={width > 600 ? width * 0.2 : width * 0.7}
               style={{
-                marginRight: 20,
+                marginTop: width > 600 ? 0 : 10,
                 alignSelf: "flex-start",
                 borderRadius: 5,
                 padding: 10,
