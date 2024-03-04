@@ -100,67 +100,60 @@ const Profile = ({ navigation }) => {
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
-        <View>{Title()}</View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           style={{ flex: 1, justifyContent: "center" }}
         >
-          <View style={{ margin: 10, alignContent: "center" }}>
-         <View
+          <View style={{ marginTop: 20, alignContent: "center" }}>
+            <View
               style={{
                 justifyContent: "space-between",
                 margin: 20,
                 marginBottom: 20,
               }}
             >
-            <View style={{ marginLeft: "5%", marginBottom: "2%" }}>
-              <Text
+              <View style={{ marginLeft: "5%", marginBottom: "2%" }}></View>
+              <View
                 style={{
-                  ...Fonts.whiteColor22Bold,
+                  alignSelf: "center",
+                  flex: 1,
+                  flexDirection: "column",
+                  alignContent: "center",
+                  width: width * 0.95,
+                  height: height,
+                  borderBottomColor: Colors.bodyBackColor,
+                  marginBottom: "1%",
+                  marginTop: "15%",
+                  borderBottomWidth: 2,
                 }}
               >
-                Manage Your Profile
-              </Text>
-            </View>
-            <View
-              style={{
-                alignSelf: "center",
-                flex: 1,
-                flexDirection: "column",
-                alignContent: "center",
-                width: width * 0.95,
-                height: height,
-                borderBottomColor: Colors.bodyBackColor,
-                marginBottom: "1%",
-                marginTop: "1%",
-                borderBottomWidth: 2,
-                
-              }}
-            >
-              {FirstNameTextField()}
-              {LastNameTextField()}
-              {userEmailTextField()}
-              {PhoneNumberTextField()}
-              {StreetAddressTextField()}
-              {PostalCode()}
-              {Province()}
-              {City()}
-              {SaveProfileButton()}
-            </View>
+                {Title()}
 
-            <View style={{ marginLeft: "5%", marginBottom: "2%" }}>
-              <Text
-                style={{
-                  ...Fonts.whiteColor22Bold,
-                }}
-              >
-                Reset Your Password
-              </Text>
-              <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
-                {ChangePassword()}
+                {ManageProfileText()}
+                {FirstNameTextField()}
+                {LastNameTextField()}
+                {userEmailTextField()}
+                {PhoneNumberTextField()}
+                {StreetAddressTextField()}
+                {PostalCode()}
+                {Province()}
+                {City()}
+                {SaveProfileButton()}
+              </View>
+
+              <View style={{ marginLeft: "5%", marginBottom: "15%" }}>
+                <Text
+                  style={{
+                    ...Fonts.whiteColor22Bold,
+                  }}
+                >
+                  Reset Your Password
+                </Text>
+                <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
+                  {ChangePassword()}
+                </View>
               </View>
             </View>
-          </View>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -197,6 +190,13 @@ const Profile = ({ navigation }) => {
       </View>
     );
   }
+  function ManageProfileText() {
+    return (
+      <Text style={[Fonts.whiteColor22Bold, { marginLeft: width > 600 ? "2%" : "5%", marginBottom:  "3%" }]}>
+        Manage Your Profile
+      </Text>
+    );
+  }
 
   function ChangePasswordClick() {
     //TODO
@@ -210,8 +210,7 @@ const Profile = ({ navigation }) => {
           type="primary"
           raiseLevel={2}
           borderRadius={10}
-          style={{
-          }}
+          style={{}}
           onPress={() => ChangePassword()}
         >
           <MaterialIcon
@@ -654,14 +653,7 @@ const Profile = ({ navigation }) => {
 
   function Title() {
     return (
-      <View
-        style={{
-          marginVertical: (Sizes.fixPadding * 4.0 * height) / 880,
-          zIndex: 1,
-          marginLeft: Sizes.fixPadding * 3.0,
-          alignItems: "flex-start",
-        }}
-      >
+      <View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
             source={{
