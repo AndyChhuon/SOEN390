@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
-import { 
-SafeAreaView, 
-View, 
-Dimensions, 
-StyleSheet, 
-Text, 
-KeyboardAvoidingView, 
-TouchableWithoutFeedback, 
-Platform, 
-ScrollView, 
-TextInput, 
-Button, 
-Alert } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Dimensions,
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  ScrollView,
+  Button,
+  TextInput,
+  Alert
+} from "react-native";
 import { FaHouse } from "react-icons/fa6";
 
 const FinancialSystemScreen = ({ navigation }) => {
@@ -33,8 +34,10 @@ const FinancialSystemScreen = ({ navigation }) => {
     costEntries: [],
     annualReport: "",
   });
-  
-  // updating window dimensions
+
+  const [feeInputError, setFeeInputError] = useState("");
+  const [costInputError, setCostInputError] = useState("");
+
   useEffect(() => {
     const onChange = ({ window }) => {
       setWindowDimensions(window);
@@ -44,35 +47,79 @@ const FinancialSystemScreen = ({ navigation }) => {
     return () => Dimensions.removeEventListener("change", onChange);
   }, []);
 
-  // Update state function
   const updateState = (data) => setState((prevState) => ({ ...prevState, ...data }));
 
-  // Add cost entry function
   const handleAddCostEntry = () => {
+    if (!state.costDescription || !state.costAmount) {
+      setCostInputError("Both cost description and amount are required.");
+      return;
+    }
+
+    if (!/^[a-zA-Z ]+$/.test(state.costDescription)) {
+      setCostInputError("Cost description should contain only alphabets and spaces.");
+      return;
+    }
+
+    if (!/^\d+(\.\d+)?$/.test(state.costAmount)) {
+      setCostInputError("Cost amount should be a number.");
+      return;
+    }
+
     const newId = state.costEntries.length + 1;
     const newCostEntry = { id: newId, description: state.costDescription, amount: state.costAmount };
     setState(prevState => ({ ...prevState, costEntries: [...prevState.costEntries, newCostEntry] }));
     updateState({ costDescription: "", costAmount: "" });
+    setCostInputError("");
+    Alert.alert('Success', 'Cost entry added successfully.');
   };
-  
-  // Delete cost entry function
+
+  const handleUpdateFees = () => {
+    if (!/^\d+(\.\d+)?$/.test(state.feePerSquareFoot) || !/^\d+(\.\d+)?$/.test(state.feePerParkingSpot)) {
+      setFeeInputError("Both fee inputs should be numbers.");
+      return;
+    }
+
+    setFeeInputError("");
+    Alert.alert('Success', 'Fees updated successfully.');
+  };
+
   const handleDeleteCostEntry = (id) => {
     const updatedCostEntries = state.costEntries.filter(entry => entry.id !== id);
     setState(prevState => ({ ...prevState, costEntries: updatedCostEntries }));
   };
 
- 
- // MAIN CONTENTS DISPLAYED
+  const clearErrors = () => {
+    setFeeInputError("");
+    setCostInputError("");
+  };
+
+
   const content = (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
-          <ScrollView horizontal={true}>
-            
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              
-              <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", paddingBottom: 10 }}>
-              <FaHouse style={{ color: Colors.whiteColor }} />
+    <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={{ flex: 1, justifyContent: "flex-start" }}
+        >
+          <View>
+            <View
+              style={{
+                ...Cards.card,
+                width: width * 0.9,
+                alignSelf: "center",
+                flexDirection: "column",
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 2,
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <FaHouse style={{ color: Colors.whiteColor }} />
                   <Text
                     style={{
                       ...Fonts.whiteColor20SemiBold,
@@ -82,11 +129,8 @@ const FinancialSystemScreen = ({ navigation }) => {
                   >
                     Financial System
                   </Text>
-              </View>
-
-
-              <View style={{ ...Cards.card, width: width * 0.9, flex: 1, flexDirection: "row", marginBottom: 20 }}>
-               
+                </View>
+                <View style={{ ...Cards.card, width: width * 0.9, flex: 1, flexDirection: "row", marginBottom: 20 }}>
                 {/* Fee entry section */}
                 <View style={{ flex: 1, paddingRight: 10, borderRightWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)' }}>
                   <TextInput
@@ -97,6 +141,7 @@ const FinancialSystemScreen = ({ navigation }) => {
                     placeholderTextColor={Colors.grayColor}
                     style={styles.input}
                     selectionColor={Colors.primaryColor}
+                    onFocus={clearErrors}
                   />
                   <TextInput
                     width={0.9 * width}
@@ -106,10 +151,11 @@ const FinancialSystemScreen = ({ navigation }) => {
                     placeholderTextColor={Colors.grayColor}
                     style={styles.input}
                     selectionColor={Colors.primaryColor}
+                    onFocus={clearErrors}
                   />
-                  <Button title="Update Fees" onPress={() => Alert.alert('Success', 'Fees updated successfully.')} color="#00796b" />
+                  <Button title="Update Fees" onPress={handleUpdateFees}  />
+                  {feeInputError ? <Text style={{ ...styles.errorText, color: 'red' }}>{feeInputError}</Text> : null}
                 </View>
-
 
                 {/* Cost entry section */}
                 <View style={{ flex: 1, paddingLeft: 10 }}>
@@ -122,6 +168,7 @@ const FinancialSystemScreen = ({ navigation }) => {
                       placeholderTextColor={Colors.grayColor}
                       style={styles.input}
                       selectionColor={Colors.primaryColor}
+                      onFocus={clearErrors}
                     />
                     <TextInput
                       width={0.3 * width}
@@ -131,8 +178,10 @@ const FinancialSystemScreen = ({ navigation }) => {
                       placeholderTextColor={Colors.grayColor}
                       style={styles.input}
                       selectionColor={Colors.primaryColor}
+                      onFocus={clearErrors}
                     />
-                    <Button title="Add Cost Entry" onPress={handleAddCostEntry} style={{ alignSelf: 'flex-start', marginTop: 10 }} color="#00796b" />
+                    <Button title="Add Cost Entry" onPress={handleAddCostEntry} style={{ alignSelf: 'flex-start', marginTop: 10 }} />
+                    {costInputError ? <Text style={{ ...styles.errorText, color: 'red' }}>{costInputError}</Text> : null}
                   </View>
 
                   {/* Display cost entries */}
@@ -150,7 +199,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                 </View>
               </View>
 
-
               {/* OPERATIONAL BUDGET */}
               <View style={{ ...Cards.card, width: width * 0.9, marginBottom: 20 }}>
                 <Text style={{ ...Fonts.whiteColor20SemiBold, marginBottom: 10 }}>Operational Budget</Text>
@@ -159,22 +207,22 @@ const FinancialSystemScreen = ({ navigation }) => {
 
               {/* Generate annual report button */}
               <View style={{ marginBottom: 20 }}>
-                <Button title="Generate Annual Report" onPress={() => Alert.alert('Success', 'Annual report generated successfully.')} color="#00796b" />
+                <Button title="Generate Annual Report" onPress={() => Alert.alert('Success', 'Annual report generated successfully.')}  />
               </View>
 
               {/* Display annual report */}
               <View>
                 <Text style={{ ...Fonts.whiteColor14Medium }}>{state.annualReport}</Text>
               </View>
+
+              </View>
             </View>
-            
-          </ScrollView>
+          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
   );
 
-  // Render content based on platform
   if (Platform.OS === "web") {
     return content;
   } else {
@@ -188,11 +236,8 @@ const FinancialSystemScreen = ({ navigation }) => {
 
 export default FinancialSystemScreen;
 
-// Styles
-const createStyles = (height) => {
-  return StyleSheet.create({
-    
-    input: {
+function createStyles(height) {
+  return StyleSheet.create({input: {
       ...Fonts.whiteColor14Medium,
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding * 1.5,
@@ -203,9 +248,8 @@ const createStyles = (height) => {
       borderWidth: 1,
       borderColor: "rgba(255,255,255,0.03)",
     },
-
     costEntryCard: {
-      backgroundColor: Colors.bodyBackColor2,
+      backgroundColor: "rgba(255,255,255,0.03)",
       borderRadius: Sizes.fixPadding * 1.5,
       paddingHorizontal: Sizes.fixPadding * 2.5,
       paddingVertical: Sizes.fixPadding * 1.2,
@@ -213,19 +257,16 @@ const createStyles = (height) => {
       borderWidth: 1,
       borderColor: "rgba(255,255,255,0.03)",
     },
-
     costEntriesContainer: {
       marginTop: 10,
       flex: 1,
     },
-
     costEntriesTitle: {
       ...Fonts.whiteColor16SemiBold,
       marginBottom: 5,
     },
-
     costEntry: {
-      backgroundColor: Colors.grayColor,
+      backgroundColor: Colors.bodyBackColor2,
       padding: 10,
       borderRadius: 5,
       marginBottom: 5,
@@ -233,9 +274,13 @@ const createStyles = (height) => {
       justifyContent: 'space-between',
       alignItems: 'center',
     },
-
     costEntryText: {
       ...Fonts.whiteColor14Medium,
-    }
-  });
-};
+    },
+    errorText: {
+      color: 'red',
+    },});
+}
+
+
+
