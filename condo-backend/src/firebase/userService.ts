@@ -17,6 +17,7 @@ const userValuesAllowedKeys = [
   "streetAddress",
   "userEmail",
   "profileUrl",
+  "propertiesOwned",
 ];
 
 const defaultUserValues = {
