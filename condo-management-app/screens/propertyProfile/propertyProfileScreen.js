@@ -195,7 +195,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             flex: 1,
             marginTop: "3%",
             width: "100%",
-            marginLeft: width > 600 ? 0 : 0,
+            marginLeft: width > 600 ? 30 : 0,
           }}
         >
           {Object.entries(userValues.propertiesOwned[propertyId]).map(
