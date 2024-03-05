@@ -157,8 +157,8 @@ const PropertyProfileScreen = ({ navigation }) => {
           marginBottom: 10,
           borderRadius: 10,
           elevation: 2,
-          elevation: 2, // This adds a subtle shadow on Android
-          shadowOpacity: 0.2, // This adds a subtle shadow on iOS
+          elevation: 2, 
+          shadowOpacity: 0.2,
           shadowRadius: 10,
           shadowColor: "black",
           shadowOffset: { height: 2, width: 0 },
@@ -180,8 +180,8 @@ const PropertyProfileScreen = ({ navigation }) => {
                   "https://placehold.co/400x400?text=Upload+Image",
               }}
               style={{
-                width: width > 600 ? 250 : width * 0.65, // Adjust image width based on screen size
-                height: width > 600 ? 250 : width * 0.65, // Adjust image height based on screen size
+                width: width > 600 ? 250 : width * 0.75, // Adjust image width based on screen size
+                height: width > 600 ? 250 : width * 0.75, // Adjust image height based on screen size
                 resizeMode: "cover",
                 borderRadius: 10,
                 elevation: 5,
@@ -193,7 +193,7 @@ const PropertyProfileScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            marginTop: "3%",
+            marginTop: "12%",
             width: "100%",
             marginLeft: width > 600 ? 30 : 0,
           }}
@@ -321,7 +321,7 @@ const PropertyProfileScreen = ({ navigation }) => {
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, height: height }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
@@ -547,13 +547,14 @@ const PropertyProfileScreen = ({ navigation }) => {
                     name="bruce"
                     type="primary"
                     style={[
-                      { marginLeft: 15, marginRight: 20, marginBottom: 20 },
+                      { marginLeft: 15, marginRight: 15, marginBottom: 20 },
                     ]}
                     onPress={() => addPropertyProfile()}
                     raiseLevel={2}
                     textSize={20}
+                    paddingHorizontal={20}
                     borderRadius={5}
-                    width={width * 0.25}
+                    width={width * 0.9}
                   >
                     <Text
                       style={{
@@ -626,7 +627,6 @@ function createStyles(height) {
     propertyItem: {
       flexDirection: "row",
       alignItems: "center",
-      marginVertical: 4,
       flexWrap: "wrap",
     },
     title: {

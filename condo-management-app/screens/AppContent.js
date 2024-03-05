@@ -13,6 +13,7 @@ import BottomTabBarScreen from "../navigator/bottomTabBar";
 import PropertyProfileScreen from "./propertyProfile/propertyProfileScreen";
 import financialSystemScreen from "./financialSystem/financialSystemScreen";
 import PropertyScreen from "./propertyPage/propertyPage";
+import LandingPage from "./LandingPage/landingPage";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ const AppContent = () => {
           gestureEnabled: false,
         }}
       >
+        <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="Register" component={SignupScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="BottomNavigator" component={BottomTabBarScreen} />

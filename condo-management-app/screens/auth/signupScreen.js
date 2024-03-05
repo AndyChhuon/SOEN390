@@ -17,10 +17,9 @@ import {
 import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import AwesomeButton from "react-native-really-awesome-button";
+import { ThemedButton } from "react-native-really-awesome-button";
 import useAuth from "../../hooks/useAuth";
 
-const { height, width } = Dimensions.get("window");
 const RegisterScreen = ({ navigation }) => {
   const { emailSignup } = useAuth();
 
@@ -37,6 +36,23 @@ const RegisterScreen = ({ navigation }) => {
     backClickCount: 0,
     isAgree: true,
   });
+
+  const { height, width } = Dimensions.get("window");
+
+  const styles = createStyles(height);
+
+  const [windowDimensions, setWindowDimensions] = useState(
+    Dimensions.get("window")
+  );
+
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setWindowDimensions(window);
+    };
+
+    Dimensions.addEventListener("change", onChange);
+    return () => Dimensions.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -94,7 +110,7 @@ const RegisterScreen = ({ navigation }) => {
       <View style={{ flexGrow: 1 }}>{loginTitle()}</View>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1, justifyContent: "flex-end" }}
+        style={{ flex: 1, justifyContent: "flex-end", marginHorizontal: 10}}
       >
         {userEmailTextField()}
         {passwordTextField()}
@@ -133,6 +149,7 @@ const RegisterScreen = ({ navigation }) => {
           navigation.push("Login");
         }}
         style={{
+          alignSelf: "center",
           textAlign: "center",
           paddingBottom: (Sizes.fixPadding * 2.0 * height) / 880,
           marginTop: (Sizes.fixPadding * 4.0 * height) / 880,
@@ -140,11 +157,11 @@ const RegisterScreen = ({ navigation }) => {
       >
         <Text
           style={{
-            ...Fonts.primaryColor14Medium,
+            ...Fonts.whiteColor14Regular,
             textDecorationLine: "underline",
           }}
         >
-          Already signed up?
+          Already signed up? Click here to login
         </Text>
       </Text>
     );
@@ -185,31 +202,31 @@ const RegisterScreen = ({ navigation }) => {
 
   function registerButton() {
     return (
-      <View style={{ alignItems: "center" }}>
-        <AwesomeButton
-          activeOpacity={0.9}
-          onPress={async (next) => {
+      <View
+        style={{
+          alignItems: "center",
+          marginHorizontal: Sizes.fixPadding * 2.0,
+        }}
+      >
+        <ThemedButton
+          name="bruce"
+          type="primary"
+          raiseLevel={5}
+          borderRadius={10}
+          onPress={async () => {
             registerOnClick();
             next();
           }}
-          style={styles.registerButtonStyle}
-          width={0.9 * width}
-          backgroundColor={Colors.secondaryGoldColor}
-          raiseLevel={5}
-          borderRadius={20}
-          backgroundShadow={Colors.grayColor}
-          progress
         >
           <Text
             style={{
-              ...Fonts.whiteColor20SemiBold,
-              width: "100%",
-              textAlign: "center",
+              ...Fonts.primaryColor16SemiBold,
+              color: Colors.whiteColor,
             }}
           >
-            Sign up
+            Register
           </Text>
-        </AwesomeButton>
+        </ThemedButton>
       </View>
     );
   }
@@ -298,6 +315,8 @@ const RegisterScreen = ({ navigation }) => {
       <View
         style={{
           marginRight: Sizes.fixPadding * 2.0,
+          marginTop: (Sizes.fixPadding * 2.0 * height) / 880,
+          marginBottom: (Sizes.fixPadding * 2.0 * height) / 880,
         }}
       >
         <View style={styles.agreeOrNotInfoWrapStyle}>
@@ -305,17 +324,13 @@ const RegisterScreen = ({ navigation }) => {
             activeOpacity={0.9}
             onPress={() => updateState({ isAgree: !isAgree })}
             style={{
-              backgroundColor: isAgree
-                ? Colors.secondaryGoldColor
-                : "transparent",
-              borderColor: isAgree
-                ? Colors.secondaryGoldColor
-                : Colors.whiteColor,
+              backgroundColor: isAgree ? Colors.whiteColor : "transparent",
+              borderColor: isAgree ? Colors.whiteColor : Colors.whiteColor,
               ...styles.checkBoxStyle,
             }}
           >
             {isAgree ? (
-              <MaterialIcons name="check" color={Colors.whiteColor} size={14} />
+              <MaterialIcons name="check" color={Colors.blackColor} size={14} />
             ) : null}
           </TouchableOpacity>
           <View>
@@ -325,7 +340,7 @@ const RegisterScreen = ({ navigation }) => {
               </Text>
               <Text
                 style={{
-                  ...Fonts.primaryColor14Medium,
+                  ...Fonts.whiteColor14Medium,
                   textDecorationLine: "underline",
                 }}
               >
@@ -429,78 +444,80 @@ const RegisterScreen = ({ navigation }) => {
   }
 };
 
-const styles = StyleSheet.create({
-  loginContainer: {
-    justifyContent: "center",
-    backgroundColor: "red",
-    height: "100%",
-  },
-  backArrowWrapStyle: {
-    width: 40.0,
-    height: 40.0,
-    borderRadius: 20.0,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textFieldWrapStyle: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: Sizes.fixPadding - 5.0,
-    paddingHorizontal: Sizes.fixPadding + 2.0,
-    marginHorizontal: Sizes.fixPadding * 2.0,
-  },
-  forgetPasswordTextStyle: {
-    marginTop: Sizes.fixPadding - 5.0,
-    marginHorizontal: Sizes.fixPadding * 2.0,
-    textAlign: "right",
-    textDecorationLine: "underline",
-    ...Fonts.primaryColor14Medium,
-  },
-  registerButtonStyle: {
-    marginTop: (Sizes.fixPadding * 4.0 * height) / 880,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: Sizes.fixPadding * 2.0,
-    borderRadius: Sizes.fixPadding - 5.0,
-  },
-  googleAndFacebookButtonWrapStyle: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    paddingVertical: Sizes.fixPadding + 5.0,
-    marginHorizontal: Sizes.fixPadding,
-    borderRadius: Sizes.fixPadding - 5.0,
-  },
-  animatedView: {
-    backgroundColor: "#333333",
-    position: "absolute",
-    bottom: 20,
-    alignSelf: "center",
-    borderRadius: Sizes.fixPadding * 2.0,
-    paddingHorizontal: Sizes.fixPadding + 5.0,
-    paddingVertical: Sizes.fixPadding,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  agreeOrNotInfoWrapStyle: {
-    marginTop: Sizes.fixPadding,
-    marginHorizontal: Sizes.fixPadding * 2.0,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  checkBoxStyle: {
-    width: 18.0,
-    height: 18.0,
-    borderRadius: Sizes.fixPadding - 8.0,
-    borderWidth: 1.0,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: Sizes.fixPadding + 2.0,
-  },
-});
+function createStyles(width, height) {
+  return StyleSheet.create({
+    loginContainer: {
+      justifyContent: "center",
+      backgroundColor: "red",
+      height: "100%",
+    },
+    backArrowWrapStyle: {
+      width: 40.0,
+      height: 40.0,
+      borderRadius: 20.0,
+      backgroundColor: "rgba(255,255,255,0.05)",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    textFieldWrapStyle: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "rgba(255,255,255,0.05)",
+      borderRadius: Sizes.fixPadding - 5.0,
+      paddingHorizontal: Sizes.fixPadding + 2.0,
+      marginHorizontal: Sizes.fixPadding * 2.0,
+    },
+    forgetPasswordTextStyle: {
+      marginTop: Sizes.fixPadding - 5.0,
+      marginHorizontal: Sizes.fixPadding * 2.0,
+      textAlign: "right",
+      textDecorationLine: "underline",
+      ...Fonts.primaryColor14Medium,
+    },
+    registerButtonStyle: {
+      marginTop: (Sizes.fixPadding * 4.0 * height) / 880,
+      alignItems: "center",
+      justifyContent: "center",
+      marginHorizontal: Sizes.fixPadding * 2.0,
+      borderRadius: Sizes.fixPadding - 5.0,
+    },
+    googleAndFacebookButtonWrapStyle: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "rgba(255,255,255,0.05)",
+      paddingVertical: Sizes.fixPadding + 5.0,
+      marginHorizontal: Sizes.fixPadding,
+      borderRadius: Sizes.fixPadding - 5.0,
+    },
+    animatedView: {
+      backgroundColor: "#333333",
+      position: "absolute",
+      bottom: 20,
+      alignSelf: "center",
+      borderRadius: Sizes.fixPadding * 2.0,
+      paddingHorizontal: Sizes.fixPadding + 5.0,
+      paddingVertical: Sizes.fixPadding,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    agreeOrNotInfoWrapStyle: {
+      marginTop: Sizes.fixPadding,
+      marginHorizontal: Sizes.fixPadding * 2.0,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    checkBoxStyle: {
+      width: 18.0,
+      height: 18.0,
+      borderRadius: Sizes.fixPadding - 8.0,
+      borderWidth: 1.0,
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: Sizes.fixPadding + 2.0,
+    },
+  });
+}
 
 export default RegisterScreen;

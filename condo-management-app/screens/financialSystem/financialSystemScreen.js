@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo
 import { ThemedButton } from "react-native-really-awesome-button";
+import React, { useRef, useState, useEffect } from "react";
+import Dropdown from "../Components/Dropdown";
 import {
   SafeAreaView,
   View,
+  Image,
+  Keyboard,
   Dimensions,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
   ScrollView,
-  Button,
-  TextInput,
-  Alert,
 } from "react-native";
 import { FaHouse } from "react-icons/fa6";
 
@@ -114,10 +116,9 @@ const FinancialSystemScreen = ({ navigation }) => {
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, height: height,  } }>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1, justifyContent: "flex-start" }}
         >
           <View>
             <View
@@ -127,12 +128,10 @@ const FinancialSystemScreen = ({ navigation }) => {
                 flexDirection: "column",
               }}
             >
-              <View style={{ flex: 1 }}>
+              <View style={{ marginTop: 25 }}>
                 <View
                   style={{
                     flexDirection: "row",
-                    margin: 2,
-                    padding: 10,
                     alignItems: "center",
                   }}
                 >
@@ -140,7 +139,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                   <Text
                     style={{
                       ...Fonts.whiteColor20SemiBold,
-                      margin: 10,
                       alignSelf: "center",
                     }}
                   >
@@ -150,25 +148,15 @@ const FinancialSystemScreen = ({ navigation }) => {
                 <View
                   style={{
                     width: width * 0.9,
-                    flex: 1,
                     flexDirection: "column",
-                    marginBottom: 5,
+                    padding: 10,
                   }}
                 >
                   {/* Fee entry section */}
-                  <View
-                    style={{
-                      flex: 1,
-                      paddingRight: 10,
-                      borderRightWidth: 1,
-                      borderColor: "rgba(255, 255, 255, 0.1)",
-                    }}
-                  >
+                  <View>
                     <View
                       style={{
                         flexDirection: "row",
-                        marginLeft: 10,
-
                         padding: 10,
                         alignItems: "center",
                       }}
@@ -176,31 +164,18 @@ const FinancialSystemScreen = ({ navigation }) => {
                       <Text
                         style={{
                           ...Fonts.whiteColor14Medium,
-
                           alignSelf: "center",
                         }}
                       >
                         Fee per Square Foot
                       </Text>
                     </View>
-                    <TextInput
-                      width={0.9 * width}
-                      onChangeText={(value) =>
-                        updateState({ feePerSquareFoot: value })
-                      }
-                      placeholder="Enter fee per square foot"
-                      value={state.feePerSquareFoot}
-                      placeholderTextColor={Colors.grayColor}
-                      style={styles.input}
-                      selectionColor={Colors.primaryColor}
-                      onFocus={clearErrors}
-                    />
+                    {FeePerSquareFoot()}
                     <View
                       style={{
                         flexDirection: "row",
-                        marginLeft: 10,
-                        padding: 10,
                         alignItems: "center",
+                        padding: 10,
                       }}
                     >
                       <Text
@@ -212,28 +187,17 @@ const FinancialSystemScreen = ({ navigation }) => {
                         Parking Fee
                       </Text>
                     </View>
-                    <TextInput
-                      width={0.9 * width}
-                      onChangeText={(value) =>
-                        updateState({ feePerParkingSpot: value })
-                      }
-                      placeholder="Enter fee per parking"
-                      value={state.feePerParkingSpot}
-                      placeholderTextColor={Colors.grayColor}
-                      style={styles.input}
-                      selectionColor={Colors.primaryColor}
-                      onFocus={clearErrors}
-                    />
 
+                    
+                    {FeePerParkingSpot()}
                     <ThemedButton
                       name="bruce"
                       type="primary"
                       raiseLevel={2}
                       style={{
-                        marginRight: 20,
                         alignSelf: "center",
                         borderRadius: 5,
-                        padding: 10,
+                        marginTop: 10,
                       }}
                       onPress={handleUpdateFees}
                     >
@@ -255,33 +219,26 @@ const FinancialSystemScreen = ({ navigation }) => {
                   </View>
 
                   {/* Cost entry section */}
-                  <View
-                    style={{
-                      flex: 1,
-                      marginBottom: "5%",
-                      marginTop: "1%",
-                    }}
-                  >
-                    <View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginLeft: 10,
 
-                          padding: 10,
-                          alignItems: "center",
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        padding: 10,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          ...Fonts.whiteColor14Medium,
+
+                          alignSelf: "center",
                         }}
                       >
-                        <Text
-                          style={{
-                            ...Fonts.whiteColor14Medium,
-
-                            alignSelf: "center",
-                          }}
-                        >
-                          Cost Description
-                        </Text>
-                      </View>
+                        Cost Description
+                      </Text>
+                    </View>
+                    <View style={styles.textFieldWrapStyle}>
                       <TextInput
                         width={0.5 * width}
                         onChangeText={(value) =>
@@ -294,25 +251,25 @@ const FinancialSystemScreen = ({ navigation }) => {
                         selectionColor={Colors.primaryColor}
                         onFocus={clearErrors}
                       />
-                      <View
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        padding: 10,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
                         style={{
-                          flexDirection: "row",
-                          marginLeft: 10,
+                          ...Fonts.whiteColor14Medium,
 
-                          padding: 10,
-                          alignItems: "center",
+                          alignSelf: "center",
                         }}
                       >
-                        <Text
-                          style={{
-                            ...Fonts.whiteColor14Medium,
-
-                            alignSelf: "center",
-                          }}
-                        >
-                          Cost Amount
-                        </Text>
-                      </View>
+                        Cost Amount
+                      </Text>
+                    </View>
+                    <View style={styles.textFieldWrapStyle}>
                       <TextInput
                         width={0.3 * width}
                         onChangeText={(value) =>
@@ -325,69 +282,69 @@ const FinancialSystemScreen = ({ navigation }) => {
                         selectionColor={Colors.primaryColor}
                         onFocus={clearErrors}
                       />
-                      <ThemedButton
-                        name="bruce"
-                        type="primary"
-                        raiseLevel={2}
+                    </View>
+                    <ThemedButton
+                      name="bruce"
+                      type="primary"
+                      raiseLevel={2}
+                      style={{
+                        marginTop: 10,
+                        alignSelf: "center",
+                        borderRadius: 5,
+                      }}
+                      onPress={handleAddCostEntry}
+                    >
+                      <Text
                         style={{
-                          marginRight: 20,
-                          alignSelf: "center",
-                          borderRadius: 5,
-                          padding: 10,
+                          ...Fonts.primaryColor16SemiBold,
+                          color: Colors.whiteColor,
                         }}
-                        onPress={handleAddCostEntry}
                       >
-                        <Text
-                          style={{
-                            ...Fonts.primaryColor16SemiBold,
-                            color: Colors.whiteColor,
-                          }}
-                        >
-                          Add Cost Entry
-                        </Text>
-                      </ThemedButton>
-                      {costInputError ? (
-                        <Text style={{ ...styles.errorText, color: "red" }}>
-                          {costInputError}
-                        </Text>
-                      ) : null}
-                    </View>
+                        Add Cost Entry
+                      </Text>
+                    </ThemedButton>
+                    {costInputError ? (
+                      <Text style={{ ...styles.errorText, color: "red" }}>
+                        {costInputError}
+                      </Text>
+                    ) : null}
+                  </View>
 
-                    {/* Display cost entries */}
-                    <View style={styles.costEntriesContainer}>
-                      <Text style={styles.costEntriesTitle}>Cost Entries:</Text>
-                      <ScrollView style={{ height: height * 0.8, margin: 5 }}>
-                        {state.costEntries.map((entry) => (
-                          <View key={entry.id}>
-                            <View
-                              style={{
-                                backgroundColor: Colors.bodyBackColor,
-                                marginVertical: 10,
-                                alignContent: "center",
-                                justifyContent: "space-between",
-                                padding: 10,
-                                flexDirection: "row",
-                              }}
+                  {/* Display cost entries */}
+                  <View style={styles.costEntriesContainer}>
+                    <Text style={styles.costEntriesTitle}>Cost Entries:</Text>
+                    <ScrollView style={{ padding: 10 }}>
+                      {state.costEntries.map((entry) => (
+                        <View key={entry.id}>
+                          <View
+                            style={{
+                              backgroundColor: Colors.bodyBackColor,
+                              alignContent: "center",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
+                              borderRadius: 5,
+                              padding: 10,
+                              margin: 5,
+                              shadowColor: "black",
+                              shadowRadius: 10,
+                              shadowOpacity: 0.2,
+                              shadowOffset: { width: 2, height: 2 },
+                            }}
+                          >
+                            <Text style={styles.costEntryText}>
+                              Description: {entry.description}, Amount:{" "}
+                              {entry.amount}
+                            </Text>
+                            <TouchableWithoutFeedback
+                              onPress={() => handleDeleteCostEntry(entry.id)}
+                              style={{ marginLeft: 15 }}
                             >
-                              <Text style={styles.costEntryText}>
-                                Description: {entry.description}, Amount:{" "}
-                                {entry.amount}
-                              </Text>
-                              <TouchableWithoutFeedback
-                                onPress={() => handleDeleteCostEntry(entry.id)}
-                                style={{ marginLeft: 15 }}
-                              >
-                                <Ionicons
-                                  name="close"
-                                  size={24}
-                                  color="white"
-                                />
-                              </TouchableWithoutFeedback>
-                            </View>
+                              <Ionicons name="close" size={24} color="white" />
+                            </TouchableWithoutFeedback>
                           </View>
-                        ))}
-                      </ScrollView>
-                    </View>
+                        </View>
+                      ))}
+                    </ScrollView>
                   </View>
                 </View>
 
@@ -395,7 +352,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                 <View
                   style={{
                     width: width * 0.9,
-                    marginTop: 30,
                   }}
                 >
                   <Text
@@ -418,9 +374,8 @@ const FinancialSystemScreen = ({ navigation }) => {
                     type="primary"
                     raiseLevel={5}
                     style={{
-                      marginRight: 20,
+                      marginTop: 10,
                       alignSelf: "center",
-                      padding: 10,
                     }}
                     onPress={() =>
                       Alert.alert(
@@ -454,6 +409,64 @@ const FinancialSystemScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 
+  function FeePerSquareFoot() {
+    const input = useRef();
+    return (
+      <View>
+        <View style={styles.textFieldWrapStyle}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => input.current.focus()}
+          ></TouchableOpacity>
+          <TextInput
+            ref={input}
+            width={0.9 * width}
+            onChangeText={(value) => updateState({ feePerSquareFoot: value })}
+            placeholder="Fee per square foot"
+            value={state.feePerSquareFoot}
+            placeholderTextColor={Colors.grayColor}
+            style={{
+              ...Fonts.whiteColor14Medium,
+              flex: 1,
+              marginLeft: Sizes.fixPadding + 2.0,
+              paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
+            }}
+            selectionColor={Colors.primaryColor}
+          />
+        </View>
+      </View>
+    );
+  }
+
+  function FeePerParkingSpot() {
+    const input = useRef();
+    return (
+      <View>
+        <View style={styles.textFieldWrapStyle}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => input.current.focus()}
+          ></TouchableOpacity>
+          <TextInput
+            ref={input}
+            width={0.9 * width}
+            onChangeText={(value) => updateState({ feePerParkingSpot: value })}
+            placeholder="Enter fee per parking"
+            value={state.feePerParkingSpot}
+            placeholderTextColor={Colors.grayColor}
+            style={{
+              ...Fonts.whiteColor14Medium,
+              flex: 1,
+              marginLeft: Sizes.fixPadding + 2.0,
+              paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
+            }}
+            selectionColor={Colors.primaryColor}
+          />
+        </View>
+      </View>
+    );
+  }
+
   if (Platform.OS === "web") {
     return content;
   } else {
@@ -470,26 +483,29 @@ export default FinancialSystemScreen;
 function createStyles(height) {
   return StyleSheet.create({
     input: {
-      ...Fonts.whiteColor14Medium,
+      ...Fonts.whiteColor16Medium,
+      flex: 1,
+      marginLeft: Sizes.fixPadding + 2.0,
+      paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
+    },
+
+    textFieldWrapStyle: {
+      flexDirection: "row",
+      alignItems: "center",
       backgroundColor: "rgba(255,255,255,0.05)",
-      padding: 10,
-      marginHorizontal: Sizes.fixPadding * 2.5,
-      marginBottom: Sizes.fixPadding * 1,
-      borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.03)",
+      borderRadius: Sizes.fixPadding - 5.0,
+      paddingHorizontal: Sizes.fixPadding + 2.0,
+      marginHorizontal: Sizes.fixPadding * 2.0,
+      paddingVertical: (Sizes.fixPadding + 2.0) / 2.0,
     },
     costEntryCard: {
       backgroundColor: "rgba(255,255,255,0.03)",
       borderRadius: Sizes.fixPadding * 1.5,
-      paddingHorizontal: Sizes.fixPadding * 2.5,
-      paddingVertical: Sizes.fixPadding * 1.2,
-      marginBottom: Sizes.fixPadding * 2.5,
       borderWidth: 1,
       borderColor: "rgba(255,255,255,0.03)",
     },
     costEntriesContainer: {
       marginTop: 10,
-      flex: 1,
     },
     costEntriesTitle: {
       ...Fonts.whiteColor16SemiBold,

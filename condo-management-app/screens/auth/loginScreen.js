@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useFocusEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -15,8 +15,10 @@ import {
 } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import AwesomeButton from "react-native-really-awesome-button";
+import { ThemedButton } from "react-native-really-awesome-button";
 import useAuth from "../../hooks/useAuth";
+
+
 
 const LoginScreen = ({ navigation }) => {
   const [state, setState] = useState({
@@ -25,7 +27,21 @@ const LoginScreen = ({ navigation }) => {
     securePassword: true,
   });
   const { height, width } = Dimensions.get("window");
+
   const styles = createStyles(height);
+
+  const [windowDimensions, setWindowDimensions] = useState(
+    Dimensions.get("window")
+  );
+
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setWindowDimensions(window);
+    };
+
+    Dimensions.addEventListener("change", onChange);
+    return () => Dimensions.removeEventListener("change", onChange);
+  }, []);
 
   const { emailLogin } = useAuth();
 
@@ -128,30 +144,36 @@ const LoginScreen = ({ navigation }) => {
   function loginButton() {
     return (
       <View style={{ alignItems: "center", marginBottom: 50 }}>
-        <AwesomeButton
-          activeOpacity={0.9}
-          onPress={async (next) => {
+        <ThemedButton
+          name="bruce"
+          type="primary"
+          raiseLevel={5}
+          borderRadius={10}
+          width={width *0.92}
+          style={{
+            borderRadius: 5,
+            padding: 10,
+          }}
+          onPress={async () => {
             loginOnClick();
             next();
           }}
-          style={styles.loginButtonStyle}
-          width={0.9 * width}
-          backgroundColor={Colors.secondaryGoldColor}
-          raiseLevel={5}
-          borderRadius={20}
-          backgroundShadow={Colors.grayColor}
-          progress
         >
+          <MaterialIcons
+            style={{ marginRight: 15 }}
+            name="login"
+            size={26}
+            color="#fff"
+          />
           <Text
             style={{
-              ...Fonts.whiteColor20SemiBold,
-              width: "100%",
-              textAlign: "center",
+              ...Fonts.primaryColor16SemiBold,
+              color: Colors.whiteColor,
             }}
           >
             Login
           </Text>
-        </AwesomeButton>
+        </ThemedButton>
       </View>
     );
   }
@@ -327,7 +349,7 @@ const LoginScreen = ({ navigation }) => {
   }
 };
 
-function createStyles(height) {
+function createStyles(width, height) {
   return StyleSheet.create({
     loginContainer: {
       justifyContent: "center",
