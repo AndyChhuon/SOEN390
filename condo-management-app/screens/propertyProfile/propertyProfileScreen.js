@@ -336,7 +336,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             >
               <MaterialIcon
                 style={{ marginRight: 5 }}
-                name="attach-money"
+                name="money-bill"
                 size={26}
                 color="#fff"
               />

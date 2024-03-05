@@ -22,7 +22,6 @@ import { FaHouse } from "react-icons/fa6";
 import useAuth from "../../hooks/useAuth";
 import { MaterialIcons } from "@expo/vector-icons";
 
-
 const FinancialSystemScreen = ({ route, navigation }) => {
   height, width;
   const [wasPopped, setWasPopped] = useState(false);
@@ -34,6 +33,8 @@ const FinancialSystemScreen = ({ route, navigation }) => {
   const [state, setState] = useState({
     feePerSquareFoot: "",
     feePerParkingSpot: "",
+    operationalBudget: null,
+    TenantID: "",
     operationalBudget: null,
     costDescription: "",
     costAmount: "",
@@ -79,7 +80,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
 
     const newId = state.costEntries.length + 1;
     const newCostEntry = {
-      id: newId,
+      id: state.TenantID,
       description: state.costDescription,
       amount: state.costAmount,
     };
@@ -87,7 +88,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
       ...prevState,
       costEntries: [...prevState.costEntries, newCostEntry],
     }));
-    updateState({ costDescription: "", costAmount: "" });
+    updateState({ costDescription: "", costAmount: "", TenantID: ""});
     setCostInputError("");
     Alert.alert("Success", "Cost entry added successfully.");
   };
@@ -121,7 +122,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
   };
   function backArrow() {
     return (
-      <View style={[{margin:10}, { ...styles.backArrowWrapStyle }]}>
+      <View style={[{ margin: 10 }, { ...styles.backArrowWrapStyle }]}>
         <MaterialIcons
           name="chevron-left"
           color={Colors.whiteColor}
@@ -246,21 +247,38 @@ const FinancialSystemScreen = ({ route, navigation }) => {
                   {/* Cost entry section */}
 
                   <View>
-                  <Text
+                    <Text
+                      style={{
+                        ...Fonts.whiteColor20SemiBold,
+                        marginVertical: 20,
+                      }}
+                    >
+                      Charge Tenant
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginVertical: 5,
+                      }}
+                    >
+                      <Text
                         style={{
-                          ...Fonts.whiteColor20SemiBold,
-                          marginBottom: 10,
+                          ...Fonts.whiteColor14Medium,
+
+                          alignSelf: "center",
                         }}
                       >
-                        Operational Budget
+                        Tenant ID
                       </Text>
+                    </View>
+                    {TenantID()}
                     <View
                       style={{
                         flexDirection: "row",
                         marginVertical: 5,
                       }}
                     >
-                      
                       <Text
                         style={{
                           ...Fonts.whiteColor14Medium,
@@ -317,7 +335,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
                   {/* Display cost entries */}
                   <View style={styles.costEntriesContainer}>
                     <Text style={styles.costEntriesTitle}>Cost Entries:</Text>
-                    <ScrollView style={{ padding: 10 }}>
+                    <ScrollView style={{}}>
                       {state.costEntries.map((entry) => (
                         <View key={entry.id}>
                           <View
@@ -335,10 +353,15 @@ const FinancialSystemScreen = ({ route, navigation }) => {
                               shadowOffset: { width: 2, height: 2 },
                             }}
                           >
-                            <Text style={styles.costEntryText}>
-                              Description: {entry.description}, Amount:{" "}
-                              {entry.amount}
-                            </Text>
+                            <View>
+                              <Text style={styles.costEntryText}>
+                                Tenant: {entry.id}
+                              </Text>
+                              <Text style={styles.costEntryText}>
+                                Description: {entry.description}, Amount:{" "}
+                                {entry.amount}
+                              </Text>
+                            </View>
                             <TouchableWithoutFeedback
                               onPress={() => handleDeleteCostEntry(entry.id)}
                               style={{ marginLeft: 15 }}
@@ -509,6 +532,35 @@ const FinancialSystemScreen = ({ route, navigation }) => {
     );
   }
 
+  function TenantID() {
+    const input = useRef();
+    return (
+      <View>
+        <View style={styles.textFieldWrapStyle}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => input.current.focus()}
+          ></TouchableOpacity>
+          <TextInput
+            ref={input}
+            width={0.9 * width}
+            onChangeText={(value) => updateState({ TenantID: value })}
+            placeholder="Enter the tenants ID"
+            value={state.tenantID}
+            placeholderTextColor={Colors.grayColor}
+            style={{
+              ...Fonts.whiteColor14Medium,
+              flex: 1,
+              marginLeft: Sizes.fixPadding + 2.0,
+              paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
+            }}
+            selectionColor={Colors.primaryColor}
+          />
+        </View>
+      </View>
+    );
+  }
+
   function FeePerParkingSpot() {
     const input = useRef();
     return (
@@ -581,8 +633,8 @@ function createStyles(height) {
       marginBottom: 5,
     },
     costEntry: {
-      backgroundColor: Colors.bodyBackColor2,
-      padding: 10,
+      backgroundColor: Colors.cardmaincolor,
+      padding: 5,
       borderRadius: 5,
       marginBottom: 5,
       flexDirection: "row",
