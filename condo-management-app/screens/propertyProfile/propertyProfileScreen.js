@@ -153,7 +153,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           backgroundColor: Colors.bodyBackColor,
           borderBottomColor: "#000",
           borderBottomWidth: 0,
-          height: width > 600 ? height*0.5 : height*0.95,
+          height: width > 900 ? height*0.6 : height*0.95,
           marginBottom: 10,
           borderRadius: 10,
           elevation: 2,
@@ -163,7 +163,7 @@ const PropertyProfileScreen = ({ navigation }) => {
           shadowColor: "black",
           shadowOffset: { height: 2, width: 0 },
           shadowOffset: { width: 2, height: 2 },
-          flexDirection: width > 600 ? "row" : "column",
+          flexDirection: width > 900 ? "row" : "column",
           position: "relative",
           alignContent: "center",
         }}
@@ -180,8 +180,9 @@ const PropertyProfileScreen = ({ navigation }) => {
                   "https://placehold.co/400x400?text=Upload+Image",
               }}
               style={{
-                width: width > 600 ? 250 : width * 0.75, // Adjust image width based on screen size
-                height: width > 600 ? 250 : width * 0.75, // Adjust image height based on screen size
+                marginHorizontal: 30,
+                width: width > 900 ? 500 : width * 0.60, // Adjust image width based on screen size
+                height: width > 900 ? 400 : width * 0.55, // Adjust image height based on screen size
                 resizeMode: "cover",
                 borderRadius: 10,
                 elevation: 5,
@@ -193,9 +194,9 @@ const PropertyProfileScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            marginTop: "12%",
+            marginVertical: width > 900 ? 70 : 20,
             width: "100%",
-            marginLeft: width > 600 ? 30 : 0,
+            marginHorizontal: width > 900 ? 60 : 30,
           }}
         >
           {Object.entries(userValues.propertiesOwned[propertyId]).map(
@@ -244,7 +245,7 @@ const PropertyProfileScreen = ({ navigation }) => {
 
           <View
             style={{
-              flexDirection: width > 600 ? "row" : "column",
+              flexDirection: width > 900 ? "row" : "column",
               marginTop: 20,
               flexWrap: "wrap",
             }}
@@ -252,7 +253,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             <ThemedButton
               name="bruce"
               type="primary"
-              width={width > 600 ? width * 0.2 : width * 0.7}
+              width={width > 900 ? width * 0.2 : width * 0.7}
               raiseLevel={2}
               borderRadius={10}
               style={{
@@ -285,7 +286,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 600 ? width * 0.2 : width * 0.7}
+              width={width > 900 ? width * 0.2 : width * 0.7}
               style={{
                 marginTop: width > 600 ? 0 : 10,
                 alignSelf: "flex-start",
@@ -586,6 +587,7 @@ const PropertyProfileScreen = ({ navigation }) => {
             </Text>
             <ScrollView
               horizontal={false}
+              showsVerticalScrollIndicator={false}
               style={{
                 height: height * 0.85,
                 marginBottom: 55,
@@ -653,7 +655,7 @@ function createStyles(height) {
     },
 
     content: {
-      fontSize: 16,
+      fontSize: 18,
       color: "white",
     },
   });

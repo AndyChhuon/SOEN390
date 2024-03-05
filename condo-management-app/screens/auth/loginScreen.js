@@ -362,7 +362,6 @@ function createStyles(width, height) {
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding - 5.0,
       paddingHorizontal: Sizes.fixPadding + 2.0,
-      marginHorizontal: Sizes.fixPadding * 2.0,
     },
     forgetPasswordTextStyle: {
       marginTop: ((Sizes.fixPadding - 5.0) * height) / 880,
