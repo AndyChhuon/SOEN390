@@ -19,8 +19,11 @@ import {
   ScrollView,
 } from "react-native";
 import { FaHouse } from "react-icons/fa6";
+import useAuth from "../../hooks/useAuth";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const FinancialSystemScreen = ({ navigation }) => {
+
+const FinancialSystemScreen = ({ route, navigation }) => {
   height, width;
   const [wasPopped, setWasPopped] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState(
@@ -37,7 +40,10 @@ const FinancialSystemScreen = ({ navigation }) => {
     costEntries: [],
     annualReport: "",
   });
+  const { userValues } = useAuth();
 
+  const propertyId = route?.params?.propertyId;
+  const propertyDetails = userValues.propertiesOwned[propertyId];
   const [feeInputError, setFeeInputError] = useState("");
   const [costInputError, setCostInputError] = useState("");
 
@@ -113,18 +119,36 @@ const FinancialSystemScreen = ({ navigation }) => {
     setFeeInputError("");
     setCostInputError("");
   };
+  function backArrow() {
+    return (
+      <View style={[{margin:10}, { ...styles.backArrowWrapStyle }]}>
+        <MaterialIcons
+          name="chevron-left"
+          color={Colors.whiteColor}
+          size={26}
+          onPress={() => {
+            if (wasPopped) return;
+            setWasPopped(true);
+            navigation.pop();
+          }}
+        />
+      </View>
+    );
+  }
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, height: height,  } }>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, height: height }}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
-          <View>
+          {backArrow()}
+          <View style={{ marginHorizontal: 20 }}>
             <View
               style={{
-                width: width * 0.9,
-                alignSelf: "center",
                 flexDirection: "column",
               }}
             >
@@ -135,14 +159,21 @@ const FinancialSystemScreen = ({ navigation }) => {
                     alignItems: "center",
                   }}
                 >
-                  <FaHouse style={{ color: Colors.whiteColor }} />
+                  <FaHouse
+                    size={30}
+                    style={{
+                      color: Colors.whiteColor,
+                      marginLeft: 10,
+                      marginRight: 10,
+                    }}
+                  />
                   <Text
                     style={{
-                      ...Fonts.whiteColor20SemiBold,
+                      ...Fonts.whiteColor30SemiBold,
                       alignSelf: "center",
                     }}
                   >
-                    Financial System
+                    {propertyDetails.propertyName || "Property Name"}
                   </Text>
                 </View>
                 <View
@@ -172,21 +203,18 @@ const FinancialSystemScreen = ({ navigation }) => {
                     <View
                       style={{
                         flexDirection: "row",
-                        alignItems: "center",
                         marginVertical: 5,
                       }}
                     >
                       <Text
                         style={{
                           ...Fonts.whiteColor14Medium,
-                          alignSelf: "center",
                         }}
                       >
                         Parking Fee
                       </Text>
                     </View>
 
-                    
                     {FeePerParkingSpot()}
                     <ThemedButton
                       name="bruce"
@@ -218,12 +246,21 @@ const FinancialSystemScreen = ({ navigation }) => {
                   {/* Cost entry section */}
 
                   <View>
+                  <Text
+                        style={{
+                          ...Fonts.whiteColor20SemiBold,
+                          marginBottom: 10,
+                        }}
+                      >
+                        Operational Budget
+                      </Text>
                     <View
                       style={{
                         flexDirection: "row",
                         marginVertical: 5,
                       }}
                     >
+                      
                       <Text
                         style={{
                           ...Fonts.whiteColor14Medium,
@@ -232,25 +269,12 @@ const FinancialSystemScreen = ({ navigation }) => {
                         Cost Description
                       </Text>
                     </View>
-                    <View style={styles.textFieldWrapStyle}>
-                      <TextInput
-                        onChangeText={(value) =>
-                          updateState({ costDescription: value })
-                        }
-                        placeholder="Cost Description"
-                        value={state.costDescription}
-                        placeholderTextColor={Colors.grayColor}
-                        style={styles.input}
-                        selectionColor={Colors.primaryColor}
-                        onFocus={clearErrors}
-                      />
-                    </View>
+                    {CostDescription()}
                     <View
                       style={{
                         flexDirection: "row",
                         alignItems: "center",
                         marginVertical: 5,
-
                       }}
                     >
                       <Text
@@ -263,19 +287,7 @@ const FinancialSystemScreen = ({ navigation }) => {
                         Cost Amount
                       </Text>
                     </View>
-                    <View style={styles.textFieldWrapStyle}>
-                      <TextInput
-                        onChangeText={(value) =>
-                          updateState({ costAmount: value })
-                        }
-                        placeholder="Cost Amount"
-                        value={state.costAmount}
-                        placeholderTextColor={Colors.grayColor}
-                        style={styles.input}
-                        selectionColor={Colors.primaryColor}
-                        onFocus={clearErrors}
-                      />
-                    </View>
+                    {CostAmount()}
                     <ThemedButton
                       name="bruce"
                       type="primary"
@@ -283,7 +295,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                       style={{
                         borderRadius: 5,
                         marginTop: 10,
-
                       }}
                       onPress={handleAddCostEntry}
                     >
@@ -342,50 +353,60 @@ const FinancialSystemScreen = ({ navigation }) => {
                 </View>
 
                 {/* OPERATIONAL BUDGET */}
-                <View
-                  style={{
-                    width: width * 0.9,
-                  }}
-                >
-                  <Text
-                    style={{ ...Fonts.whiteColor20SemiBold, marginBottom: 10 }}
-                  >
-                    Operational Budget
-                  </Text>
-                  <Text style={{ ...Fonts.whiteColor16Medium }}>
-                    {state.operationalBudget !== null
-                      ? `$${state.operationalBudget.toFixed(2)}`
-                      : "N/A"}
-                  </Text>
-                </View>
-
-                {/* Generate annual report button */}
-                <View style={{ marginBottom: "15%" }}>
-                  {/* <Button title="Generate Annual Report" onPress={() => Alert.alert('Success', 'Annual report generated successfully.')}  /> */}
-                  <ThemedButton
-                    name="bruce"
-                    type="primary"
-                    raiseLevel={5}
-                    style={{
-                      marginTop: 10,
-                      alignSelf: "center",
-                    }}
-                    onPress={() =>
-                      Alert.alert(
-                        "Success",
-                        "Annual report generated successfully."
-                      )
-                    }
-                  >
+                <View style={{ marginHorizontal: 15 }}>
+                  <View>
                     <Text
                       style={{
-                        ...Fonts.primaryColor16SemiBold,
-                        color: Colors.whiteColor,
+                        ...Fonts.whiteColor20SemiBold,
+                        marginBottom: 10,
                       }}
                     >
-                      Generate Annual Report
+                      Operational Budget
                     </Text>
-                  </ThemedButton>
+                    <Text style={{ ...Fonts.whiteColor16Medium }}>
+                      {state.operationalBudget !== null
+                        ? `$${state.operationalBudget.toFixed(2)}`
+                        : "N/A"}
+                    </Text>
+                  </View>
+
+                  {/* Generate annual report button */}
+                  <View style={{ marginBottom: "15%" }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginVertical: 15,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          ...Fonts.whiteColor20SemiBold,
+                          alignSelf: "center",
+                        }}
+                      >
+                        Generate Annual Report
+                      </Text>
+                    </View>
+                    {/* <Button title="Generate Annual Report" onPress={() => Alert.alert('Success', 'Annual report generated successfully.')}  /> */}
+                    <ThemedButton
+                      name="bruce"
+                      type="primary"
+                      raiseLevel={2}
+                      style={{
+                        marginTop: 10,
+                      }}
+                      onPress={() => console.log("Report Generated")}
+                    >
+                      <Text
+                        style={{
+                          ...Fonts.primaryColor16SemiBold,
+                          color: Colors.whiteColor,
+                        }}
+                      >
+                        Generate Report
+                      </Text>
+                    </ThemedButton>
+                  </View>
                 </View>
 
                 {/* Display annual report */}
@@ -417,6 +438,63 @@ const FinancialSystemScreen = ({ navigation }) => {
             onChangeText={(value) => updateState({ feePerSquareFoot: value })}
             placeholder="Fee per square foot"
             value={state.feePerSquareFoot}
+            placeholderTextColor={Colors.grayColor}
+            style={{
+              ...Fonts.whiteColor14Medium,
+              flex: 1,
+              marginLeft: Sizes.fixPadding + 2.0,
+              paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
+            }}
+            selectionColor={Colors.primaryColor}
+          />
+        </View>
+      </View>
+    );
+  }
+
+  function CostAmount() {
+    const input = useRef();
+    return (
+      <View>
+        <View style={styles.textFieldWrapStyle}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => input.current.focus()}
+          ></TouchableOpacity>
+          <TextInput
+            ref={input}
+            width={0.9 * width}
+            onChangeText={(value) => updateState({ costAmount: value })}
+            placeholder="Enter cost amount"
+            value={state.costAmount}
+            placeholderTextColor={Colors.grayColor}
+            style={{
+              ...Fonts.whiteColor14Medium,
+              flex: 1,
+              marginLeft: Sizes.fixPadding + 2.0,
+              paddingVertical: ((Sizes.fixPadding + 7.0) * height) / 880,
+            }}
+            selectionColor={Colors.primaryColor}
+          />
+        </View>
+      </View>
+    );
+  }
+  function CostDescription() {
+    const input = useRef();
+    return (
+      <View>
+        <View style={styles.textFieldWrapStyle}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => input.current.focus()}
+          ></TouchableOpacity>
+          <TextInput
+            ref={input}
+            width={0.9 * width}
+            onChangeText={(value) => updateState({ costDescription: value })}
+            placeholder="Enter the cost description"
+            value={state.costDescription}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,

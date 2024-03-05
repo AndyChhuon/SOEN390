@@ -182,8 +182,8 @@ const PropertyProfileScreen = ({ navigation }) => {
               style={{
                 marginHorizontal: 30,
                 alignSelf: "center",
-                width: width > 900 ? 400 : width * 0.75,
-                height: width > 900 ? 400 : width * 0.65,
+                width: width > 900 ? 400 : "90%",
+                height: width > 900 ? 400 : width * 0.45,
                 resizeMode: "cover",
                 borderRadius: 10,
                 elevation: 5,
@@ -247,15 +247,18 @@ const PropertyProfileScreen = ({ navigation }) => {
               flexWrap: "wrap",
               marginVertical: 20,
               bottom: 0,
+              alignContent: "center",
             }}
           >
             <ThemedButton
               name="bruce"
               type="primary"
-              width={width > 900 ? width * 0.2 : width * 0.7}
               raiseLevel={2}
               borderRadius={10}
+              width={width > 900 ? width*0.2 : width*0.8}
+
               style={{
+                marginVertical: 10,
                 alignSelf: "flex-start",
                 borderRadius: 5,
                 padding: 10,
@@ -285,9 +288,11 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width * 0.2 : width * 0.7}
+              width={width > 900 ? width*0.2 : width*0.8}
+
+
               style={{
-                marginTop: width > 600 ? 0 : 10,
+                marginVertical: 10,
                 alignSelf: "flex-start",
                 borderRadius: 5,
                 padding: 10,
@@ -311,6 +316,37 @@ const PropertyProfileScreen = ({ navigation }) => {
                 }}
               >
                 Upload Files
+              </Text>
+            </ThemedButton>
+            <ThemedButton
+              name="bruce"
+              type="primary"
+              raiseLevel={2}
+              borderRadius={10}
+              width={width > 900 ? width*0.2 : width*0.8}
+
+              style={{
+                marginVertical: 10,
+                alignSelf: "flex-start",
+                borderRadius: 5,
+              }}
+              onPress={() =>
+                navigation.navigate("FinancialSystem", { propertyId })
+              }
+            >
+              <MaterialIcon
+                style={{ marginRight: 5 }}
+                name="attach-money"
+                size={26}
+                color="#fff"
+              />
+              <Text
+                style={{
+                  ...Fonts.primaryColor16SemiBold,
+                  color: Colors.whiteColor,
+                }}
+              >
+                Financials
               </Text>
             </ThemedButton>
           </View>

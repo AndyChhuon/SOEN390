@@ -22,7 +22,21 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = ({ route }) => {
   const { reloadUser, isWaitingOnEmailVerification } = useAuth();
-  const { height } = Dimensions.get("window");
+
+  const { height, width } = Dimensions.get("window");
+
+  const [windowDimensions, setWindowDimensions] = useState(
+    Dimensions.get("window")
+  );
+
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setWindowDimensions(window);
+    };
+
+    Dimensions.addEventListener("change", onChange);
+    return () => Dimensions.removeEventListener("change", onChange);
+  }, []);
 
   const styles = createStyles(height);
   const backAction = () => {
@@ -83,19 +97,6 @@ const TabNavigator = ({ route }) => {
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
                 icon: require("../assets/images/icons/home.png"),
-                focused: focused,
-                size: 38,
-              }),
-          }}
-        />
-
-        <Tab.Screen
-          name={"FinancialSystem"}
-          component={financialSystemScreen}
-          options={{
-            tabBarIcon: ({ color, focused }) =>
-              tabIconSort({
-                icon: require("../assets/images/icons/finance.png"),
                 focused: focused,
                 size: 38,
               }),
