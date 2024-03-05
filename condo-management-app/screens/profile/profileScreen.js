@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import Dropdown from "../Components/Dropdown";
 import {
   SafeAreaView,
   View,
@@ -45,6 +46,13 @@ const Profile = ({ navigation }) => {
     city: user.city || "",
   });
 
+  const data = [
+    { label: "English", value: "1" },
+    { label: "French", value: "2" },
+    { label: "Spanish", value: "3" },
+  ];
+
+  const [selectedValue, setSelectedValue] = useState("");
   //clears db entries if undefined
   const CleanUndefinedEntries = (obj) => {
     Object.keys(obj).forEach((key) => {
@@ -112,7 +120,7 @@ const Profile = ({ navigation }) => {
                 marginBottom: 20,
               }}
             >
-              <View style={{ marginLeft: "5%", marginBottom: "2%" }}></View>
+              <View style={{ marginBottom: "2%" }}></View>
               <View
                 style={{
                   alignSelf: "center",
@@ -128,7 +136,6 @@ const Profile = ({ navigation }) => {
                 }}
               >
                 {Title()}
-
                 {ManageProfileText()}
                 {FirstNameTextField()}
                 {LastNameTextField()}
@@ -139,18 +146,25 @@ const Profile = ({ navigation }) => {
                 {Province()}
                 {City()}
                 {SaveProfileButton()}
-              </View>
-
-              <View style={{ marginLeft: "5%", marginBottom: "15%" }}>
-                <Text
+                {DropdownC()}
+                <View
                   style={{
-                    ...Fonts.whiteColor22Bold,
+                    alignSelf: "flex-start",
+                    flexDirection: "column",
+                    alignContent: "flex-start",
+                    marginLeft: width > 600 ? "2%" : "5%", 
+                    marginBottom: "15%" ,
+                    zIndex: 0,
                   }}
                 >
-                  Reset Your Password
-                </Text>
-                <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
-                  {ChangePassword()}
+                  <Text
+                    style={{
+                      ...Fonts.whiteColor22Bold,
+                    }}
+                  >
+                    Reset Your Password
+                  </Text>
+                    {ChangePassword()}
                 </View>
               </View>
             </View>
@@ -192,19 +206,40 @@ const Profile = ({ navigation }) => {
   }
   function ManageProfileText() {
     return (
-      <Text style={[Fonts.whiteColor22Bold, { marginLeft: width > 600 ? "2%" : "5%", marginBottom:  "3%" }]}>
+      <Text
+        style={[
+          Fonts.whiteColor22Bold,
+          { marginLeft: width > 600 ? "2%" : "5%", marginBottom: "3%" },
+        ]}
+      >
         Manage Your Profile
       </Text>
     );
   }
 
-  function ChangePasswordClick() {
-    //TODO
+  function DropdownC() {
+    return (
+      <View style={{marginBottom: "5%"}}>
+        <Text
+        style={[
+          Fonts.whiteColor22Bold,
+          { marginLeft: width > 600 ? "2%" : "5%", marginBottom: "3%" },
+        ]}
+      >
+        Language Preferences
+      </Text>
+        <Dropdown
+          data={data}
+          onSelect={(item) => setSelectedValue(item.value)}
+          dropdownText={"Select Language"}
+        />
+      </View>
+    );
   }
 
   function ChangePassword() {
     return (
-      <View style={{ width: "100%" }}>
+      <View style={{ width: "100%"}}>
         <ThemedButton
           name="bruce"
           type="primary"
@@ -266,63 +301,6 @@ const Profile = ({ navigation }) => {
       </View>
     );
   }
-
-  function ViewNotificationsButton() {
-    return (
-      <View style={{ flex: 1, width: "100%" }}>
-        <AwesomeButton
-          activeOpacity={0.9}
-          onPress={async () => {
-            navigation.navigate("Notifications");
-          }}
-          width={null}
-          stretch={true}
-          backgroundColor={Colors.secondaryGoldColor}
-          raiseLevel={5}
-          borderRadius={20}
-          backgroundShadow={Colors.grayColor}
-        >
-          <Text
-            style={{
-              ...Fonts.whiteColor20SemiBold,
-              textAlign: "center",
-            }}
-          >
-            View Notifications
-          </Text>
-        </AwesomeButton>
-      </View>
-    );
-  }
-
-  function ViewDashboard() {
-    return (
-      <View style={{ flex: 1, width: "100%" }}>
-        <AwesomeButton
-          activeOpacity={0.9}
-          onPress={async () => {
-            navigation.navigate("Dashboard");
-          }}
-          width={null}
-          stretch={true}
-          backgroundColor={Colors.secondaryGoldColor}
-          raiseLevel={5}
-          borderRadius={20}
-          backgroundShadow={Colors.grayColor}
-        >
-          <Text
-            style={{
-              ...Fonts.whiteColor20SemiBold,
-              textAlign: "center",
-            }}
-          >
-            View Dashboard
-          </Text>
-        </AwesomeButton>
-      </View>
-    );
-  }
-
   function FirstNameTextField() {
     const input = useRef();
     return (
@@ -653,7 +631,7 @@ const Profile = ({ navigation }) => {
 
   function Title() {
     return (
-      <View>
+      <View style={{marginTop: "15%"}}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
             source={{
@@ -743,6 +721,40 @@ function createStyles(height) {
       marginBottom: Sizes.fixPadding * 2.0,
       marginHorizontal: Sizes.fixPadding * 2.0,
       zIndex: 2,
+    },
+
+    dropdown: {
+      height: 50,
+      borderColor: "gray",
+      borderWidth: 0.5,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+    },
+    icon: {
+      marginRight: 5,
+    },
+    label: {
+      position: "absolute",
+      backgroundColor: "white",
+      left: 22,
+      top: 8,
+      zIndex: 999,
+      paddingHorizontal: 8,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
     },
   });
 }

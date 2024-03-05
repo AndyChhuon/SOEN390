@@ -68,7 +68,7 @@ const PropertyScreen = ({ route, navigation }) => {
         {backArrow()}
         <View style={{ marginHorizontal: 15 }}>
           <Text style={styles.screenTitle}>
-            {propertyDetails.propertyName || "Property Name"}
+            
           </Text>
           <View style={styles.imageContainer}>
             <Image
