@@ -77,24 +77,12 @@ const TabNavigator = ({ route }) => {
           }}
         />
         <Tab.Screen
-          name={"Dashboard"}
-          component={ownerDashboard}
-          options={{
-            tabBarIcon: ({ color, focused }) =>
-              tabIconSort({
-                icon: require("../assets/images/icons/home.png"),
-                focused: focused,
-                size: 38,
-              }),
-          }}
-        />
-        <Tab.Screen
           name={"propertyProfile"}
           component={PropertyProfileScreen}
           options={{
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
-                icon: require("../assets/images/icons/propertyProfile.png"),
+                icon: require("../assets/images/icons/home.png"),
                 focused: focused,
                 size: 38,
               }),

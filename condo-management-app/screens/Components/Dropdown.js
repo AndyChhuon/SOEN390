@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 
 
@@ -19,20 +19,22 @@ const Dropdown = ({ data, onSelect, dropdownText }) => {
         style={styles.button}
         onPress={() => setIsOpen(!isOpen)}
       >
-        <Text style={[styles.buttonText, {...Fonts.whiteColor14Medium,}]}>
+        <Text style={[styles.buttonText, {...Fonts.whiteColor16Bold,}]}>
           {selectedItem ? selectedItem.label : dropdownText}
         </Text>
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.dropdown}>
           {data.map((item, index) => (
-            <TouchableOpacity
+            <ScrollView showsVerticalScrollIndicator ={false}>
+              <TouchableOpacity
               key={index}
               style={styles.item}
               onPress={() => handleSelect(item)}
             >
-              <Text style={[styles.itemText, {...Fonts.whiteColor14Medium,}]}>{item.label}</Text>
+              <Text style={[styles.itemText, {...Fonts.whiteColor14Regular,}]}>{item.label}</Text>
             </TouchableOpacity>
+            </ScrollView>
           ))}
         </View>
       )}
@@ -70,9 +72,9 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 10,
-    marginVertical: 3,
+    marginVertical: 5,
     backgroundColor: "rgba(255,255,255,0.045)",
-    borderRadius: 5,
+    borderRadius: 3,
   },
   itemText: {
     textAlign: "center",

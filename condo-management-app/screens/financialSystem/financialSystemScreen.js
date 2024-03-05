@@ -157,14 +157,12 @@ const FinancialSystemScreen = ({ navigation }) => {
                     <View
                       style={{
                         flexDirection: "row",
-                        padding: 10,
-                        alignItems: "center",
+                        marginVertical: 5,
                       }}
                     >
                       <Text
                         style={{
                           ...Fonts.whiteColor14Medium,
-                          alignSelf: "center",
                         }}
                       >
                         Fee per Square Foot
@@ -175,7 +173,7 @@ const FinancialSystemScreen = ({ navigation }) => {
                       style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        padding: 10,
+                        marginVertical: 5,
                       }}
                     >
                       <Text
@@ -195,7 +193,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                       type="primary"
                       raiseLevel={2}
                       style={{
-                        alignSelf: "center",
                         borderRadius: 5,
                         marginTop: 10,
                       }}
@@ -224,15 +221,12 @@ const FinancialSystemScreen = ({ navigation }) => {
                     <View
                       style={{
                         flexDirection: "row",
-                        alignItems: "center",
-                        padding: 10,
+                        marginVertical: 5,
                       }}
                     >
                       <Text
                         style={{
                           ...Fonts.whiteColor14Medium,
-
-                          alignSelf: "center",
                         }}
                       >
                         Cost Description
@@ -240,7 +234,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.textFieldWrapStyle}>
                       <TextInput
-                        width={0.5 * width}
                         onChangeText={(value) =>
                           updateState({ costDescription: value })
                         }
@@ -255,8 +248,9 @@ const FinancialSystemScreen = ({ navigation }) => {
                     <View
                       style={{
                         flexDirection: "row",
-                        padding: 10,
                         alignItems: "center",
+                        marginVertical: 5,
+
                       }}
                     >
                       <Text
@@ -271,7 +265,6 @@ const FinancialSystemScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.textFieldWrapStyle}>
                       <TextInput
-                        width={0.3 * width}
                         onChangeText={(value) =>
                           updateState({ costAmount: value })
                         }
@@ -288,9 +281,9 @@ const FinancialSystemScreen = ({ navigation }) => {
                       type="primary"
                       raiseLevel={2}
                       style={{
-                        marginTop: 10,
-                        alignSelf: "center",
                         borderRadius: 5,
+                        marginTop: 10,
+
                       }}
                       onPress={handleAddCostEntry}
                     >
@@ -491,11 +484,9 @@ function createStyles(height) {
 
     textFieldWrapStyle: {
       flexDirection: "row",
-      alignItems: "center",
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding - 5.0,
       paddingHorizontal: Sizes.fixPadding + 2.0,
-      marginHorizontal: Sizes.fixPadding * 2.0,
       paddingVertical: (Sizes.fixPadding + 2.0) / 2.0,
     },
     costEntryCard: {
@@ -518,7 +509,6 @@ function createStyles(height) {
       marginBottom: 5,
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center",
     },
     costEntryText: {
       ...Fonts.whiteColor14Medium,

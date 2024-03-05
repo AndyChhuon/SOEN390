@@ -38,7 +38,6 @@ const AppContent = () => {
         />
         <Stack.Screen name="PropertyScreen" component={PropertyScreen} />
         <Stack.Screen name="Notifications" component={NotificationPage} />
-        <Stack.Screen name="Dashboard" component={ownerDashboard} />
         <Stack.Screen
           name="FinancialSystem"
           component={financialSystemScreen}

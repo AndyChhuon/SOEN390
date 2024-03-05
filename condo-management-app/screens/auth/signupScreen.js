@@ -110,12 +110,15 @@ const RegisterScreen = ({ navigation }) => {
       <View style={{ flexGrow: 1 }}>{loginTitle()}</View>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1, justifyContent: "flex-end", marginHorizontal: 10}}
+        style={{ flex: 1, justifyContent: "flex-end", marginHorizontal: 10 }}
       >
-        {userEmailTextField()}
-        {passwordTextField()}
-        {agreeOrNotInfo()}
-        {registerButton()}
+        {backgroundImage()}
+        <View style={{ flexDirection: "column" }}>
+          {userEmailTextField()}
+          {passwordTextField()}
+          {agreeOrNotInfo()}
+          {registerButton()}
+        </View>
       </KeyboardAvoidingView>
 
       {dontAccountInfo()}
@@ -158,12 +161,34 @@ const RegisterScreen = ({ navigation }) => {
         <Text
           style={{
             ...Fonts.whiteColor14Regular,
+          }}
+        >
+          Already signed up?{" "}
+        </Text>
+        <Text
+          style={{
+            ...Fonts.whiteColor14Regular,
             textDecorationLine: "underline",
           }}
         >
-          Already signed up? Click here to login
+          Click here to login
         </Text>
       </Text>
+    );
+  }
+
+  function backgroundImage() {
+    return (
+      <Image
+        source={require("./image_2.png")}
+        style={{
+          width: "80%",
+          height: "80%",
+          margin: 40,
+          alignSelf: "center",
+          resizeMode: "center"
+        }}
+      />
     );
   }
 
@@ -312,13 +337,7 @@ const RegisterScreen = ({ navigation }) => {
 
   function agreeOrNotInfo() {
     return (
-      <View
-        style={{
-          marginRight: Sizes.fixPadding * 2.0,
-          marginTop: (Sizes.fixPadding * 2.0 * height) / 880,
-          marginBottom: (Sizes.fixPadding * 2.0 * height) / 880,
-        }}
-      >
+      <View style={{ alignSelf: "center" }}>
         <View style={styles.agreeOrNotInfoWrapStyle}>
           <TouchableOpacity
             activeOpacity={0.9}
@@ -461,11 +480,12 @@ function createStyles(width, height) {
     },
     textFieldWrapStyle: {
       flexDirection: "row",
+      width: width * 0.6,
       alignItems: "center",
+      alignSelf: "center",
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding - 5.0,
       paddingHorizontal: Sizes.fixPadding + 2.0,
-      marginHorizontal: Sizes.fixPadding * 2.0,
     },
     forgetPasswordTextStyle: {
       marginTop: Sizes.fixPadding - 5.0,
@@ -503,10 +523,11 @@ function createStyles(width, height) {
       alignItems: "center",
     },
     agreeOrNotInfoWrapStyle: {
-      marginTop: Sizes.fixPadding,
+      marginVertical: Sizes.fixPadding,
       marginHorizontal: Sizes.fixPadding * 2.0,
       flexDirection: "row",
       alignItems: "center",
+      alignSelf: "center",
     },
     checkBoxStyle: {
       width: 18.0,

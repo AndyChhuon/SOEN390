@@ -150,14 +150,14 @@ const PropertyProfileScreen = ({ navigation }) => {
         key={propertyId}
         style={{
           padding: 20,
-          backgroundColor: Colors.bodyBackColor,
+          backgroundColor: Colors.cardmaincolor,
           borderBottomColor: "#000",
           borderBottomWidth: 0,
-          height: width > 900 ? height*0.6 : height*0.95,
+          height: width > 900 ? height * 0.6 : height * 0.95,
           marginBottom: 10,
           borderRadius: 10,
           elevation: 2,
-          elevation: 2, 
+          elevation: 2,
           shadowOpacity: 0.2,
           shadowRadius: 10,
           shadowColor: "black",
@@ -181,8 +181,9 @@ const PropertyProfileScreen = ({ navigation }) => {
               }}
               style={{
                 marginHorizontal: 30,
-                width: width > 900 ? 500 : width * 0.60, // Adjust image width based on screen size
-                height: width > 900 ? 400 : width * 0.55, // Adjust image height based on screen size
+                alignSelf: "center",
+                width: width > 900 ? 400 : width * 0.75,
+                height: width > 900 ? 400 : width * 0.65,
                 resizeMode: "cover",
                 borderRadius: 10,
                 elevation: 5,
@@ -193,10 +194,8 @@ const PropertyProfileScreen = ({ navigation }) => {
 
         <View
           style={{
-            flex: 1,
             marginVertical: width > 900 ? 70 : 20,
-            width: "100%",
-            marginHorizontal: width > 900 ? 60 : 30,
+            marginHorizontal: width > 900 ? 60 : 20,
           }}
         >
           {Object.entries(userValues.propertiesOwned[propertyId]).map(
@@ -213,7 +212,6 @@ const PropertyProfileScreen = ({ navigation }) => {
                   </View>
                 );
               } else if (key === "files" && value["condo-file"]) {
-                // Targeting only the 'condo-file'
                 const file = value["condo-file"];
                 return (
                   <View
@@ -227,7 +225,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                   </View>
                 );
               } else {
-                return null; // In case there's no 'condo-file'
+                return null;
               }
             }
           )}
@@ -246,8 +244,9 @@ const PropertyProfileScreen = ({ navigation }) => {
           <View
             style={{
               flexDirection: width > 900 ? "row" : "column",
-              marginTop: 20,
               flexWrap: "wrap",
+              marginVertical: 20,
+              bottom: 0,
             }}
           >
             <ThemedButton
@@ -322,7 +321,10 @@ const PropertyProfileScreen = ({ navigation }) => {
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, height: height }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, height: height }}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
@@ -555,7 +557,6 @@ const PropertyProfileScreen = ({ navigation }) => {
                     textSize={20}
                     paddingHorizontal={20}
                     borderRadius={5}
-                    width={width * 0.9}
                   >
                     <Text
                       style={{

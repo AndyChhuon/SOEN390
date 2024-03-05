@@ -91,6 +91,7 @@ const LoginScreen = ({ navigation }) => {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={{ flex: 1, justifyContent: "flex-end" }}
       >
+        {backgroundImage()}
         {userEmailTextField()}
         {passwordTextField()}
         {loginButton()}
@@ -149,7 +150,6 @@ const LoginScreen = ({ navigation }) => {
           type="primary"
           raiseLevel={5}
           borderRadius={10}
-          width={width *0.92}
           style={{
             borderRadius: 5,
             padding: 10,
@@ -250,6 +250,7 @@ const LoginScreen = ({ navigation }) => {
               name={securePassword ? "eye" : "eye-off"}
               size={20}
               color={Colors.whiteColor}
+              style={{marginHorizontal: 10}}
               onPress={() => updateState({ securePassword: !securePassword })}
             />
           </View>
@@ -327,6 +328,21 @@ const LoginScreen = ({ navigation }) => {
     );
   }
 
+
+  function backgroundImage() {
+    return (
+      <Image
+        source={require("./image_3.png")}
+        style={{
+          width: "80%",
+          height: "80%",
+          margin: 40,
+          alignSelf: "center",
+          resizeMode: "center"
+        }}
+      />
+    );
+  }
   function loginTitle() {
     return (
       <View
@@ -358,7 +374,9 @@ function createStyles(width, height) {
     },
     textFieldWrapStyle: {
       flexDirection: "row",
+      width: width*0.6,
       alignItems: "center",
+      alignSelf: "center",
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding - 5.0,
       paddingHorizontal: Sizes.fixPadding + 2.0,
