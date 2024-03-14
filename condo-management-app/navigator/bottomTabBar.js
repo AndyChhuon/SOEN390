@@ -173,13 +173,10 @@ function createStyles(height) {
       alignItems: "center",
     },
     tabBarStyle: {
-      borderTopWidth: (2 * height) / 880,
       height: (70 * height) / 880,
       paddingTop: 15,
       paddingBott: 10,
-      borderTopColor: "#7b8c95",
       elevation: (3.0 * height) / 880,
-      shadowColor: Colors.primaryColor,
       backgroundColor: Colors.bodyBackColor,
     },
   });

@@ -186,7 +186,7 @@ const RegisterScreen = ({ navigation }) => {
           height: "80%",
           margin: 40,
           alignSelf: "center",
-          resizeMode: "center"
+          resizeMode: "center",
         }}
       />
     );
@@ -319,6 +319,7 @@ const RegisterScreen = ({ navigation }) => {
           style={
             passwordError
               ? {
+                  alignSelf: "center",
                   marginHorizontal: Sizes.fixPadding * 2.0,
                   marginBottom: 7,
                 }
@@ -357,14 +358,20 @@ const RegisterScreen = ({ navigation }) => {
               <Text style={{ ...Fonts.whiteColor14Medium }}>
                 By creating an account, you agree to our {}
               </Text>
-              <Text
-                style={{
-                  ...Fonts.whiteColor14Medium,
-                  textDecorationLine: "underline",
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push("Terms");
                 }}
               >
-                Terms and Condition
-              </Text>
+                <Text
+                  style={{
+                    ...Fonts.whiteColor14Medium,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Terms and Condition
+                </Text>
+              </TouchableOpacity>
             </Text>
           </View>
         </View>
@@ -372,16 +379,15 @@ const RegisterScreen = ({ navigation }) => {
           style={
             agreeError
               ? {
+                  alignSelf: "center",
                   marginHorizontal: Sizes.fixPadding * 2.0,
+                  marginBottom: 7,
                 }
               : { display: "none" }
           }
         >
           <Text
-            style={{
-              ...Fonts.parentColor14Medium,
-              color: Colors.errorColor,
-            }}
+            style={{ ...Fonts.parentColor14Medium, color: Colors.errorColor }}
           >
             {agreeError}
           </Text>
@@ -429,15 +435,20 @@ const RegisterScreen = ({ navigation }) => {
           />
         </View>
         <View
-          style={{
-            marginHorizontal: Sizes.fixPadding * 2.0,
-            marginBottom: (7 * height) / 880,
-          }}
+          style={
+            emailError
+              ? {
+                  alignSelf: "center",
+                  marginHorizontal: Sizes.fixPadding * 2.0,
+                  marginBottom: 7,
+                }
+              : { display: "none" }
+          }
         >
           <Text
             style={{ ...Fonts.parentColor14Medium, color: Colors.errorColor }}
           >
-            {emailError ? emailError : ""}
+            {emailError}
           </Text>
         </View>
       </View>
@@ -483,6 +494,7 @@ function createStyles(width, height) {
       width: width * 0.6,
       alignItems: "center",
       alignSelf: "center",
+      marginVertical: 5,
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding - 5.0,
       paddingHorizontal: Sizes.fixPadding + 2.0,

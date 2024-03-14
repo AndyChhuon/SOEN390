@@ -259,7 +259,9 @@ const LoginScreen = ({ navigation }) => {
           style={
             passwordError
               ? {
+                alignSelf: "center",
                   marginHorizontal: Sizes.fixPadding * 2.0,
+                  marginBottom: 7,
                 }
               : { display: "none" }
           }
@@ -313,10 +315,15 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
         <View
-          style={{
-            marginHorizontal: Sizes.fixPadding * 2.0,
-            marginBottom: (7 * height) / 880,
-          }}
+          style={
+            emailError
+              ? {
+                alignSelf: "center",
+                  marginHorizontal: Sizes.fixPadding * 2.0,
+                  marginBottom: 7,
+                }
+              : { display: "none" }
+          }
         >
           <Text
             style={{ ...Fonts.parentColor14Medium, color: Colors.errorColor }}
@@ -377,6 +384,7 @@ function createStyles(width, height) {
       width: width*0.6,
       alignItems: "center",
       alignSelf: "center",
+      marginVertical: 5,
       backgroundColor: "rgba(255,255,255,0.05)",
       borderRadius: Sizes.fixPadding - 5.0,
       paddingHorizontal: Sizes.fixPadding + 2.0,
