@@ -62,8 +62,11 @@ TBD
 1. firebase.ts --> create baseline db data operations (update, set, push, etc)
 
 2. Create service file (in firebase.ts folder)
+
 2.1 add keys
+
 2.2 add validate key function
+
 2.3 add all functions
 
 3. app.ts --> add post endpoint for each function created
