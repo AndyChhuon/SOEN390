@@ -57,7 +57,7 @@ TBD
 6. Optionally, press `w` in terminal to open the app on web
 
 
-## Backend: How to add end point
+#### Backend: How to add end point
 
 1. firebase.ts --> create baseline db data operations (update, set, push, etc)
 
