@@ -55,3 +55,17 @@ TBD
 4. Run the app: `npm start`
 5. Scan the QR code on mobile to run the app
 6. Optionally, press `w` in terminal to open the app on web
+
+
+## Backend: How to add end point
+
+1. firebase.ts --> create baseline db data operations (update, set, push, etc)
+
+2. Create service file (in firebase.ts folder)
+2.1 add keys
+2.2 add validate key function
+2.3 add all functions
+
+3. app.ts --> add post endpoint for each function created
+
+4. useAuth.js --> add functions for the frontend here
