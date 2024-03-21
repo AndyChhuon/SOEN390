@@ -13,6 +13,7 @@ const {
   addPropertyFinancials,
   generateReport,
 } = require("./firebase/financialService");
+const { generateResponse } = require("./openai/chat");
 const { parseJSONOrString } = require("./utils/utils");
 import { Request, Response } from "express";
 const PDFDocument = require("pdfkit");
@@ -63,6 +64,20 @@ app.post("/generateReport", async (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.propertyId) {
     console.log("Calling generateReport endpoint");
     await generateReport(req.body.tokenId, req.body.propertyId, res);
+  } else {
+    res.status(400).send("Invalid request");
+  }
+});
+
+app.post("/generateResponse", async (req: Request, res: Response) => {
+  if (req.body.tokenId && req.body.messagesArr) {
+    try {
+      console.log("Calling generateResponse endpoint");
+      await generateResponse(req.body.tokenId, req.body.messagesArr, res);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("Internal server error");
+    }
   } else {
     res.status(400).send("Invalid request");
   }

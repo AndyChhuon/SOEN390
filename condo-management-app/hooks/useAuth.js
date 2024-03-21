@@ -18,6 +18,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import { set } from "firebase/database";
 
 const AuthContext = createContext({});
 
@@ -223,6 +224,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const generateChatResponse = async (messagesArr, setMessages) => {
+    const tokenId = await getIdToken(user);
+    const response = await fetch(herokuBackendUrl + "/generateResponse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        messagesArr: messagesArr,
+      }),
+    });
+
+    let currentMessage = "";
+
+    // get response stream
+    const reader = response.body.getReader();
+    reader.read().then(function processText({ done, value }) {
+      if (done) {
+        return;
+      }
+
+      // decode data
+      const text = new TextDecoder("utf-8").decode(value);
+
+      // append to current message
+      currentMessage += text;
+
+      setMessages([
+        ...messagesArr,
+        { content: currentMessage, role: "assistant" },
+      ]);
+
+      // read more
+      return reader.read().then(processText);
+    });
+  };
+
   const addPropertyFile = async (dataForm) => {
     const tokenId = await getIdToken(user);
     dataForm.append("tokenId", tokenId);
@@ -266,6 +305,7 @@ export const AuthProvider = ({ children }) => {
       userValues,
       updatePropertyFinancials,
       generatePdf,
+      generateChatResponse,
     }),
     [user, userValues]
   );

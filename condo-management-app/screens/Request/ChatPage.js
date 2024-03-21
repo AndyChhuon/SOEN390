@@ -1,36 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
-import {useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from "@react-navigation/native";
+import useAuth from "../../hooks/useAuth";
+import { set } from "firebase/database";
 
 const ChatPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { assigneeName, initialMessage } = route.params;
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const screenHeight = Dimensions.get('window').height;
+  const [inputMessage, setInputMessage] = useState("");
+  const screenHeight = Dimensions.get("window").height;
 
-  
-//FETCHING OF MESSAGES 
+  const { generateChatResponse } = useAuth();
+
+  //FETCHING OF MESSAGES
   useEffect(() => {
     if (initialMessage) {
-      setMessages([{ id: 1, text: initialMessage, sender: 'user' }]);
+      setMessages([{ content: initialMessage, role: "user" }]);
+      generateChatResponse(
+        [{ content: initialMessage, role: "user" }],
+        setMessages
+      );
     }
   }, [initialMessage]);
 
-
   //SEND MESSAGE FUNCTION
   const sendMessage = () => {
-    if (inputMessage.trim() === '') return;
+    if (inputMessage.trim() === "") return;
 
-    setMessages([...messages, { id: messages.length, text: inputMessage, sender: 'user' }]);
-    setInputMessage('');
+    setMessages([...messages, { content: inputMessage, role: "user" }]);
+    generateChatResponse(
+      [...messages, { content: inputMessage, role: "user" }],
+      setMessages
+    );
+    setInputMessage("");
   };
 
   //END CHAT BUTTON
   const handleEndChat = () => {
-    navigation.goBack('Request');
+    navigation.goBack("Request");
   };
 
   return (
@@ -39,18 +57,18 @@ const ChatPage = () => {
         <Text style={styles.assigneeName}>{assigneeName}</Text>
       </View>
       <ScrollView contentContainerStyle={styles.chatContainer}>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <View
-            key={message.id}
+            key={index}
             style={[
               styles.messageBubble,
               {
-                alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                backgroundColor: '#BFBFBF', 
+                alignSelf: message.role === "user" ? "flex-end" : "flex-start",
+                backgroundColor: "#BFBFBF",
               },
             ]}
           >
-            <Text style={styles.messageText}>{message.text}</Text>
+            <Text style={styles.messageText}>{message.content}</Text>
           </View>
         ))}
       </ScrollView>
@@ -78,75 +96,72 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.bodyBackColor2,
     margin: 10,
     borderRadius: 10,
-    padding: 20, 
+    padding: 20,
   },
   header: {
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#DDD',
+    borderBottomColor: "#DDD",
     marginBottom: 10,
   },
   assigneeName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     ...Fonts.whiteColor16Medium,
   },
   chatContainer: {
     flexGrow: 1,
-    paddingBottom: 10, 
+    paddingBottom: 10,
   }, // Add a closing bracket here
   messageBubble: {
-    maxWidth: '80%',
+    maxWidth: "80%",
     marginVertical: 5,
     padding: 15,
     borderRadius: 10,
   },
-  messageText: {
+  messagecontent: {
     fontSize: 16,
     ...Fonts.whiteColor16Medium,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderTopWidth: 1,
-    borderTopColor: '#DDD',
-    paddingVertical: 10, 
+    borderTopColor: "#DDD",
+    paddingVertical: 10,
   },
   input: {
     flex: 1,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 30,
     marginHorizontal: 5,
   },
   sendButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: '#007BFF',
+    backgroundColor: "#007BFF",
     borderRadius: 30,
     marginRight: 5,
   },
-  sendButtonText: {
-    color: '#FFF',
+  sendButtoncontent: {
+    color: "#FFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   endChatButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: "#FF3B30",
     paddingVertical: 15,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 30,
     marginTop: 10,
   },
-  endChatButtonText: {
-    color: '#FFF',
+  endChatButtoncontent: {
+    color: "#FFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-}); 
-
-
-
+});
 
 export default ChatPage;
