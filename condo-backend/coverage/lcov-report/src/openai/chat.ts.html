@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/20</span>
+                <span class='fraction'>19/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.28% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.05% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/17</span>
+                <span class='fraction'>16/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -142,9 +142,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -157,14 +157,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -191,14 +191,14 @@ const openai = new OpenAI();
 &nbsp;
 openai.apiKey = openaiApiKey;
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >generateResponse(</span>
+async function generateResponse(
   tokenId: String,
   messagesArr: OpenAI.Chat.ChatCompletionMessageParam[],
   res: Response
 ) {
-  const id = <span class="cstat-no" title="statement not covered" >await getIdFromToken(tokenId);</span>
-<span class="cstat-no" title="statement not covered" >  if (await userExists(id)) {</span>
-    const completion = <span class="cstat-no" title="statement not covered" >await openai.chat.completions.create({</span>
+  const id = await getIdFromToken(tokenId);
+  if (await userExists(id)) {
+    const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
@@ -211,15 +211,15 @@ async function <span class="fstat-no" title="function not covered" >generateResp
       stream: true,
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    for await (const chunk<span class="cstat-no" title="statement not covered" > of <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >c</span>ompletion)</span> {</span></span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (chunk &amp;&amp; chunk.choices[0].delta.content) {</span>
-<span class="cstat-no" title="statement not covered" >        console.log(chunk.choices[0].delta.content);</span>
-<span class="cstat-no" title="statement not covered" >        res.write(chunk.choices[0].delta.content);</span>
+    for await (const chunk of completion) {
+      if (chunk &amp;&amp; chunk.choices[0].delta.content) {
+        console.log(chunk.choices[0].delta.content);
+        res.write(chunk.choices[0].delta.content);
       }
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.end();</span>
-  } else {
+    res.end();
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >    res.status(404).send("User not found");</span>
   }
 }
@@ -232,7 +232,7 @@ export { generateResponse };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T17:42:36.884Z
+                at 2024-03-21T23:29:46.973Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
