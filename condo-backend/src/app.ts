@@ -9,8 +9,13 @@ const {
   addPropertiesOwned,
   addPropertyFile,
 } = require("./firebase/propertyProfileService");
+const {
+  addPropertyFinancials,
+  generateReport,
+} = require("./firebase/financialService");
 const { parseJSONOrString } = require("./utils/utils");
 import { Request, Response } from "express";
+const PDFDocument = require("pdfkit");
 
 app.use(express.json());
 app.use(cors());
@@ -18,7 +23,6 @@ app.use(cors());
 app.get("/", (req: Request, res: Response) => {
   res.send("Test Success");
 });
-
 
 app.post("/updateUserValues", async (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.userValues) {
@@ -30,6 +34,35 @@ app.post("/updateUserValues", async (req: Request, res: Response) => {
       console.log(e);
       res.status(500).send("Internal server error");
     }
+  } else {
+    res.status(400).send("Invalid request");
+  }
+});
+
+app.post("/updatePropertyFinancials", async (req: Request, res: Response) => {
+  if (req.body.tokenId && req.body.propertyId && req.body.propertyFinancials) {
+    try {
+      console.log("Calling updateUserValues endpoint");
+      const propertyFinancials = parseJSONOrString(req.body.propertyFinancials);
+      await addPropertyFinancials(
+        req.body.tokenId,
+        req.body.propertyId,
+        propertyFinancials,
+        res
+      );
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("Internal server error");
+    }
+  } else {
+    res.status(400).send("Invalid request");
+  }
+});
+
+app.post("/generateReport", async (req: Request, res: Response) => {
+  if (req.body.tokenId && req.body.propertyId) {
+    console.log("Calling generateReport endpoint");
+    await generateReport(req.body.tokenId, req.body.propertyId, res);
   } else {
     res.status(400).send("Invalid request");
   }

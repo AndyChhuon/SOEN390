@@ -25,8 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
   const [userValues, setUserValues] = useState({});
-  const herokuBackendUrl =
-    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; // localhost:8080
+  const herokuBackendUrl = "http://localhost:8080"; // localhost:8080
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -152,6 +151,77 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const updatePropertyFinancials = async (propertyId, propertyFinancials) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/updatePropertyFinancials", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        propertyId: propertyId,
+        propertyFinancials: propertyFinancials,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setUserValues({
+            ...userValues,
+            propertiesOwned: {
+              ...userValues.propertiesOwned,
+              [propertyId]: {
+                ...userValues.propertiesOwned[propertyId],
+                financials: propertyFinancials,
+              },
+            },
+          });
+        });
+      }
+    });
+  };
+
+  const generatePdf = async (propertyId) => {
+    const tokenId = await getIdToken(user);
+
+    try {
+      const response = await fetch(herokuBackendUrl + "/generateReport", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tokenId: tokenId,
+          propertyId: propertyId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      // Extracting filename from Content-Disposition header
+      const disposition = response.headers.get("Content-Disposition");
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+      const matches = filenameRegex.exec(disposition);
+      const filename = matches && matches[1] ? matches[1] : "report.pdf";
+
+      // Initiate download
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+  };
+
   const addPropertyFile = async (dataForm) => {
     const tokenId = await getIdToken(user);
     dataForm.append("tokenId", tokenId);
@@ -193,6 +263,8 @@ export const AuthProvider = ({ children }) => {
       addProperty,
       addPropertyFile,
       userValues,
+      updatePropertyFinancials,
+      generatePdf,
     }),
     [user, userValues]
   );

@@ -34,16 +34,20 @@ const FinancialSystemScreen = ({ route, navigation }) => {
     feePerSquareFoot: "",
     feePerParkingSpot: "",
     operationalBudget: null,
-    TenantID: "",
     operationalBudget: null,
-    costDescription: "",
-    costAmount: "",
     costEntries: [],
     annualReport: "",
   });
-  const { userValues } = useAuth();
 
+  const [tempState, setTempState] = useState({
+    costDescription: "",
+    costAmount: "",
+    tenantID: "",
+  });
+  const { userValues, updatePropertyFinancials, generatePdf } = useAuth();
+  console.log(state);
   const propertyId = route?.params?.propertyId;
+  console.log(userValues?.propertiesOwned[propertyId].financials);
   const propertyDetails = userValues.propertiesOwned[propertyId];
   const [feeInputError, setFeeInputError] = useState("");
   const [costInputError, setCostInputError] = useState("");
@@ -53,6 +57,10 @@ const FinancialSystemScreen = ({ route, navigation }) => {
       setWindowDimensions(window);
     };
 
+    if (userValues?.propertiesOwned[propertyId].financials) {
+      updateState(userValues?.propertiesOwned[propertyId].financials);
+    }
+
     Dimensions.addEventListener("change", onChange);
     return () => Dimensions.removeEventListener("change", onChange);
   }, []);
@@ -60,37 +68,46 @@ const FinancialSystemScreen = ({ route, navigation }) => {
   const updateState = (data) =>
     setState((prevState) => ({ ...prevState, ...data }));
 
+  const updateTempState = (data) =>
+    setTempState((prevState) => ({ ...prevState, ...data }));
+
   const handleAddCostEntry = () => {
-    if (!state.costDescription || !state.costAmount) {
+    if (!tempState.costDescription || !tempState.costAmount) {
       setCostInputError("Both cost description and amount are required.");
       return;
     }
 
-    if (!/^[a-zA-Z ]+$/.test(state.costDescription)) {
+    if (!/^[a-zA-Z ]+$/.test(tempState.costDescription)) {
       setCostInputError(
         "Cost description should contain only alphabets and spaces."
       );
       return;
     }
 
-    if (!/^\d+(\.\d+)?$/.test(state.costAmount)) {
+    if (!/^\d+(\.\d+)?$/.test(tempState.costAmount)) {
       setCostInputError("Cost amount should be a number.");
       return;
     }
 
     const newId = state.costEntries.length + 1;
     const newCostEntry = {
-      id: state.TenantID,
-      description: state.costDescription,
-      amount: state.costAmount,
+      id: tempState.TenantID,
+      description: tempState.costDescription,
+      amount: tempState.costAmount,
     };
-    setState((prevState) => ({
-      ...prevState,
-      costEntries: [...prevState.costEntries, newCostEntry],
-    }));
-    updateState({ costDescription: "", costAmount: "", TenantID: ""});
+    setState((prevState) => {
+      updatePropertyFinancials(propertyId, {
+        ...prevState,
+        costEntries: [...prevState.costEntries, newCostEntry],
+      });
+
+      return {
+        ...prevState,
+        costEntries: [...prevState.costEntries, newCostEntry],
+      };
+    });
     setCostInputError("");
-    Alert.alert("Success", "Cost entry added successfully.");
+    setTempState({ costDescription: "", costAmount: "", TenantID: "" });
   };
 
   const handleUpdateFees = () => {
@@ -103,7 +120,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
     }
 
     setFeeInputError("");
-    Alert.alert("Success", "Fees updated successfully.");
+    updatePropertyFinancials(propertyId, state);
   };
 
   const handleDeleteCostEntry = (id) => {
@@ -418,7 +435,9 @@ const FinancialSystemScreen = ({ route, navigation }) => {
                       style={{
                         marginTop: 10,
                       }}
-                      onPress={() => console.log("Report Generated")}
+                      onPress={() => {
+                        generatePdf(propertyId);
+                      }}
                     >
                       <Text
                         style={{
@@ -487,9 +506,9 @@ const FinancialSystemScreen = ({ route, navigation }) => {
           <TextInput
             ref={input}
             width={0.9 * width}
-            onChangeText={(value) => updateState({ costAmount: value })}
+            onChangeText={(value) => updateTempState({ costAmount: value })}
             placeholder="Enter cost amount"
-            value={state.costAmount}
+            value={tempState.costAmount}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -515,9 +534,11 @@ const FinancialSystemScreen = ({ route, navigation }) => {
           <TextInput
             ref={input}
             width={0.9 * width}
-            onChangeText={(value) => updateState({ costDescription: value })}
+            onChangeText={(value) =>
+              updateTempState({ costDescription: value })
+            }
             placeholder="Enter the cost description"
-            value={state.costDescription}
+            value={tempState.costDescription}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
@@ -544,9 +565,9 @@ const FinancialSystemScreen = ({ route, navigation }) => {
           <TextInput
             ref={input}
             width={0.9 * width}
-            onChangeText={(value) => updateState({ TenantID: value })}
+            onChangeText={(value) => updateTempState({ TenantID: value })}
             placeholder="Enter the tenants ID"
-            value={state.tenantID}
+            value={tempState.TenantID}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
