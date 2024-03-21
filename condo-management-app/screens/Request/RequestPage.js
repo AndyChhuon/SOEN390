@@ -15,7 +15,7 @@ import {
   Image,
 } from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
-import { useRoute } from '@react-navigation/native';
+
 
 const RequestPage = ({ navigation }) => {
   const height = Dimensions.get("window").height;
@@ -23,8 +23,7 @@ const RequestPage = ({ navigation }) => {
   const [assignee, setAssignee] = useState(null);
   const [requestMessage, setRequestMessage] = useState(''); 
   const styles = createStyles(height);
-  const route = useRoute();
-  const shouldRefresh = route.params?.refresh;
+
 
 
 
