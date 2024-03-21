@@ -11,6 +11,7 @@ jobs:
 
     env:
       SERVICE_ACCOUNT_KEYS: ${{ secrets.SERVICE_ACCOUNT_KEYS }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - uses: actions/checkout@v4
