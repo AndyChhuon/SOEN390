@@ -32,7 +32,6 @@ const getDataFromRequest = (req: any): any =>
         console.log("file was not found in form data.");
         return reject("File was not found in form data.");
       }
-      console.log(files["file"]);
       const tokenId = fields.tokenId[0];
       const file = files["file"][0]; // get the file from the returned files object
       const userId = await getIdFromToken(tokenId);
