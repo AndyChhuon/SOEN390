@@ -144,7 +144,7 @@ const LoginScreen = ({ navigation }) => {
 
   function loginButton() {
     return (
-      <View style={{ alignItems: "center", marginBottom: 50 }}>
+      <View id="login_button" style={{ alignItems: "center", marginBottom: 50 }} >
         <ThemedButton
           name="bruce"
           type="primary"
@@ -166,6 +166,7 @@ const LoginScreen = ({ navigation }) => {
             color="#fff"
           />
           <Text
+            id="login_button"
             style={{
               ...Fonts.primaryColor16SemiBold,
               color: Colors.whiteColor,
@@ -233,6 +234,7 @@ const LoginScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
             <TextInput
+              id = 'user_password'
               ref={passInput}
               onChangeText={(value) => updateState({ password: value })}
               placeholder="Enter Password"
@@ -299,6 +301,7 @@ const LoginScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
           <TextInput
+            id = 'email_address'
             ref={input}
             onChangeText={(value) => updateState({ userEmail: value })}
             placeholder="Enter Email Address"

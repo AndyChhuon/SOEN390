@@ -228,6 +228,7 @@ const RegisterScreen = ({ navigation }) => {
   function registerButton() {
     return (
       <View
+      id="register_button"
         style={{
           alignItems: "center",
           marginHorizontal: Sizes.fixPadding * 2.0,
@@ -294,6 +295,7 @@ const RegisterScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
             <TextInput
+              id = "user_pass"
               ref={passInput}
               onChangeText={(value) => updateState({ password: value })}
               placeholder="Enter Password"
@@ -415,6 +417,7 @@ const RegisterScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
           <TextInput
+            id = "email_add"
             ref={input}
             onChangeText={(value) => updateState({ userEmail: value })}
             placeholder="Enter Email Address"
