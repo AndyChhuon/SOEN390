@@ -7,7 +7,16 @@ const {
   addToPropertiesOwned,
   getCostEntries,
 } = require("../firebase/firebase");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const openaiApiKey = process.env.OPENAI_API_KEY
+  ? process.env.OPENAI_API_KEY
+  : "";
+
 const openai = new OpenAI();
+
+openai.apiKey = openaiApiKey;
 
 async function generateResponse(
   tokenId: String,
