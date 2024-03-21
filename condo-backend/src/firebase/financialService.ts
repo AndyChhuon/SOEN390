@@ -62,6 +62,7 @@ const generateReport = async (
     doc.font("Times-Roman").fontSize(15).text("Financial Report", {
       align: "center",
     });
+    let sum = 0;
     costEntries.forEach((entry: any) => {
       doc.font("Times-Roman").fontSize(12).text(`TenantID: ${entry.id}`);
       doc
@@ -70,7 +71,12 @@ const generateReport = async (
         .text(
           `costDescription: ${entry.description}, costAmount: ${entry.amount}`
         );
+      sum += parseFloat(entry.amount);
     });
+    doc
+      .font("Times-Roman")
+      .fontSize(12)
+      .text(`Total: $${sum.toFixed(2)}`);
     doc.end();
   } else {
     response.status(404).send("User not found");
