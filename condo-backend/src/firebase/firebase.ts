@@ -31,6 +31,16 @@ const addToPropertiesOwned = async (id: String, propertyValues: Object) => {
   return key;
 };
 
+const addFinancialsToProperty = async (
+  id: String,
+  propertyID: String,
+  financials: Object
+) => {
+  db.ref("users")
+    .child(`${id}/propertiesOwned/${propertyID}/financials`)
+    .update(financials);
+};
+
 const addToPropertyFiles = (
   id: String,
   propertyID: String,
@@ -40,6 +50,14 @@ const addToPropertyFiles = (
   db.ref("users")
     .child(`${id}/propertiesOwned/${propertyID}/files`)
     .update({ [fileType]: fileUrl });
+};
+
+const getCostEntries = async (id: String, propertyID: String) => {
+  const snapshot = await db
+    .ref("users")
+    .child(`${id}/propertiesOwned/${propertyID}/financials/costEntries`)
+    .once("value");
+  return snapshot.val();
 };
 
 const userExists = async (id: String) => {
@@ -59,4 +77,6 @@ export {
   getUserValues,
   addToPropertiesOwned,
   addToPropertyFiles,
+  addFinancialsToProperty,
+  getCostEntries,
 };
