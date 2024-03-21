@@ -30,7 +30,7 @@ const ChatPage = () => {
 
   //END CHAT BUTTON
   const handleEndChat = () => {
-    navigation.navigate('RequestPage', { refresh: true });
+    navigation.goBack('Request');
   };
 
   return (
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   chatContainer: {
     flexGrow: 1,
     paddingBottom: 10, 
+  }, // Add a closing bracket here
   messageBubble: {
     maxWidth: '80%',
     marginVertical: 5,
@@ -143,6 +144,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-});
+}); 
+
+
+
 
 export default ChatPage;
