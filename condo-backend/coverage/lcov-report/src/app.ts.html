@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.67% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>64/73</span>
+                <span class='fraction'>63/72</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.36% </span>
+                <span class="strong">86.15% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/66</span>
+                <span class='fraction'>56/65</span>
             </div>
         
             
@@ -183,25 +183,23 @@
 <a name='L118'></a><a href='#L118'>118</a>
 <a name='L119'></a><a href='#L119'>119</a>
 <a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L121'></a><a href='#L121'>121</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -305,127 +303,126 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">//Node .
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Node .
 // Runs on http://localhost:8080
 &nbsp;
-const express = require("express");
-const cors = require("cors");
-const app = express();
-const { updateUserValues, initializeUser } = require("./firebase/userService");
+import { type Request, type Response } from 'express'
+const express = require('express')
+const cors = require('cors')
+const app = express()
+const { updateUserValues, initializeUser } = require('./firebase/userService')
 const {
   addPropertiesOwned,
-  addPropertyFile,
-} = require("./firebase/propertyProfileService");
+  addPropertyFile
+} = require('./firebase/propertyProfileService')
 const {
   addPropertyFinancials,
-  generateReport,
-} = require("./firebase/financialService");
-const { generateResponse } = require("./openai/chat");
-const { parseJSONOrString } = require("./utils/utils");
-import { Request, Response } from "express";
-const PDFDocument = require("pdfkit");
+  generateReport
+} = require('./firebase/financialService')
+const { generateResponse } = require('./openai/chat')
+const { parseJSONOrString } = require('./utils/utils')
 &nbsp;
-app.use(express.json());
-app.use(cors());
+app.use(express.json())
+app.use(cors())
 &nbsp;
-app.post("/updateUserValues", async (req: Request, res: Response) =&gt; {
+app.post('/updateUserValues', async (req: Request, res: Response) =&gt; {
   if (req.body.tokenId &amp;&amp; req.body.userValues) {
     try {
-      console.log("Calling updateUserValues endpoint");
-      const userValues = parseJSONOrString(req.body.userValues);
-      await updateUserValues(req.body.tokenId, userValues, res);
+      console.log('Calling updateUserValues endpoint')
+      const userValues = parseJSONOrString(req.body.userValues)
+      await updateUserValues(req.body.tokenId, userValues, res)
     } catch (e) {
-      console.log(e);
-      res.status(500).send("Internal server error");
+      console.log(e)
+      res.status(500).send('Internal server error')
     }
   } else {
-    res.status(400).send("Invalid request");
+    res.status(400).send('Invalid request')
   }
-});
+})
 &nbsp;
-app.post("/updatePropertyFinancials", async (req: Request, res: Response) =&gt; {
+app.post('/updatePropertyFinancials', async (req: Request, res: Response) =&gt; {
   if (req.body.tokenId &amp;&amp; req.body.propertyId &amp;&amp; req.body.propertyFinancials) {
     try {
-      console.log("Calling updateUserValues endpoint");
-      const propertyFinancials = parseJSONOrString(req.body.propertyFinancials);
+      console.log('Calling updateUserValues endpoint')
+      const propertyFinancials = parseJSONOrString(req.body.propertyFinancials)
       await addPropertyFinancials(
         req.body.tokenId,
         req.body.propertyId,
         propertyFinancials,
         res
-      );
+      )
     } catch (e) {
-<span class="cstat-no" title="statement not covered" >      console.log(e);</span>
-<span class="cstat-no" title="statement not covered" >      res.status(500).send("Internal server error");</span>
+<span class="cstat-no" title="statement not covered" >      console.log(e)</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).send('Internal server error')</span>
     }
   } else {
-    res.status(400).send("Invalid request");
+    res.status(400).send('Invalid request')
   }
-});
+})
 &nbsp;
-app.post("/generateReport", async (req: Request, res: Response) =&gt; {
+app.post('/generateReport', async (req: Request, res: Response) =&gt; {
   if (req.body.tokenId &amp;&amp; req.body.propertyId) {
-    console.log("Calling generateReport endpoint");
-    await generateReport(req.body.tokenId, req.body.propertyId, res);
+    console.log('Calling generateReport endpoint')
+    await generateReport(req.body.tokenId, req.body.propertyId, res)
   } else {
-    res.status(400).send("Invalid request");
+    res.status(400).send('Invalid request')
   }
-});
+})
 &nbsp;
-app.post("/generateResponse", async (req: Request, res: Response) =&gt; {
+app.post('/generateResponse', async (req: Request, res: Response) =&gt; {
   if (req.body.tokenId &amp;&amp; req.body.messagesArr) {
     try {
-      console.log("Calling generateResponse endpoint");
-      await generateResponse(req.body.tokenId, req.body.messagesArr, res);
+      console.log('Calling generateResponse endpoint')
+      await generateResponse(req.body.tokenId, req.body.messagesArr, res)
     } catch (e) {
-<span class="cstat-no" title="statement not covered" >      console.log(e);</span>
-<span class="cstat-no" title="statement not covered" >      res.status(500).send("Internal server error");</span>
+<span class="cstat-no" title="statement not covered" >      console.log(e)</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).send('Internal server error')</span>
     }
   } else {
-    res.status(400).send("Invalid request");
+    res.status(400).send('Invalid request')
   }
-});
+})
 &nbsp;
-app.post("/initializeUser", async (req: Request, res: Response) =&gt; {
+app.post('/initializeUser', async (req: Request, res: Response) =&gt; {
   if (req.body.tokenId &amp;&amp; req.body.email) {
     try {
-      console.log("Calling initializeUser endpoint");
-      await initializeUser(req.body.tokenId, req.body.email, res);
+      console.log('Calling initializeUser endpoint')
+      await initializeUser(req.body.tokenId, req.body.email, res)
     } catch (e) {
-<span class="cstat-no" title="statement not covered" >      console.log(e);</span>
-<span class="cstat-no" title="statement not covered" >      res.status(500).send("Internal server error");</span>
+<span class="cstat-no" title="statement not covered" >      console.log(e)</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).send('Internal server error')</span>
     }
   } else {
-    res.status(400).send("Invalid request");
+    res.status(400).send('Invalid request')
   }
-});
+})
 &nbsp;
-app.post("/addPropertyFile", async (req: Request, res: Response) =&gt; {
+app.post('/addPropertyFile', async (req: Request, res: Response) =&gt; {
   try {
-    console.log("Calling addPropertyFile endpoint");
-    const response = await addPropertyFile(req, res);
-<span class="cstat-no" title="statement not covered" >    res.status(200).send(response);</span>
+    console.log('Calling addPropertyFile endpoint')
+    const response = await addPropertyFile(req, res)
+<span class="cstat-no" title="statement not covered" >    res.status(200).send(response)</span>
   } catch (e) {
-    console.log(e);
-    res.status(500).send("Internal server error");
+    console.log(e)
+    res.status(500).send('Internal server error')
   }
-});
+})
 &nbsp;
-app.post("/addProperty", async (req: Request, res: Response) =&gt; {
+app.post('/addProperty', async (req: Request, res: Response) =&gt; {
   if (req.body.tokenId &amp;&amp; req.body.propertyValues) {
     try {
-      console.log("Calling addProperty endpoint");
-      await addPropertiesOwned(req.body.tokenId, req.body.propertyValues, res);
+      console.log('Calling addProperty endpoint')
+      await addPropertiesOwned(req.body.tokenId, req.body.propertyValues, res)
     } catch (e) {
-<span class="cstat-no" title="statement not covered" >      console.log(e);</span>
-<span class="cstat-no" title="statement not covered" >      res.status(500).send("Internal server error");</span>
+<span class="cstat-no" title="statement not covered" >      console.log(e)</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).send('Internal server error')</span>
     }
   } else {
-    res.status(400).send("Invalid request");
+    res.status(400).send('Invalid request')
   }
-});
+})
 &nbsp;
-export { app };
+export { app }
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -433,7 +430,7 @@ export { app };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T23:29:46.973Z
+                at 2024-03-22T01:25:24.641Z
             </div>
         <script src="../prettify.js"></script>
         <script>
