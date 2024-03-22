@@ -239,7 +239,7 @@ const Profile = ({ navigation }) => {
 
   function ChangePassword() {
     return (
-      <View style={{ width: "100%"}}>
+      <View id="change_pass_btn" style={{ width: "100%"}}>
         <ThemedButton
           name="bruce"
           type="primary"
@@ -269,7 +269,7 @@ const Profile = ({ navigation }) => {
 
   function SaveProfileButton() {
     return (
-      <View style={{ margin: 15 }}>
+      <View id="save_prof_btn" style={{ margin: 15 }}>
         <ThemedButton
           name="bruce"
           type="primary"
@@ -313,6 +313,7 @@ const Profile = ({ navigation }) => {
             <IoMdPerson style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+            id="f_name"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ firstName: value })}
@@ -354,6 +355,7 @@ const Profile = ({ navigation }) => {
             <IoMdPerson style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+            id="l_name"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ lastName: value })}
@@ -395,6 +397,7 @@ const Profile = ({ navigation }) => {
             <MdOutlinePhone style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+            id="p_number"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ phoneNumber: value })}
@@ -436,6 +439,7 @@ const Profile = ({ navigation }) => {
             <FaHouseChimneyUser style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+            id="s_address"
             width={0.9 * width}
             ref={input}
             onChangeText={(value) => updateState({ streetAddress: value })}
@@ -477,6 +481,7 @@ const Profile = ({ navigation }) => {
             <FaHouseChimneyUser style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+          id="p_code"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ postalcode: value })}
@@ -518,6 +523,7 @@ const Profile = ({ navigation }) => {
             <FaHouseChimneyUser style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+            id="s_prov"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ stateProvince: value })}
@@ -559,6 +565,7 @@ const Profile = ({ navigation }) => {
             <FaHouseChimneyUser style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
+            id="city"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ city: value })}
@@ -603,6 +610,7 @@ const Profile = ({ navigation }) => {
             />
           </TouchableOpacity>
           <TextInput
+            id="u_email"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ userEmail: value })}
