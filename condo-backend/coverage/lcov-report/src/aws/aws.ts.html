@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.88% </span>
+                <span class="strong">37.28% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/54</span>
+                <span class='fraction'>22/59</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.04% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/47</span>
+                <span class='fraction'>18/54</span>
             </div>
         
             
@@ -168,11 +168,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -185,14 +180,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -201,12 +190,27 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,64 +261,64 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const AWS = require("aws-sdk");
-const multiparty = require("multiparty");
-const path = require("path");
-const fs = require("fs");
-const {
-  getIdFromToken,
-  updateUserValuesDB,
-  userExists,
-  getUserValues,
-} = require("../firebase/firebase");
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const AWS = require('aws-sdk')
+const multiparty = require('multiparty')
+const path = require('path')
+const fs = require('fs')
+const { getIdFromToken } = require('../firebase/firebase')
 &nbsp;
 AWS.config.update({
-  region: "us-west-2",
-});
+  region: 'us-west-2'
+})
 &nbsp;
 const getDataFromRequest = (req: any): any =&gt;
   new Promise(async (resolve, reject) =&gt; {
-    const form = new multiparty.Form();
+    const form = new multiparty.Form()
     await form.parse(req, async (err: any, fields: any, files: any) =&gt; {
-      if (err) reject(err);
-      if (!fields) return reject("No fields found in form data.");
+      if (err) reject(err)
+      if (!fields) {
+        reject('No fields found in form data.')
+        return
+      }
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!fields.tokenId) {</span>
-<span class="cstat-no" title="statement not covered" >        return reject("tokenId was not found in form data.");</span>
+<span class="cstat-no" title="statement not covered" >        reject('tokenId was not found in form data.')</span>
+<span class="cstat-no" title="statement not covered" >        return</span>
       }
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!fields.propertyID) {</span>
-<span class="cstat-no" title="statement not covered" >        return reject("propertyID was not found in form data.");</span>
+<span class="cstat-no" title="statement not covered" >        reject('propertyID was not found in form data.')</span>
+<span class="cstat-no" title="statement not covered" >        return</span>
       }
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!fields.fileType) {</span>
-<span class="cstat-no" title="statement not covered" >        return reject("fileType was not found in form data.");</span>
+<span class="cstat-no" title="statement not covered" >        reject('fileType was not found in form data.')</span>
+<span class="cstat-no" title="statement not covered" >        return</span>
       }
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!files["file"]) {</span>
-<span class="cstat-no" title="statement not covered" >        console.log("file was not found in form data.");</span>
-<span class="cstat-no" title="statement not covered" >        return reject("File was not found in form data.");</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!files.file) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log('file was not found in form data.')</span>
+<span class="cstat-no" title="statement not covered" >        reject('File was not found in form data.')</span>
+<span class="cstat-no" title="statement not covered" >        return</span>
       }
-      const tokenId = <span class="cstat-no" title="statement not covered" >fields.tokenId[0];</span>
-      const file = <span class="cstat-no" title="statement not covered" >files["file"][0];</span> // get the file from the returned files object
-      const userId = <span class="cstat-no" title="statement not covered" >await getIdFromToken(tokenId);</span>
-      const propertyID = <span class="cstat-no" title="statement not covered" >fields.propertyID[0];</span>
-      const fileType = <span class="cstat-no" title="statement not covered" >fields.fileType[0];</span>
+      const tokenId = <span class="cstat-no" title="statement not covered" >fields.tokenId[0]</span>
+      const file = <span class="cstat-no" title="statement not covered" >files.file[0] </span>// get the file from the returned files object
+      const userId = <span class="cstat-no" title="statement not covered" >await getIdFromToken(tokenId)</span>
+      const propertyID = <span class="cstat-no" title="statement not covered" >fields.propertyID[0]</span>
+      const fileType = <span class="cstat-no" title="statement not covered" >fields.fileType[0]</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!file) <span class="cstat-no" title="statement not covered" >return reject("File was not found in form data.");</span></span>
-      else
+<span class="cstat-no" title="statement not covered" >      if (!file) {</span>
+<span class="cstat-no" title="statement not covered" >        reject('File was not found in form data.')</span>
+      } else {
 <span class="cstat-no" title="statement not covered" >        resolve({</span>
           file,
           userId,
           propertyID,
-          fileType,
-        });
-    });
-  });
+          fileType
+        })
+      }
+    })
+  })
 &nbsp;
 const uploadFileToS3Bucket = <span class="fstat-no" title="function not covered" >(</span>
   file: any,
@@ -322,50 +326,46 @@ const uploadFileToS3Bucket = <span class="fstat-no" title="function not covered"
   filePath: string,
   options = <span class="branch-0 cbranch-no" title="branch not covered" >{}</span>
 ): any =&gt; {
-  const s3 = <span class="cstat-no" title="statement not covered" >new AWS.S3();</span>
+  const s3 = <span class="cstat-no" title="statement not covered" >new AWS.S3()</span>
 &nbsp;
   // turn the file into a buffer for uploading
-  const buffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(file.path);</span>
+  const buffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(file.path)</span>
 &nbsp;
-  var originalname = <span class="cstat-no" title="statement not covered" >file.originalFilename;</span>
-  var attach_split = <span class="cstat-no" title="statement not covered" >originalname.split(".");</span>
-  var name = <span class="cstat-no" title="statement not covered" >attach_split[0];</span>
+  const originalname = <span class="cstat-no" title="statement not covered" >file.originalFilename</span>
+  const attachSplit = <span class="cstat-no" title="statement not covered" >originalname.split('.')</span>
+  const name = <span class="cstat-no" title="statement not covered" >attachSplit[0]</span>
   // generate a new random file name
-  const fileName = <span class="cstat-no" title="statement not covered" >name;</span>
+  const fileName = <span class="cstat-no" title="statement not covered" >name</span>
 &nbsp;
   // the extension of your file
-  const extension = <span class="cstat-no" title="statement not covered" >path.extname(file.path);</span>
+  const extension = <span class="cstat-no" title="statement not covered" >path.extname(file.path)</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  console.log(`${fileName}${extension}`);</span>
+<span class="cstat-no" title="statement not covered" >  console.log(`${fileName}${extension}`)</span>
 &nbsp;
   const params = <span class="cstat-no" title="statement not covered" >{</span>
-    Bucket: "soen390-files", //Bucketname
+    Bucket: 'soen390-files', // Bucketname
     Key: `${userId}/${filePath}/${fileName}${extension}`, // File name you want to save as in S3
-    Body: buffer, // Content of file
-  };
+    Body: buffer // Content of file
+  }
 &nbsp;
   // return a promise
 <span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return s3.upload(params, <span class="fstat-no" title="function not covered" >(e</span>rr: any, result: any) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (err) <span class="cstat-no" title="statement not covered" >reject(err);</span></span>
-      else <span class="cstat-no" title="statement not covered" >resolve(result); </span>// return the values of the successful AWS S3 request
-    });
-  });
-};
+<span class="cstat-no" title="statement not covered" >      if (err) <span class="cstat-no" title="statement not covered" >reject(err)</span></span>
+      else <span class="cstat-no" title="statement not covered" >resolve(result) /</span>/ return the values of the successful AWS S3 request
+    })
+  })
+}
 &nbsp;
 const uploadFileFromRequest = async (req: Request) =&gt; {
-  const { file, userId, propertyID, fileType } = await getDataFromRequest(req);
+  const { file, userId, propertyID, fileType } = await getDataFromRequest(req)
 &nbsp;
-  const { Location, ETag, Bucket, Key } = <span class="cstat-no" title="statement not covered" >await uploadFileToS3Bucket(</span>
-    file,
-    propertyID,
-    fileType
-  );
+  const { Location } = <span class="cstat-no" title="statement not covered" >await uploadFileToS3Bucket(file, propertyID, fileType)</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return { userId, propertyID, fileType, Location };</span>
-};
+<span class="cstat-no" title="statement not covered" >  return { userId, propertyID, fileType, Location }</span>
+}
 &nbsp;
-export { uploadFileFromRequest };
+export { uploadFileFromRequest }
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -373,7 +373,7 @@ export { uploadFileFromRequest };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T23:29:46.973Z
+                at 2024-03-22T01:25:24.641Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
