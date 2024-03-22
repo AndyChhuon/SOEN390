@@ -290,6 +290,43 @@ const PropertyProfileScreen = ({ navigation }) => {
               borderRadius={10}
               width={width > 900 ? width*0.2 : width*0.8}
 
+              style={{
+                marginVertical: 10,
+                alignSelf: "flex-start",
+                borderRadius: 5,
+                padding: 10,
+              }}
+              onPress={() =>
+                navigation.navigate("Reservation")
+              }
+            >
+             <Image
+                source={require("../../assets/images/icons/reserve.png")}
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginRight: 5,
+                  tintColor: "#fff",
+                  resizeMode: "contain",
+                }}
+              />
+              <Text
+                style={{
+                  ...Fonts.primaryColor16SemiBold,
+                  color: Colors.whiteColor,
+                }}
+              >
+                Reserve Facility
+              </Text>
+            </ThemedButton>
+
+            <ThemedButton
+              name="bruce"
+              type="primary"
+              raiseLevel={2}
+              borderRadius={10}
+              width={width > 900 ? width*0.2 : width*0.8}
+
 
               style={{
                 marginVertical: 10,

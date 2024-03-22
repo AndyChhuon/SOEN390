@@ -16,6 +16,7 @@ import PropertyScreen from "./propertyPage/propertyPage";
 import LandingPage from "./LandingPage/landingPage";
 import RequestPage from "./Request/RequestPage";
 import ChatPage from "./Request/ChatPage";
+import Reserve from "./Reservation/Reserve";
 
 
 const Stack = createStackNavigator();
@@ -53,7 +54,13 @@ const AppContent = () => {
           name="ChatPage"
           component={ChatPage}
         />
+
+        <Stack.Screen
+          name="Reservation"
+          component={Reserve}
+        />
       </Stack.Navigator>
+
     </>
   );
 };
