@@ -10,12 +10,14 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useAuth from "../../hooks/useAuth";
 import { set } from "firebase/database";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 const ChatPage = () => {
   const navigation = useNavigation();
@@ -63,8 +65,18 @@ const ChatPage = () => {
           style={{ flex: 1, justifyContent: "flex-start" }}
         >
           <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header2, styles.header]}>
               <Text style={styles.assigneeName}>{assigneeName}</Text>
+              <TouchableOpacity
+                onPress={handleEndChat}
+              >
+                <MaterialIcon
+                  name="close"
+                  size={30}
+                  color="#FFF"
+                  style={{ alignSelf: "center" }}
+                />
+              </TouchableOpacity>
             </View>
             <ScrollView contentContainerStyle={styles.chatContainer}>
               {messages.map((message, index) => (
@@ -73,8 +85,10 @@ const ChatPage = () => {
                   style={[
                     styles.messageBubble,
                     {
-                      alignSelf: message.role === "user" ? "flex-end" : "flex-start",
-                      backgroundColor: "#BFBFBF",
+                      alignSelf:
+                        message.role === "user" ? "flex-end" : "flex-start",
+                      backgroundColor:
+                        message.role === "user" ? "#007BFF" : "#6C757D",
                     },
                   ]}
                 >
@@ -90,12 +104,14 @@ const ChatPage = () => {
                 placeholder="Type your message..."
               />
               <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                <Text style={styles.sendButtonText}>Send</Text>
+                <MaterialIcon
+                  name="send"
+                  size={20}
+                  color="#FFF"
+                  style={{ alignSelf: "center" }}
+                />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.endChatButton} onPress={handleEndChat}>
-              <Text style={styles.endChatButtonText}>End Chat</Text>
-            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -117,7 +133,6 @@ const ChatPage = () => {
   }
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -129,6 +144,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#DDD",
     marginBottom: 10,
+  },
+  header2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // Add any other styles like padding, backgroundColor etc.
   },
   assigneeName: {
     fontSize: 18,

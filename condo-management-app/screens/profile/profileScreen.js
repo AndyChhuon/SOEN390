@@ -79,6 +79,11 @@ const Profile = ({ navigation }) => {
     });
   }, [userValues]);
 
+  const LogOut = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  };
+
   const styles = createStyles(height);
 
   const [windowDimensions, setWindowDimensions] = useState(
@@ -107,55 +112,66 @@ const Profile = ({ navigation }) => {
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height*0.92 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, height: height * 0.92 }}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1, justifyContent: "center"}}
+          style={{ flex: 1, justifyContent: "center" }}
         >
-          
-              <View
+          <View
+            style={{
+              alignSelf: "center",
+              flex: 1,
+              flexDirection: "column",
+              alignContent: "center",
+              width: width * 0.95,
+              height: height,
+              padding: 10,
+              marginVertical: "5%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <View style={{ flexGrow: 1 }}>{Title()}</View>
+              <View>{LogOutButton()}</View>
+            </View>
+            {ManageProfileText()}
+            {FirstNameTextField()}
+            {LastNameTextField()}
+            {userEmailTextField()}
+            {PhoneNumberTextField()}
+            {StreetAddressTextField()}
+            {PostalCode()}
+            {Province()}
+            {City()}
+            {SaveProfileButton()}
+            {DropdownC()}
+            <View
+              style={{
+                alignSelf: "flex-start",
+                flexDirection: "column",
+                alignContent: "flex-start",
+                margin: 15,
+                zIndex: 0,
+              }}
+            >
+              <Text
                 style={{
-                  alignSelf: "center",
-                  flex: 1,
-                  flexDirection: "column",
-                  alignContent: "center",
-                  width: width * 0.95,
-                  height: height,
-                  padding: 10,
-                  marginVertical: "5%",
+                  ...Fonts.whiteColor22Bold,
                 }}
               >
-                {Title()}
-                {ManageProfileText()}
-                {FirstNameTextField()}
-                {LastNameTextField()}
-                {userEmailTextField()}
-                {PhoneNumberTextField()}
-                {StreetAddressTextField()}
-                {PostalCode()}
-                {Province()}
-                {City()}
-                {SaveProfileButton()}
-                {DropdownC()}
-                <View
-                  style={{
-                    alignSelf: "flex-start",
-                    flexDirection: "column",
-                    alignContent: "flex-start",
-                    margin: 15,
-                    zIndex: 0,
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...Fonts.whiteColor22Bold,
-                    }}
-                  >
-                    Reset Your Password
-                  </Text>
-                    {ChangePassword()}
-                </View>
-              </View>
+                Reset Your Password
+              </Text>
+              {ChangePassword()}
+            </View>
+          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -193,12 +209,7 @@ const Profile = ({ navigation }) => {
   }
   function ManageProfileText() {
     return (
-      <Text
-        style={[
-          Fonts.whiteColor22Bold,
-          { margin: 15},
-        ]}
-      >
+      <Text style={[Fonts.whiteColor22Bold, { margin: 15 }]}>
         Manage Your Profile
       </Text>
     );
@@ -207,15 +218,9 @@ const Profile = ({ navigation }) => {
   function DropdownC() {
     return (
       <View>
-        <Text
-        style={[
-          Fonts.whiteColor22Bold,
-          { margin: 15},
-
-        ]}
-      >
-        Language Preferences
-      </Text>
+        <Text style={[Fonts.whiteColor22Bold, { margin: 15 }]}>
+          Language Preferences
+        </Text>
         <Dropdown
           data={data}
           onSelect={(item) => setSelectedValue(item.value)}
@@ -227,7 +232,7 @@ const Profile = ({ navigation }) => {
 
   function ChangePassword() {
     return (
-      <View id="change_pass_btn" style={{ width: "100%"}}>
+      <View id="change_pass_btn" style={{ width: "100%" }}>
         <ThemedButton
           name="bruce"
           type="primary"
@@ -251,6 +256,21 @@ const Profile = ({ navigation }) => {
           </Text>
         </ThemedButton>
       </View>
+    );
+  }
+
+  function LogOutButton() {
+    return (
+      <TouchableOpacity onPress={() => LogOut()}>
+
+          <MaterialIcon
+            style={{ marginRight: 15 }}
+            name="logout"
+            size={26}
+            color="#fff"
+            
+          />
+      </TouchableOpacity>
     );
   }
 
@@ -468,7 +488,7 @@ const Profile = ({ navigation }) => {
             <FaHouseChimneyUser style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
-          id="p_code"
+            id="p_code"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ postalcode: value })}
@@ -642,7 +662,11 @@ const Profile = ({ navigation }) => {
               alignItems: "flex-start",
             }}
           >
-            <Text style={[{ ...Fonts.whiteColor26SemiBold }]}>Welcome</Text>
+            <Text
+              style={[{ ...Fonts.whiteColor26SemiBold }, (marginRight = 5)]}
+            >
+              Welcome
+            </Text>
             <Text style={{ ...Fonts.whiteColor14Medium }}>
               {state.firstName} {" " + state.lastName}
             </Text>
