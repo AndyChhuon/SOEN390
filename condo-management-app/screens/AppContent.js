@@ -15,6 +15,9 @@ import financialSystemScreen from "./financialSystem/financialSystemScreen";
 import PropertyScreen from "./propertyPage/propertyPage";
 import LandingPage from "./LandingPage/landingPage";
 import Terms from "./Terms/Terms";
+import RequestPage from "./Request/RequestPage";
+import ChatPage from "./Request/ChatPage";
+
 
 const Stack = createStackNavigator();
 
@@ -46,6 +49,14 @@ const AppContent = () => {
         />
         <Stack.Screen name="Terms" component={Terms} />
 
+        <Stack.Screen
+          name="Request"
+          component={RequestPage}
+        />
+        <Stack.Screen
+          name="ChatPage"
+          component={ChatPage}
+        />
       </Stack.Navigator>
     </>
   );

@@ -18,6 +18,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import { set } from "firebase/database";
 
 const AuthContext = createContext({});
 
@@ -152,6 +153,115 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const updatePropertyFinancials = async (propertyId, propertyFinancials) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/updatePropertyFinancials", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        propertyId: propertyId,
+        propertyFinancials: propertyFinancials,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setUserValues({
+            ...userValues,
+            propertiesOwned: {
+              ...userValues.propertiesOwned,
+              [propertyId]: {
+                ...userValues.propertiesOwned[propertyId],
+                financials: propertyFinancials,
+              },
+            },
+          });
+        });
+      }
+    });
+  };
+
+  const generatePdf = async (propertyId) => {
+    const tokenId = await getIdToken(user);
+
+    try {
+      const response = await fetch(herokuBackendUrl + "/generateReport", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tokenId: tokenId,
+          propertyId: propertyId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      // Extracting filename from Content-Disposition header
+      const disposition = response.headers.get("Content-Disposition");
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+      const matches = filenameRegex.exec(disposition);
+      const filename = matches && matches[1] ? matches[1] : "report.pdf";
+
+      // Initiate download
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+  };
+
+  const generateChatResponse = async (messagesArr, setMessages) => {
+    const tokenId = await getIdToken(user);
+    const response = await fetch(herokuBackendUrl + "/generateResponse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        messagesArr: messagesArr,
+      }),
+    });
+
+    let currentMessage = "";
+
+    // get response stream
+    const reader = response.body.getReader();
+    reader.read().then(function processText({ done, value }) {
+      if (done) {
+        return;
+      }
+
+      // decode data
+      const text = new TextDecoder("utf-8").decode(value);
+
+      // append to current message
+      currentMessage += text;
+
+      setMessages([
+        ...messagesArr,
+        { content: currentMessage, role: "assistant" },
+      ]);
+
+      // read more
+      return reader.read().then(processText);
+    });
+  };
+
   const addPropertyFile = async (dataForm) => {
     const tokenId = await getIdToken(user);
     dataForm.append("tokenId", tokenId);
@@ -193,6 +303,9 @@ export const AuthProvider = ({ children }) => {
       addProperty,
       addPropertyFile,
       userValues,
+      updatePropertyFinancials,
+      generatePdf,
+      generateChatResponse,
     }),
     [user, userValues]
   );
