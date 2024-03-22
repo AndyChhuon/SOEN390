@@ -4,6 +4,7 @@ import { ThemedButton } from "react-native-really-awesome-button";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcon from "react-native-vector-icons/FontAwesome5";
+import CTextInput from "../Components/CTextInput";
 
 import {
   SafeAreaView,
@@ -39,9 +40,14 @@ const PropertyProfileScreen = ({ navigation }) => {
 
   const [state, setState] = useState({
     propertyName: "",
-    unitCount: "",
-    parkingCount: "",
-    lockerCount: "",
+    rentAmount: null,
+    securityDeposit: null,
+    petsAllowed: null,
+    smokingAllowed: null,
+    condoFee: null,
+    waterIncluded: null,
+    electricIncluded: null,
+    parkingCount: null,
     Address: "",
   });
 
@@ -123,12 +129,16 @@ const PropertyProfileScreen = ({ navigation }) => {
 
   const titleMappings = {
     propertyName: "Property Name",
+    rentAmount: "Rent Amount",
+    securityDeposit: "Security Deposit",
+    petsAllowed: "Pets Allowed",
+    smokingAllowed: "Smoking Allowed",
+    condoFee: "Condo Fee",
+    waterIncluded: "Water Included",
+    electricIncluded: "Electric Included",
+    parkingCount: "Parking Count",
+    lockerCount: "Locker Count",
     Address: "Address",
-    owner: "Owner",
-    location: "Location",
-    unitCount: "Unit Count",
-    parkingCount: "Number of Parking Spots",
-    lockerCount: "Number of Lockers",
   };
 
   const [expanded, setExpanded] = useState(false);
@@ -255,8 +265,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width*0.2 : width*0.8}
-
+              width={width > 900 ? width * 0.2 : width * 0.8}
               style={{
                 marginVertical: 10,
                 alignSelf: "flex-start",
@@ -288,9 +297,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width*0.2 : width*0.8}
-
-
+              width={width > 900 ? width * 0.2 : width * 0.8}
               style={{
                 marginVertical: 10,
                 alignSelf: "flex-start",
@@ -323,8 +330,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width*0.2 : width*0.8}
-
+              width={width > 900 ? width * 0.2 : width * 0.8}
               style={{
                 marginVertical: 10,
                 alignSelf: "flex-start",
@@ -400,209 +406,115 @@ const PropertyProfileScreen = ({ navigation }) => {
 
             <TouchableOpacity>
               <Animated.View style={{ height: animation, overflow: "scroll" }}>
-                <View
-                  style={{ flex: 1, flexDirection: "row", marginBottom: 15 }}
-                >
-                  <View style={{ flex: 1, marginBottom: 15 }}>
-                    <View>
-                      <View style={styles.textFieldWrapStyle}>
-                        <TextInput
-                          width={0.8 * width}
-                          onChangeText={(value) =>
-                            updateState({ propertyName: value })
-                          }
-                          placeholder="Property Name"
-                          value={state.propertyName}
-                          placeholderTextColor={Colors.grayColor}
-                          style={{
-                            ...Fonts.whiteColor16Medium,
-                            flex: 1,
-                            marginLeft: Sizes.fixPadding + 2.0,
-                            paddingVertical:
-                              ((Sizes.fixPadding + 7.0) * height) / 880,
-                          }}
-                          selectionColor={Colors.primaryColor}
-                        />
-                      </View>
-                      <View
+                <View style={{ flexDirection: "column" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "column",
+                      marginBottom: 15,
+                      paddingVertical: 30,
+                    }}
+                  >
+                    <CTextInput
+                      placeholder="Property Name"
+                      value={state.propertyName}
+                      onChangeText={(value) =>
+                        updateState({ propertyName: value })
+                      }
+                      widthMultiplier={0.8}
+                    />
+                    <CTextInput
+                      placeholder="Rent Amount"
+                      value={state.rentAmount}
+                      onChangeText={(value) =>
+                        updateState({ rentAmount: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Security Deposit"
+                      value={state.securityDeposit}
+                      onChangeText={(value) =>
+                        updateState({ securityDeposit: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Pets Allowed"
+                      value={state.petsAllowed}
+                      onChangeText={(value) =>
+                        updateState({ petsAllowed: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Smoking Allowed"
+                      value={state.smokingAllowed}
+                      onChangeText={(value) =>
+                        updateState({ smokingAllowed: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Condo Fees"
+                      value={state.condoFee}
+                      onChangeText={(value) => updateState({ condoFee: value })}
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Water Included"
+                      value={state.waterIncluded}
+                      onChangeText={(value) =>
+                        updateState({ waterIncluded: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Electric Included"
+                      value={state.electricIncluded}
+                      onChangeText={(value) =>
+                        updateState({ electricIncluded: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Parking Count"
+                      value={state.parkingCount}
+                      onChangeText={(value) =>
+                        updateState({ parkingCount: value })
+                      }
+                      widthMultiplier={0.9}
+                    />
+                    <CTextInput
+                      placeholder="Address"
+                      value={state.Address}
+                      onChangeText={(value) => updateState({ Address: value })}
+                      widthMultiplier={0.9}
+                    />
+                  </View>
+                  <View>
+                    <ThemedButton
+                      name="bruce"
+                      type="primary"
+                      style={[
+                        { marginLeft: 15, marginRight: 15, marginBottom: 20 },
+                      ]}
+                      onPress={() => addPropertyProfile()}
+                      raiseLevel={2}
+                      textSize={20}
+                      paddingHorizontal={20}
+                      borderRadius={5}
+                    >
+                      <Text
                         style={{
-                          marginHorizontal: Sizes.fixPadding * 2.0,
-                          marginBottom: (7 * height) / 880,
+                          ...Fonts.primaryColor22SemiBold,
+                          color: Colors.whiteColor,
                         }}
                       >
-                        <Text
-                          style={{
-                            ...Fonts.parentColor14Medium,
-                            color: Colors.errorColor,
-                          }}
-                        ></Text>
-                      </View>
-
-                      <View>
-                        <View style={styles.textFieldWrapStyle}>
-                          <TextInput
-                            width={0.9 * width}
-                            onChangeText={(value) =>
-                              updateState({ unitCount: value })
-                            }
-                            placeholder="Unit Count"
-                            value={state.unitCount}
-                            placeholderTextColor={Colors.grayColor}
-                            style={{
-                              ...Fonts.whiteColor16Medium,
-                              flex: 1,
-                              marginLeft: Sizes.fixPadding + 2.0,
-                              paddingVertical:
-                                ((Sizes.fixPadding + 7.0) * height) / 880,
-                            }}
-                            selectionColor={Colors.primaryColor}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            marginHorizontal: Sizes.fixPadding * 2.0,
-                            marginBottom: (7 * height) / 880,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              ...Fonts.parentColor14Medium,
-                              color: Colors.errorColor,
-                            }}
-                          ></Text>
-                        </View>
-                      </View>
-                      <View>
-                        <View style={styles.textFieldWrapStyle}>
-                          <TextInput
-                            width={0.9 * width}
-                            onChangeText={(value) =>
-                              updateState({ Address: value })
-                            }
-                            placeholder="Address"
-                            value={state.Address}
-                            placeholderTextColor={Colors.grayColor}
-                            style={{
-                              ...Fonts.whiteColor16Medium,
-                              flex: 1,
-                              marginLeft: Sizes.fixPadding + 2.0,
-                              paddingVertical:
-                                ((Sizes.fixPadding + 7.0) * height) / 880,
-                            }}
-                            selectionColor={Colors.primaryColor}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            marginHorizontal: Sizes.fixPadding * 2.0,
-                            marginBottom: (7 * height) / 880,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              ...Fonts.parentColor14Medium,
-                              color: Colors.errorColor,
-                            }}
-                          ></Text>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                      <View>
-                        <View style={styles.textFieldWrapStyle}>
-                          <TextInput
-                            width={0.9 * width}
-                            onChangeText={(value) =>
-                              updateState({ parkingCount: value })
-                            }
-                            placeholder="Parking Count"
-                            value={state.parkingCount}
-                            placeholderTextColor={Colors.grayColor}
-                            style={{
-                              ...Fonts.whiteColor16Medium,
-                              flex: 1,
-                              marginLeft: Sizes.fixPadding + 2.0,
-                              paddingVertical:
-                                ((Sizes.fixPadding + 7.0) * height) / 880,
-                            }}
-                            selectionColor={Colors.primaryColor}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            marginHorizontal: Sizes.fixPadding * 2.0,
-                            marginBottom: (7 * height) / 880,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              ...Fonts.parentColor14Medium,
-                              color: Colors.errorColor,
-                            }}
-                          ></Text>
-                        </View>
-                      </View>
-                      <View>
-                        <View style={styles.textFieldWrapStyle}>
-                          <TextInput
-                            width={0.9 * width}
-                            onChangeText={(value) =>
-                              updateState({ lockerCount: value })
-                            }
-                            placeholder="Locker Count"
-                            value={state.lockerCount}
-                            placeholderTextColor={Colors.grayColor}
-                            style={{
-                              ...Fonts.whiteColor16Medium,
-                              flex: 1,
-                              marginLeft: Sizes.fixPadding + 2.0,
-                              paddingVertical:
-                                ((Sizes.fixPadding + 7.0) * height) / 880,
-                            }}
-                            selectionColor={Colors.primaryColor}
-                          />
-                        </View>
-
-                        <View
-                          style={{
-                            marginHorizontal: Sizes.fixPadding * 2.0,
-                            marginBottom: (7 * height) / 880,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              ...Fonts.parentColor14Medium,
-                              color: Colors.errorColor,
-                            }}
-                          ></Text>
-                        </View>
-                      </View>
-                    </View>
+                        Add Property
+                      </Text>
+                    </ThemedButton>
                   </View>
-                  <View></View>
-                </View>
-                <View>
-                  <ThemedButton
-                    name="bruce"
-                    type="primary"
-                    style={[
-                      { marginLeft: 15, marginRight: 15, marginBottom: 20 },
-                    ]}
-                    onPress={() => addPropertyProfile()}
-                    raiseLevel={2}
-                    textSize={20}
-                    paddingHorizontal={20}
-                    borderRadius={5}
-                  >
-                    <Text
-                      style={{
-                        ...Fonts.primaryColor22SemiBold,
-                        color: Colors.whiteColor,
-                      }}
-                    >
-                      Add Property
-                    </Text>
-                  </ThemedButton>
                 </View>
               </Animated.View>
             </TouchableOpacity>

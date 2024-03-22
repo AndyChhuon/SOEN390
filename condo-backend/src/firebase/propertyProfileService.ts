@@ -8,12 +8,17 @@ const {
 } = require('./firebase')
 
 const propertyProfileAllowedKeys = [
-  'propertyName',
-  'unitCount',
+  'Address',
+  'condoFee',
+  'electricIncluded',
   'parkingCount',
-  'lockerCount',
-  'Address'
-]
+  'petsAllowed',
+  'propertyName',
+  'rentAmount',
+  'securityDeposit',
+  'smokingAllowed',
+  'waterIncluded',
+];
 
 const propertyProfileKeysAreValid = (userValues: Object) => {
   const keys = Object.keys(userValues)
