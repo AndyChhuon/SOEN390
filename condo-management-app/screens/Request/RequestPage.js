@@ -145,10 +145,11 @@ const createStyles = (height) =>
       marginBottom: 10,
     },
    picker: {
-  flex: 1,
-  height: 30,
-  backgroundColor: "rgba(255, 255, 255, 0.5)", // A shade lighter than the background color
-  color: "black", // Light grey font color
+    flex: 1,
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: "#fff", // White background color
+    color: "black", // Light grey font color
 },
 
    input: {

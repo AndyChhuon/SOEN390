@@ -70,6 +70,13 @@ const Profile = ({ navigation }) => {
       updateProfileInfo(cleanedState);
     }
   };
+  
+  const LogOut = () => {
+    sessionStorage.clear();
+    navigation.push("Register");
+  }
+
+
 
   //update profile state from backend
   useEffect(() => {
@@ -166,6 +173,7 @@ const Profile = ({ navigation }) => {
                   </Text>
                     {ChangePassword()}
                 </View>
+              
               </View>
             </View>
           </View>
@@ -301,6 +309,42 @@ const Profile = ({ navigation }) => {
       </View>
     );
   }
+
+  function LogoutButton() {
+    return (
+      <View style={{ margin: 15 }}>
+        <ThemedButton
+          name="bruce"
+          type="primary"
+          raiseLevel={2}
+          borderRadius={10}
+          style={{
+            borderRadius: 5,
+            padding: 10,
+          }}
+          onPress={async () => {
+            LogOut();
+          }}
+        >
+          <MaterialIcons
+            style={{ marginRight: 15 }}
+            name="logout"
+            size={26}
+            color="#fff"
+          />
+          <Text
+            style={{
+              ...Fonts.primaryColor16SemiBold,
+              color: Colors.whiteColor,
+            }}
+          >
+            Log out
+          </Text>
+        </ThemedButton>
+      </View>
+    );
+  }
+
   function FirstNameTextField() {
     const input = useRef();
     return (
@@ -631,7 +675,7 @@ const Profile = ({ navigation }) => {
 
   function Title() {
     return (
-      <View style={{marginTop: "15%"}}>
+      <View style={{marginTop: "5%"}}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
             source={{
@@ -651,7 +695,9 @@ const Profile = ({ navigation }) => {
             <Text style={{ ...Fonts.whiteColor14Medium }}>
               {state.firstName} {" " + state.lastName}
             </Text>
+            
           </View>
+          {LogoutButton()}
         </View>
       </View>
     );

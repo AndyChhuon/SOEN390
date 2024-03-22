@@ -83,6 +83,10 @@ const FinancialSystemScreen = ({ route, navigation }) => {
       );
       return;
     }
+    if (!/^\d+(\.\d+)?$/.test(tempState.tenantID)) {
+      setCostInputError("Enter a tenant id. Should be a number.");
+      return;
+    }
 
     if (!/^\d+(\.\d+)?$/.test(tempState.costAmount)) {
       setCostInputError("Cost amount should be a number.");
@@ -91,7 +95,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
 
     const newId = state.costEntries.length + 1;
     const newCostEntry = {
-      id: tempState.TenantID,
+      id: tempState.tenantID,
       description: tempState.costDescription,
       amount: tempState.costAmount,
     };
@@ -107,7 +111,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
       };
     });
     setCostInputError("");
-    setTempState({ costDescription: "", costAmount: "", TenantID: "" });
+    setTempState({ costDescription: "", costAmount: "", tenantID: "" });
   };
 
   const handleUpdateFees = () => {
@@ -565,9 +569,9 @@ const FinancialSystemScreen = ({ route, navigation }) => {
           <TextInput
             ref={input}
             width={0.9 * width}
-            onChangeText={(value) => updateTempState({ TenantID: value })}
+            onChangeText={(value) => updateTempState({ tenantID: value })}
             placeholder="Enter the tenants ID"
-            value={tempState.TenantID}
+            value={tempState.tenantID}
             placeholderTextColor={Colors.grayColor}
             style={{
               ...Fonts.whiteColor14Medium,
