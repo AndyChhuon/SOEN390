@@ -32,7 +32,6 @@ const AppContent = () => {
           gestureEnabled: false,
         }}
       >
-        <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="Register" component={SignupScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="BottomNavigator" component={BottomTabBarScreen} />

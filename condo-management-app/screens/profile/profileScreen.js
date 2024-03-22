@@ -261,30 +261,16 @@ const Profile = ({ navigation }) => {
 
   function LogOutButton() {
     return (
-      <View id="change_pass_btn" style={{ width: "100%" }}>
-        <ThemedButton
-          name="bruce"
-          type="primary"
-          raiseLevel={2}
-          borderRadius={10}
-          onPress={() => LogOut()}
-        >
+      <TouchableOpacity onPress={() => LogOut()}>
+
           <MaterialIcon
             style={{ marginRight: 15 }}
             name="logout"
             size={26}
             color="#fff"
+            
           />
-          <Text
-            style={{
-              ...Fonts.primaryColor16SemiBold,
-              color: Colors.whiteColor,
-            }}
-          >
-            Log Out
-          </Text>
-        </ThemedButton>
-      </View>
+      </TouchableOpacity>
     );
   }
 
