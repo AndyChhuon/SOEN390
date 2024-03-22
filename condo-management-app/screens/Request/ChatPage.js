@@ -7,6 +7,10 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -51,51 +55,73 @@ const ChatPage = () => {
     navigation.goBack("Request");
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.assigneeName}>{assigneeName}</Text>
-      </View>
-      <ScrollView contentContainerStyle={styles.chatContainer}>
-        {messages.map((message, index) => (
-          <View
-            key={index}
-            style={[
-              styles.messageBubble,
-              {
-                alignSelf: message.role === "user" ? "flex-end" : "flex-start",
-                backgroundColor: "#BFBFBF",
-              },
-            ]}
-          >
-            <Text style={styles.messageText}>{message.content}</Text>
+  const content = (
+    <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, height: screenHeight }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={{ flex: 1, justifyContent: "flex-start" }}
+        >
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.assigneeName}>{assigneeName}</Text>
+            </View>
+            <ScrollView contentContainerStyle={styles.chatContainer}>
+              {messages.map((message, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.messageBubble,
+                    {
+                      alignSelf: message.role === "user" ? "flex-end" : "flex-start",
+                      backgroundColor: "#BFBFBF",
+                    },
+                  ]}
+                >
+                  <Text style={styles.messageText}>{message.content}</Text>
+                </View>
+              ))}
+            </ScrollView>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={inputMessage}
+                onChangeText={(text) => setInputMessage(text)}
+                placeholder="Type your message..."
+              />
+              <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+                <Text style={styles.sendButtonText}>Send</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.endChatButton} onPress={handleEndChat}>
+              <Text style={styles.endChatButtonText}>End Chat</Text>
+            </TouchableOpacity>
           </View>
-        ))}
+        </KeyboardAvoidingView>
       </ScrollView>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputMessage}
-          onChangeText={(text) => setInputMessage(text)}
-          placeholder="Type your message..."
-        />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.endChatButton} onPress={handleEndChat}>
-        <Text style={styles.endChatButtonText}>End Chat</Text>
-      </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
+
+  if (Platform.OS === "web") {
+    return content;
+  } else {
+    return (
+      <TouchableWithoutFeedback onPress={() => {}}>
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}
+        >
+          {content}
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    );
+  }
 };
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.bodyBackColor2,
-    margin: 10,
-    borderRadius: 10,
     padding: 20,
   },
   header: {
@@ -112,14 +138,14 @@ const styles = StyleSheet.create({
   chatContainer: {
     flexGrow: 1,
     paddingBottom: 10,
-  }, // Add a closing bracket here
+  },
   messageBubble: {
     maxWidth: "80%",
     marginVertical: 5,
     padding: 15,
     borderRadius: 10,
   },
-  messagecontent: {
+  messageText: {
     fontSize: 16,
     ...Fonts.whiteColor16Medium,
   },
@@ -145,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginRight: 5,
   },
-  sendButtoncontent: {
+  sendButtonText: {
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
@@ -157,7 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 10,
   },
-  endChatButtoncontent: {
+  endChatButtonText: {
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
