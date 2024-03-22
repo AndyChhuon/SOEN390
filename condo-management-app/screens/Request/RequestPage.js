@@ -33,9 +33,9 @@ const RequestPage = ({ navigation }) => {
 //AFTER SELECTING FROM DROPDOWN, THE ASSIGNED NAME, IMAGE AND ROLE WILL SHOW. 
   useEffect(() => {
     if (selectedRequestType === "Maintenance") {
-      setAssignee({ name: "John Doe", role: "Maintenance", image: null });
+      setAssignee({ name: "John Doe", role: "Maintenance", image:  require("../../assets/images/maintain.png") });
     } else if (selectedRequestType === "Complaint") {
-      setAssignee({ name: "Jane Smith", role: "Manager", image: null });
+      setAssignee({ name: "Jane Smith", role: "Manager",  image: require("../../assets/images/complaint.png")});
     } else {
       setAssignee(null);
     }
@@ -44,7 +44,7 @@ const RequestPage = ({ navigation }) => {
   //SEND BUTTON FUNCTIONS
 
   const handleRequest = () => {
-    navigation.navigate("ChatPage",{ assigneeName: assignee.name,
+    navigation.navigate("ChatPage",{ assigneeName: assignee.name, assigneeImage: assignee.image,
       initialMessage: requestMessage, })
      
   };
@@ -88,19 +88,20 @@ const RequestPage = ({ navigation }) => {
            {/*IMAGE CODES*/}
           {/* Right half */}
           <View style={styles.rightHalf}>
-            <View style={styles.assigneeContainer}>
-              {assignee && (
-                <>
-                  {assignee.image ? (
-                    <Image source={{ uri: assignee.image }} style={styles.assigneeImage} />
-                  ) : (
-                    <View style={styles.assigneeImage} />
-                  )}
-                  <Text style={styles.assigneeText}>{assignee.name}</Text>
-                  <Text style={styles.assigneeText}>Role: {assignee.role}</Text>
-                </>
-              )}
-            </View>
+          <View style={styles.assigneeContainer}>
+  {assignee && (
+    <>
+      {assignee.image !== null ? (
+        <Image source={assignee.image} style={styles.assigneeImage} />
+      ) : (
+        <View style={styles.assigneeImagePlaceholder} />
+      )}
+      <Text style={styles.assigneeText}>{assignee.name}</Text>
+      <Text style={styles.assigneeText}>Role: {assignee.role}</Text>
+    </>
+  )}
+</View>
+
           </View>
         </View>
       </ScrollView>
@@ -112,6 +113,7 @@ export default RequestPage;
 
 const createStyles = (height) =>
   StyleSheet.create({
+    
     container: {
       flexGrow: 1,
       padding: 20,
@@ -124,15 +126,15 @@ const createStyles = (height) =>
       flex: 1,
       marginRight: 10,
       justifyContent: "center",
-      alignItems: "center", // Added alignItems
+      alignItems: "center", 
     },
     rightHalf: {
       flex: 1,
       marginLeft: 10,
     },
     inputContainer: {
-      width: "80%", // Adjusted width
-      height: "70%", // Adjusted height
+      width: "80%", 
+      height: "70%", 
     },
     labelContainer: {
       flexDirection: "row",
@@ -147,14 +149,14 @@ const createStyles = (height) =>
    picker: {
   flex: 1,
   height: 30,
-  backgroundColor: "rgba(255, 255, 255, 0.5)", // A shade lighter than the background color
-  color: "black", // Light grey font color
+  backgroundColor: "rgba(255, 255, 255, 0.5)", 
+  color: "black", 
 },
 
    input: {
   height: 30,
   flex: 1,
-  borderColor: "rgba(0, 0, 0, 0.7)", // Dark grey color with 70% opacity
+  borderColor: "rgba(0, 0, 0, 0.7)", 
   borderWidth: 1,
   borderRadius: 5,
   marginBottom: 20,
@@ -169,7 +171,7 @@ const createStyles = (height) =>
       paddingHorizontal: 20,
       borderRadius: 5,
       alignItems: "center",
-      width: 150, // Adjusted width
+      width: 150, 
     },
     buttonText: {
       color: Colors.white,
@@ -182,11 +184,20 @@ const createStyles = (height) =>
       justifyContent: "center",
       marginTop: 20,
     },
+    
     assigneeImage: {
-      width: "50%", // Adjusted width
-      aspectRatio: 1, // Maintain aspect ratio
+      maxWidth: "100%",
+      height: "auto", 
+      aspectRatio: 1, 
       borderRadius: 20,
-      backgroundColor: "lightgray", // Placeholder color for empty box
+      backgroundColor: "lightgray", 
+    },
+
+    assigneeImagePlaceholder: {
+      width: "50%", 
+      aspectRatio: 1, 
+      borderRadius: 20,
+      backgroundColor: "lightgray", 
     },
     assigneeText: {
       ...Fonts.whiteColor16Regular,
