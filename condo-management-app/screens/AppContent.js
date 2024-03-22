@@ -14,6 +14,7 @@ import PropertyProfileScreen from "./propertyProfile/propertyProfileScreen";
 import financialSystemScreen from "./financialSystem/financialSystemScreen";
 import PropertyScreen from "./propertyPage/propertyPage";
 import LandingPage from "./LandingPage/landingPage";
+import Terms from "./Terms/Terms";
 import RequestPage from "./Request/RequestPage";
 import ChatPage from "./Request/ChatPage";
 
@@ -25,6 +26,7 @@ const AppContent = () => {
     <>
       <Stack.Navigator
         screenOptions={{
+          
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
           gestureEnabled: false,
@@ -45,6 +47,8 @@ const AppContent = () => {
           name="FinancialSystem"
           component={financialSystemScreen}
         />
+        <Stack.Screen name="Terms" component={Terms} />
+
         <Stack.Screen
           name="Request"
           component={RequestPage}

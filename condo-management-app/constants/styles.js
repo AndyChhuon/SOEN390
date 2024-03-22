@@ -178,6 +178,12 @@ export const Fonts = {
     fontFamily: "SF_Compact_Display_SemiBold",
   },
 
+  whiteColor50SemiBold: {
+    color: "#FFFFFF",
+    fontSize: 50,
+    fontFamily: "SF_Compact_Display_SemiBold",
+  },
+
   whiteColor16Bold: {
     color: "#FFFFFF",
     fontSize: 16,
@@ -217,8 +223,8 @@ export const Colors = {
   cardmaincolor: "rgba(255,255,255,0.05)",
   deepblackColor: "#001021",
   deepcard: "#034748",
-  bodyBackColor: "#253542",
-  bodyBackColor2: "#212f36",
+  bodyBackColor: "#212f36",
+  bodyBackColor2: "#212f38",
   blackColor: "#000000",
   whiteColor: "#FFFFFF",
   primaryColor: "#fbe699",

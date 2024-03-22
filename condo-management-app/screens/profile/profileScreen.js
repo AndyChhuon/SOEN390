@@ -107,20 +107,12 @@ const Profile = ({ navigation }) => {
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height*0.92 }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1, justifyContent: "center" }}
+          style={{ flex: 1, justifyContent: "center"}}
         >
-          <View style={{ marginTop: 20, alignContent: "center" }}>
-            <View
-              style={{
-                justifyContent: "space-between",
-                margin: 20,
-                marginBottom: 20,
-              }}
-            >
-              <View style={{ marginBottom: "2%" }}></View>
+          
               <View
                 style={{
                   alignSelf: "center",
@@ -129,10 +121,8 @@ const Profile = ({ navigation }) => {
                   alignContent: "center",
                   width: width * 0.95,
                   height: height,
-                  borderBottomColor: Colors.bodyBackColor,
-                  marginBottom: "1%",
-                  marginTop: "15%",
-                  borderBottomWidth: 2,
+                  padding: 10,
+                  marginVertical: "5%",
                 }}
               >
                 {Title()}
@@ -152,8 +142,7 @@ const Profile = ({ navigation }) => {
                     alignSelf: "flex-start",
                     flexDirection: "column",
                     alignContent: "flex-start",
-                    marginLeft: width > 600 ? "2%" : "5%", 
-                    marginBottom: "15%" ,
+                    margin: 15,
                     zIndex: 0,
                   }}
                 >
@@ -167,8 +156,6 @@ const Profile = ({ navigation }) => {
                     {ChangePassword()}
                 </View>
               </View>
-            </View>
-          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -209,7 +196,7 @@ const Profile = ({ navigation }) => {
       <Text
         style={[
           Fonts.whiteColor22Bold,
-          { marginLeft: width > 600 ? "2%" : "5%", marginBottom: "3%" },
+          { margin: 15},
         ]}
       >
         Manage Your Profile
@@ -219,11 +206,12 @@ const Profile = ({ navigation }) => {
 
   function DropdownC() {
     return (
-      <View style={{marginBottom: "5%"}}>
+      <View>
         <Text
         style={[
           Fonts.whiteColor22Bold,
-          { marginLeft: width > 600 ? "2%" : "5%", marginBottom: "3%" },
+          { margin: 15},
+
         ]}
       >
         Language Preferences
@@ -245,7 +233,6 @@ const Profile = ({ navigation }) => {
           type="primary"
           raiseLevel={2}
           borderRadius={10}
-          style={{}}
           onPress={() => ChangePassword()}
         >
           <MaterialIcon
@@ -639,7 +626,7 @@ const Profile = ({ navigation }) => {
 
   function Title() {
     return (
-      <View style={{marginTop: "15%"}}>
+      <View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
             source={{

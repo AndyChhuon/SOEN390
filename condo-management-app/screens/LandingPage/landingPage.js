@@ -41,13 +41,9 @@ const LandingPage = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}>
       <View style={{ flexGrow: 1 }}>
         {loginTitle()}
+        {backgroundImage()}
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1, justifyContent: "flex-end" }}
-      >
-        {loginButton()}
-      </KeyboardAvoidingView>
+      
     </SafeAreaView>
   );
 
@@ -65,6 +61,21 @@ const LandingPage = ({ navigation }) => {
     );
   }
 
+
+  function backgroundImage() {
+    return (
+      <Image
+        source={require("./image_2.png")}
+        style={{
+          width: "70%",
+          height: "70%",
+          margin: 40,
+          alignSelf: "center",
+          resizeMode: "center"
+        }}
+      />
+    );
+  }
 
   function loginButton() {
     return (
@@ -113,11 +124,8 @@ const LandingPage = ({ navigation }) => {
           marginRight: "auto",
         }}
       >
-        <Text style={{ ...Fonts.whiteColor26SemiBold }}>
-          Let’s sign you in.
-        </Text>
-        <Text style={{ ...Fonts.whiteColor14Medium }}>
-          Welcome Back. You’ve been missed!
+        <Text style={{ ...Fonts.whiteColor50SemiBold }}>
+          Condo Medium
         </Text>
       </View>
     );
