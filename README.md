@@ -35,7 +35,9 @@ Build a condo management application
 
 ## Coding Style
 
-TBD
+We are using ESLint and prettier for coding style and static analysis.
+![image](https://github.com/AndyChhuon/SOEN390/assets/43625453/f47b623c-7bd0-4cdb-962d-293603f6f346)
+
 
 ## Setup
 
