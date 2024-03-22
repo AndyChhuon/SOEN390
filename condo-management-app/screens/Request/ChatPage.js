@@ -10,7 +10,8 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -20,7 +21,7 @@ import { set } from "firebase/database";
 const ChatPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { assigneeName, initialMessage } = route.params;
+  const { assigneeName, initialMessage, assigneeImage } = route.params; 
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const screenHeight = Dimensions.get("window").height;
@@ -55,8 +56,8 @@ const ChatPage = () => {
     navigation.goBack("Request");
   };
 
-  const content = (
-    <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, height: screenHeight }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -64,6 +65,9 @@ const ChatPage = () => {
         >
           <View style={styles.container}>
             <View style={styles.header}>
+              {assigneeImage && ( // Render image if available
+                <Image source={assigneeImage} style={styles.assigneeImage} />
+              )}
               <Text style={styles.assigneeName}>{assigneeName}</Text>
             </View>
             <ScrollView contentContainerStyle={styles.chatContainer}>
@@ -101,20 +105,6 @@ const ChatPage = () => {
       </ScrollView>
     </SafeAreaView>
   );
-
-  if (Platform.OS === "web") {
-    return content;
-  } else {
-    return (
-      <TouchableWithoutFeedback onPress={() => {}}>
-        <SafeAreaView
-          style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}
-        >
-          {content}
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
-    );
-  }
 };
 
 
@@ -125,6 +115,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#DDD",
@@ -134,6 +126,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     ...Fonts.whiteColor16Medium,
+    marginLeft: 10,
+  },
+  assigneeImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   chatContainer: {
     flexGrow: 1,
