@@ -57,7 +57,7 @@
         <template id="filterTemplate">
             <div class="quiet">
                 Filter:
-                <input type="search" id="fileSearch">
+                <input oninput="onInput()" type="search" id="fileSearch">
             </div>
         </template>
     </div>
@@ -117,14 +117,8 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,63 +171,60 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Response } from "express";
-import { v4 as uuidv4 } from "uuid";
-import { uploadFileFromRequest } from "../aws/aws";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { type Response } from 'express'
+import { uploadFileFromRequest } from '../aws/aws'
 const {
   getIdFromToken,
-  updateUserValuesDB,
   userExists,
   addToPropertiesOwned,
-  getUserValues,
-  addToPropertyFiles,
-} = require("./firebase");
+  addToPropertyFiles
+} = require('./firebase')
 &nbsp;
 const propertyProfileAllowedKeys = [
-  "propertyName",
-  "unitCount",
-  "parkingCount",
-  "lockerCount",
-  "Address",
-];
+  'propertyName',
+  'unitCount',
+  'parkingCount',
+  'lockerCount',
+  'Address'
+]
 &nbsp;
 const propertyProfileKeysAreValid = (userValues: Object) =&gt; {
-  const keys = Object.keys(userValues);
-  return keys.every((key) =&gt; propertyProfileAllowedKeys.includes(key));
-};
+  const keys = Object.keys(userValues)
+  return keys.every((key) =&gt; propertyProfileAllowedKeys.includes(key))
+}
 &nbsp;
 const addPropertiesOwned = async (
-  tokenId: String,
+  tokenId: string,
   propertyValues: Object,
   response: Response
 ) =&gt; {
-  const id = await getIdFromToken(tokenId);
+  const id = await getIdFromToken(tokenId)
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!propertyProfileKeysAreValid(propertyValues)) {
-<span class="cstat-no" title="statement not covered" >    response.status(400).send("Invalid property values");</span>
+<span class="cstat-no" title="statement not covered" >    response.status(400).send('Invalid property values')</span>
   } else if (await userExists(id)) {
     // user exists and propertyValues are valid, update propertyValues
-    const key = await addToPropertiesOwned(id, propertyValues);
+    const key = await addToPropertiesOwned(id, propertyValues)
     response.status(200).send({
-      message: "property values updated successfully",
-      newPropertyOwned: { [key]: propertyValues },
-    });
+      message: 'property values updated successfully',
+      newPropertyOwned: { [key]: propertyValues }
+    })
   } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >    response.status(404).send("User not found");</span>
+<span class="cstat-no" title="statement not covered" >    response.status(404).send('User not found')</span>
   }
-};
+}
 &nbsp;
 const addPropertyFile = async (req: Request, response: Response) =&gt; {
   // user exists and propertyValues are valid, update propertyValues
   const { userId, propertyID, fileType, Location } =
-    await uploadFileFromRequest(req);
-<span class="cstat-no" title="statement not covered" >  addToPropertyFiles(userId, propertyID, fileType, Location);</span>
+    await uploadFileFromRequest(req)
+<span class="cstat-no" title="statement not covered" >  addToPropertyFiles(userId, propertyID, fileType, Location)</span>
 <span class="cstat-no" title="statement not covered" >  response.status(200).send({</span>
-    message: "file uploaded successfully",
-    newFileUploaded: { [fileType]: Location },
-  });
-};
+    message: 'file uploaded successfully',
+    newFileUploaded: { [fileType]: Location }
+  })
+}
 &nbsp;
-export { addPropertiesOwned, addPropertyFile };
+export { addPropertiesOwned, addPropertyFile }
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -241,7 +232,7 @@ export { addPropertiesOwned, addPropertyFile };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-01T20:35:42.074Z
+                at 2024-03-22T01:25:24.641Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

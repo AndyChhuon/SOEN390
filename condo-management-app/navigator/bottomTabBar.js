@@ -17,6 +17,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
 import PropertyScreen from "../screens/propertyPage/propertyPage";
+import RequestPage from "../screens/Request/RequestPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -110,6 +111,19 @@ const TabNavigator = ({ route }) => {
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
                 icon: require("../assets/images/icons/notification.png"),
+                focused: focused,
+                size: 32,
+              }),
+          }}
+        />
+
+        <Tab.Screen
+          name={"Request"}
+          component={RequestPage}
+          options={{
+            tabBarIcon: ({ color, focused }) =>
+              tabIconSort({
+                icon: require("../assets/images/icons/request.png"),
                 focused: focused,
                 size: 32,
               }),
