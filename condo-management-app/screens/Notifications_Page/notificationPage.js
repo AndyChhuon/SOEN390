@@ -1,140 +1,168 @@
-import React from 'react';
-import {
-    View,
-    FlatList,
-    StyleSheet,
-    SafeAreaView,
-    ScrollView,
-    KeyboardAvoidingView,
-    TouchableWithoutFeedback,
-    Platform,
-    Dimensions // If you use 'height' from Dimensions
-} from 'react-native';
-import NotificationComponent from '../Components/NotificationComponent'; // Make sure the path is correct
+import React, { useRef, useState, useEffect } from "react";
+import Dropdown from "../Components/Dropdown";
+import useAuth from "../../hooks/useAuth";
 
-import { Colors } from '../../constants/styles';
+import {
+ SafeAreaView,
+ View,
+ Image,
+ Keyboard,
+ Dimensions,
+ StyleSheet,
+ Text,
+ TextInput,
+ TouchableOpacity,
+ KeyboardAvoidingView,
+ TouchableWithoutFeedback,
+ Platform,
+ ScrollView,
+} from "react-native";
+import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
+import { FlatList } from "react-native-gesture-handler";
+import NotificationComponent from "../Components/NotificationComponent"; // Make sure the path is correct
 
 const notifications = [
-    { id: '1', message: 'Your order has been shipped', timestamp: '10 minutes ago' },
-    { id: '2', message: 'New message from Jane Doe', timestamp: '2 hours ago' },
-    // Add more notifications as needed
+ {
+  id: "1",
+  message: "Your order has been shipped",
+  timestamp: "10 minutes ago",
+ },
+ { id: "2", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "3", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "4", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "5", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "6", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "7", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "8", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "9", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ { id: "10", message: "New message from Jane Doe", timestamp: "2 hours ago" },
+ // Add more notifications as needed
 ];
 
 const NotificationPage = () => {
+ const { userValues } = useAuth();
+ const [state, setState] = useState({
+  firstName: userValues.firstName,
+  lastName: userValues.lastName,
+ });
+ const styles = createStyles(height);
 
-    const { height } = Dimensions.get('window');
-    const styles = createStyles(height); // Ensure this is uncommented and used if you are using dynamic styles based on height
+ const [windowDimensions, setWindowDimensions] = useState(
+  Dimensions.get("window")
+ );
+ const { width, height } = windowDimensions;
 
-    const handlePressOutsideTextBox = () => {
-        Keyboard.dismiss();
-      };
-
-
-
-    const content = (
-
-        <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1, height: height * 0.92 }}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : undefined}
-                    style={{ flex: 1, justifyContent: "center" }}
-                >
-
-                    
-                        <View style={styles.container}>
-                            <FlatList
-                                data={notifications}
-                                keyExtractor={(item) => item.id}
-                                renderItem={({ item }) => <NotificationComponent message={item.message} timestamp={item.timestamp} />}
-                            />
-                        </View>
-
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </SafeAreaView>
-    );
-
-
-    if (Platform.OS === "web") {
-        return content;
-    } else {
-        return (
-            <TouchableWithoutFeedback onPress={handlePressOutsideTextBox}>
-                <SafeAreaView
-                    style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}
-                >
-                    {content}
-                </SafeAreaView>
-            </TouchableWithoutFeedback>
-        );
-    }
+const DeleteNotification = (id) => {
+    const updatedNotifications = notifications.filter((notification) => notification.id !== id);
+    // Update the state with the updated notifications
+    setState((prevState) => ({
+        ...prevState,
+        notifications: updatedNotifications,
+    }));
 };
 
+ useEffect(() => {
+  const onChange = ({ window }) => {
+   setWindowDimensions(window);
+  };
+
+  Dimensions.addEventListener("change", onChange);
+  return () => Dimensions.removeEventListener("change", onChange);
+ }, []);
+
+ const handlePressOutsideTextBox = () => {
+  Keyboard.dismiss();
+ };
+
+ const content = (
+  <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
+   <ScrollView contentContainerStyle={{ flexGrow: 1, height: height * 0.92 }}>
+    <KeyboardAvoidingView
+     behavior={Platform.OS === "ios" ? "padding" : undefined}
+     style={{ flex: 1, justifyContent: "center" }}
+    >
+     <View
+      style={{
+       alignSelf: "center",
+       flex: 1,
+       flexDirection: "column",
+       alignContent: "center",
+       width: width * 0.95,
+       height: height,
+       padding: 10,
+       marginVertical: "5%",
+      }}
+     >
+      {Title()}
+      {NotificationList()}
+     </View>
+    </KeyboardAvoidingView>
+   </ScrollView>
+  </SafeAreaView>
+ );
+
+ function Title() {
+  return (
+   <View>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+     <View
+      style={{
+       flex: 1,
+       justifyContent: "flex-end",
+       height: 75,
+       alignItems: "flex-start",
+      }}
+     >
+      <Text style={[{ ...Fonts.whiteColor26SemiBold }]}>Notifications</Text>
+      <Text style={{ ...Fonts.whiteColor14Medium }}>
+       {"You have notifications"} {state.firstName}
+      </Text>
+     </View>
+    </View>
+   </View>
+  );
+ }
+
+ function NotificationList() {
+  return (
+   <View style={{marginVertical: 50}}>
+    <FlatList
+     data={notifications}
+     keyExtractor={(item) => item.id}
+     renderItem={({ item }) => (
+      <NotificationComponent
+       message={item.message}
+       timestamp={item.timestamp}
+      />
+     )}
+    />
+   </View>
+  );
+ }
+
+ if (Platform.OS === "web") {
+  return content;
+ } else {
+  return (
+   <TouchableWithoutFeedback onPress={handlePressOutsideTextBox}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}>
+     {content}
+    </SafeAreaView>
+   </TouchableWithoutFeedback>
+  );
+ }
+};
 
 export default NotificationPage;
 
 function createStyles(height) {
-    return StyleSheet.create({
-        notificationContainer: {
-            flex: 1,
-            backgroundColor: "#333", // Light background for better readability
-        },
-
-        notificationItem: {
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#b0b0b0", // Slightly grey background for notification items
-            borderRadius: 10,
-            padding: 10,
-            marginVertical: 5,
-            marginHorizontal: 10,
-        },
-
-        notificationText: {
-            fontSize: 16,
-            color: "#333",
-            flex: 1, // Allows text to wrap and take up most of the container space
-        },
-
-        timestamp: {
-            fontSize: 12,
-            color: "#666",
-            marginLeft: 10, // Adds spacing between the message and timestamp
-        },
-
-        markAllAsReadButton: {
-            flexDirection: "row",
-            justifyContent: "center",
-            marginVertical: 10,
-            padding: 10,
-            backgroundColor: "blue", // A visually distinct button
-            borderRadius: 5,
-            alignItems: "center",
-        },
-
-        buttonText: {
-            color: "#ffffff",
-            fontSize: 16,
-        },
-
-        // If there are specific styles for icons, labels, or dropdowns in your notification components, adjust them here.
-        iconStyle: {
-            width: 20,
-            height: 20,
-        },
-        label: {
-            fontSize: 14,
-            backgroundColor: "transparent", // Assuming labels might be used for categorizing notifications
-            paddingHorizontal: 8,
-        },
-        // Additional styles for dropdown or selection components within notifications, if needed
-        dropdown: {
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 0.5,
-            borderRadius: 8,
-            paddingHorizontal: 8,
-            marginHorizontal: 10, // Ensures consistent horizontal padding with other items
-        },
-    });
+ return StyleSheet.create({
+  container: {
+   flex: 1,
+   justifyContent: "center",
+   alignItems: "center",
+   height: height,
+   padding: 10,
+  },
+ });
 }
