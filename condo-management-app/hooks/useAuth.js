@@ -18,16 +18,18 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
-import { set } from "firebase/database";
+import { get, set } from "firebase/database";
+import { Alert } from "react-native";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
+  const [newPropertyCreated, setNewPropertyCreated] = useState(false);
+  const [newRentInitiated, setNewRentInitiated] = useState(false);
   const [userValues, setUserValues] = useState({});
-  const herokuBackendUrl =
-    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; // localhost:8080
+  const herokuBackendUrl = "http://localhost:8080"; // localhost:8080
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -148,6 +150,7 @@ export const AuthProvider = ({ children }) => {
               ...data.newPropertyOwned,
             },
           });
+          setNewPropertyCreated(true);
         });
       }
     });
@@ -294,6 +297,133 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const getRentableProperties = async (setProperties) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/getRentableProperties", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setProperties(data);
+          setNewPropertyCreated(false);
+          return data;
+        });
+      }
+    });
+  };
+
+  const startRenting = async (propertyId, setProperties) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/addRenter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        propertyId: propertyId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        getRentableProperties(setProperties);
+        setNewRentInitiated(true);
+      }
+    });
+  };
+
+  const getRentedProperties = async (setProperties) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/getRentedProperties", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setProperties(data);
+          setNewRentInitiated(false);
+          return data;
+        });
+      }
+    });
+  };
+
+  const getPropertyAvailableTimes = async (
+    propertyId,
+    activity,
+    date,
+    setTimes
+  ) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/getPropertyAvailableTimes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        propertyId: propertyId,
+        activity: activity,
+        date: date,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setTimes(data);
+          return data;
+        });
+      }
+    });
+  };
+
+  const addScheduledActivity = async (
+    propertyId,
+    activity,
+    date,
+    selectedTimes,
+    setTimes
+  ) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/addScheduledActivity", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        propertyId: propertyId,
+        activity: activity,
+        date: date,
+        timeArr: selectedTimes,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          getUservalues(user);
+          setTimes((times) =>
+            times.filter((time) => !selectedTimes.includes(time))
+          );
+          return data;
+        });
+      }
+    });
+  };
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -306,8 +436,15 @@ export const AuthProvider = ({ children }) => {
       updatePropertyFinancials,
       generatePdf,
       generateChatResponse,
+      getRentableProperties,
+      startRenting,
+      getRentedProperties,
+      getPropertyAvailableTimes,
+      addScheduledActivity,
+      newPropertyCreated,
+      newRentInitiated,
     }),
-    [user, userValues]
+    [user, userValues, newPropertyCreated, newRentInitiated]
   );
 
   return (
