@@ -61,6 +61,16 @@ const DeleteNotification = (id) => {
     }));
 };
 
+const [notifs, setNotifs] = useState(notifications);
+
+  // Delete function that uses setNotifications
+  const deleteNotification = (id) => {
+    setNotifs(currentNotifications => 
+      currentNotifications.filter(notification => notification.id !== id)
+    );
+  };
+
+
  useEffect(() => {
   const onChange = ({ window }) => {
    setWindowDimensions(window);
@@ -127,12 +137,13 @@ const DeleteNotification = (id) => {
   return (
    <View style={{marginVertical: 50}}>
     <FlatList
-     data={notifications}
+     data={notifs}
      keyExtractor={(item) => item.id}
      renderItem={({ item }) => (
       <NotificationComponent
        message={item.message}
        timestamp={item.timestamp}
+       onDelete={() => deleteNotification(item.id)}
       />
      )}
     />

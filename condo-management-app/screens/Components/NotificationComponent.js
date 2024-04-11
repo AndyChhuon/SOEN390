@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const NotificationComponent = ({ message, timestamp }) => {
+const NotificationComponent = ({ message, timestamp, onDelete }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.message}>{message}</Text>
       <Text style={styles.timestamp}>{timestamp}</Text>
+      <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+        <Text style={styles.deleteButtonText}>Delete</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -16,7 +19,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   message: {
@@ -26,7 +30,15 @@ const styles = StyleSheet.create({
   timestamp: {
     fontSize: 12,
     color: '#666',
-    marginTop: 5,
+  },
+  deleteButton: {
+    padding: 5,
+    backgroundColor: 'red',
+    borderRadius: 5,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontSize: 12,
   },
 });
 
