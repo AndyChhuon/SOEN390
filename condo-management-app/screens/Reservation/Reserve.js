@@ -45,7 +45,7 @@ const Reserve = () => {
       id: 1,
       name: "Swimming Pool",
       description:
-        "Enjoy our Olympic standard swimming pool. We have swimming lessons, diving lessons for people looking to learn. We also have a kids pool for your smaller children to enjoy.",
+        "Enjoy our Olympic standard swimming pool.There are changing rooms and shower for your convience at the pool. We have swimming lessons, diving lessons for people looking to learn. We also have a kids pool for your smaller children to enjoy.",
         image: require("../../assets/images/swimming.png"),
     },
     {
@@ -126,76 +126,70 @@ const Reserve = () => {
 };
 
 const createStyles = (width, height) => {
-    const isSmallScreen = width < 600;
-    const cardWidthPercentage = isSmallScreen ? 90 : 30;
-    const cardWidth = (width * cardWidthPercentage) / 100;
-  
-    return StyleSheet.create({
-      centeredContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      },
-      facilityContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        alignItems: "center", 
-      },
-      facilityCard: {
-        width: cardWidth,
-        backgroundColor: Colors.cardmaincolor,
-        borderRadius: Sizes.cardRadius,
-        padding: Sizes.cardPadding,
-        marginHorizontal: 2,
-        marginBottom: 10,
-      },
-      facilityTitle: {
-        ...Fonts.whiteColor20SemiBold,
-        marginBottom: 10,
-        padding: 11,
-      },
-      facilityImage: {
-        width: "100%",
-        height: 150, 
-        marginBottom: 10,
-        resizeMode: "cover", 
-      },
-      facilityDescription: {
-        ...Fonts.whiteColor16Medium,
-        height: 100,
-        padding: 10,
-        marginBottom: 10,
-      },
-      reserveButton: {
-        backgroundColor: "#444",
-        paddingVertical: 8,
-        paddingHorizontal: 20, 
-        borderRadius: 5,
-        marginTop: 10,
-        marginBottom: 10,
-        alignSelf: "center",
-        alignItems: "center",
-      },
-      reserveButtonText: {
-        ...Fonts.whiteColor16Medium,
-      },
-      goBackButton: {
-        position: "absolute",
-        top: 20,
-        left: 20,
-      },
-      goBackButtonIcon: {
-        color: Colors.whiteColor,
-        fontSize: 24,
-      },
-      
-      scrollViewContent: {
-        flexGrow: 1,
-        paddingVertical: 20,
-      },
-    });
-  };
+  const isSmallScreen = width < 600;
+  const cardWidthPercentage = isSmallScreen ? 90 : 30;
+  const cardWidth = (width * cardWidthPercentage) / 100;
+  const imageHeight = isSmallScreen ? 100 : 150;
+
+  return StyleSheet.create({
+    centeredContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    facilityContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      flexWrap: "wrap",
+    },
+    facilityCard: {
+      width: cardWidth,
+      backgroundColor: Colors.cardmaincolor,
+      borderRadius: Sizes.cardRadius,
+      marginHorizontal: 5,
+      marginBottom: 20,
+      overflow: "hidden", // Ensure content doesn't overflow the card
+    },
+    facilityTitle: {
+      ...Fonts.whiteColor20SemiBold,
+      padding: 11,
+    },
+    facilityImage: {
+      width: "100%",
+      height: imageHeight,
+      resizeMode: "cover",
+    },
+    facilityDescription: {
+      ...Fonts.whiteColor16Medium,
+      padding: 10,
+    },
+    reserveButton: {
+      backgroundColor: "#444",
+      paddingVertical: 8,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      margin: 10,
+      alignSelf: "center",
+      alignItems: "center",
+    },
+    reserveButtonText: {
+      ...Fonts.whiteColor16Medium,
+    },
+    goBackButton: {
+      position: "absolute",
+      top: 20,
+      left: 20,
+    },
+    goBackButtonIcon: {
+      color: Colors.whiteColor,
+      fontSize: 24,
+    },
+    scrollViewContent: {
+      flexGrow: 1,
+      paddingVertical: 20,
+    },
+  });
+};
   
 
 export default Reserve;
