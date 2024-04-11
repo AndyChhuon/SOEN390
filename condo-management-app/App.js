@@ -4,6 +4,8 @@ import AppContent from "./screens/AppContent";
 import { AuthProvider } from "./hooks/useAuth";
 import * as Font from "expo-font";
 import { View } from "react-native";
+import { enGB, registerTranslation } from "react-native-paper-dates";
+
 const App = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   useEffect(() => {
@@ -25,6 +27,7 @@ const App = () => {
       setIsInitialized(true);
     }
     loadFont();
+    registerTranslation("en-GB", enGB);
   }, []);
 
   return isInitialized ? (
