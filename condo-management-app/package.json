@@ -41,7 +41,8 @@
     "typescript": "^5.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.4",
     "@cypress/code-coverage": "^3.12.30",
     "babel-plugin-istanbul": "^6.1.1",
     "cypress": "^13.7.1"
