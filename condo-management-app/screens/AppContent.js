@@ -7,6 +7,7 @@ import {
 import LoginScreen from "./auth/loginScreen";
 import SignupScreen from "./auth/signupScreen";
 import ProfileScreen from "./profile/profileScreen";
+// import NotificationPage from "./Notifications_Page/notificationPage__";
 import NotificationPage from "./Notifications_Page/notificationPage";
 import ownerDashboard from "./Dashboard/ownerDashboard";
 import BottomTabBarScreen from "../navigator/bottomTabBar";
