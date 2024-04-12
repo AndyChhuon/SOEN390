@@ -12,14 +12,14 @@ describe("add property", () => {
 
     cy.contains('Property Profiles').click()
     cy.wait(500)
-    //cy.contains('#add_button').click();
+    cy.get('#add_button').type('{enter}');
     cy.wait(500)
-    //cy.get('#p_name').clear().type('ExampleProperty')
-    //cy.get('#u_count').clear().type('3')
-    //cy.get('#address').clear().type('123')
-    //cy.get('#p_count').clear().type('2')
-    //cy.get('#l_count').clear().type('0')
-    //cy.contains('Add Property').click()
+    cy.get('#p_name').clear().type('ExampleProperty')
+    cy.get('#u_count').clear().type('3')
+    cy.get('#address').clear().type('123')
+    cy.get('#p_count').clear().type('2')
+    cy.get('#l_count').clear().type('0')
+    cy.contains('Add Property').type('{enter}')
     cy.wait(500)
     
   })

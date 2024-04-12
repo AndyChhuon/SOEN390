@@ -393,10 +393,10 @@ const PropertyProfileScreen = ({ navigation }) => {
                 }}
                 onPress={() => toggleExpansion()}
               >
-                <Icon name="add-circle-outline" size={30} color="white" />
+                <Icon id = "add_button" name="add-circle-outline" size={30} color="white" />
               </ThemedButton>
             </View>
-
+            
             <TouchableOpacity>
               <Animated.View style={{ height: animation, overflow: "scroll" }}>
                 <View
@@ -406,6 +406,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                     <View>
                       <View style={styles.textFieldWrapStyle}>
                         <TextInput
+                        id = 'p_name'
                           width={0.8 * width}
                           onChangeText={(value) =>
                             updateState({ propertyName: value })
@@ -440,6 +441,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                       <View>
                         <View style={styles.textFieldWrapStyle}>
                           <TextInput
+                          id = 'u_count'
                             width={0.9 * width}
                             onChangeText={(value) =>
                               updateState({ unitCount: value })
@@ -474,6 +476,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                       <View>
                         <View style={styles.textFieldWrapStyle}>
                           <TextInput
+                          id ='address'
                             width={0.9 * width}
                             onChangeText={(value) =>
                               updateState({ Address: value })
@@ -510,6 +513,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                       <View>
                         <View style={styles.textFieldWrapStyle}>
                           <TextInput
+                          id = 'p_count'
                             width={0.9 * width}
                             onChangeText={(value) =>
                               updateState({ parkingCount: value })
@@ -544,6 +548,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                       <View>
                         <View style={styles.textFieldWrapStyle}>
                           <TextInput
+                          id = 'l_count'
                             width={0.9 * width}
                             onChangeText={(value) =>
                               updateState({ lockerCount: value })
