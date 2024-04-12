@@ -26,7 +26,7 @@ const PropertyScreen = ({ route, navigation }) => {
 
   const propertyId = route?.params?.propertyId;
 
-  const propertyDetails = userValues.propertiesOwned[propertyId];
+  const propertyDetails = null;
 
   useEffect(() => {
     const onChange = ({ window }) => {
@@ -39,7 +39,7 @@ const PropertyScreen = ({ route, navigation }) => {
 
   function backArrow() {
     return (
-      <View style={[{margin:10}, { ...styles.backArrowWrapStyle }]}>
+      <View style={[{ margin: 10 }, { ...styles.backArrowWrapStyle }]}>
         <MaterialIcons
           name="chevron-left"
           color={Colors.whiteColor}
@@ -57,6 +57,7 @@ const PropertyScreen = ({ route, navigation }) => {
   if (!propertyDetails) {
     return (
       <SafeAreaView style={styles.safeAreaView}>
+        {backArrow()}
         <Text style={styles.screenTitle}>Property not found</Text>
       </SafeAreaView>
     );
@@ -67,9 +68,7 @@ const PropertyScreen = ({ route, navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         {backArrow()}
         <View style={{ marginHorizontal: 15 }}>
-          <Text style={styles.screenTitle}>
-            
-          </Text>
+          <Text style={styles.screenTitle}></Text>
           <View style={styles.imageContainer}>
             <Image
               source={{

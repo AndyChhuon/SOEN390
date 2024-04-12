@@ -163,7 +163,10 @@ const myRentedProperties = ({ navigation }) => {
                   padding: 10,
                 }}
                 onPress={() =>
-                  navigation.navigate("PropertyScreen", { propertyId })
+                  navigation.navigate("PropertyScreen", {
+                    propertyId,
+                    propertyDetails: properties[propertyId],
+                  })
                 }
               >
                 <MaterialIcon

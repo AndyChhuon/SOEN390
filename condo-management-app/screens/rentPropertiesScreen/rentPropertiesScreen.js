@@ -51,7 +51,6 @@ const rentPropertiesScreen = ({ navigation }) => {
   };
 
   const displayProperties = () => {
-    console.log(properties);
     return Object.keys(properties).map((propertyId) => {
       return (
         <View
@@ -164,7 +163,10 @@ const rentPropertiesScreen = ({ navigation }) => {
                   padding: 10,
                 }}
                 onPress={() =>
-                  navigation.navigate("PropertyScreen", { propertyId })
+                  navigation.navigate("PropertyScreen", {
+                    propertyId,
+                    propertyDetails: properties[propertyId],
+                  })
                 }
               >
                 <MaterialIcon
