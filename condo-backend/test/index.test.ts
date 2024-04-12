@@ -21,6 +21,7 @@ const userValues = {
   streetAddress: "test",
   userEmail: "test",
   profileUrl: "test",
+  userType: "admin",
 };
 
 const data = JSON.stringify({
@@ -329,3 +330,4 @@ describe("Test getRentedProperties with correct values", () => {
     expect(response.statusCode).toBe(200);
   });
 });
+
