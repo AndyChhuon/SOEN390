@@ -475,6 +475,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
             onPress={() => input.current.focus()}
           ></TouchableOpacity>
           <TextInput
+            id="fees_per_square_foot"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ feePerSquareFoot: value })}
@@ -592,6 +593,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
             onPress={() => input.current.focus()}
           ></TouchableOpacity>
           <TextInput
+            id="fee_per_parking_spot"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ feePerParkingSpot: value })}
