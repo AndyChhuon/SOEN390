@@ -255,8 +255,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width*0.2 : width*0.8}
-
+              width={width > 900 ? width * 0.2 : width * 0.8}
               style={{
                 marginVertical: 10,
                 alignSelf: "flex-start",
@@ -264,7 +263,10 @@ const PropertyProfileScreen = ({ navigation }) => {
                 padding: 10,
               }}
               onPress={() =>
-                navigation.navigate("PropertyScreen", { propertyId })
+                navigation.navigate("PropertyScreen", {
+                  propertyId,
+                  propertyDetails: userValues.propertiesOwned[propertyId],
+                })
               }
             >
               <MaterialIcon
@@ -288,9 +290,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width*0.2 : width*0.8}
-
-
+              width={width > 900 ? width * 0.2 : width * 0.8}
               style={{
                 marginVertical: 10,
                 alignSelf: "flex-start",
@@ -323,8 +323,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               type="primary"
               raiseLevel={2}
               borderRadius={10}
-              width={width > 900 ? width*0.2 : width*0.8}
-
+              width={width > 900 ? width * 0.2 : width * 0.8}
               style={{
                 marginVertical: 10,
                 alignSelf: "flex-start",
