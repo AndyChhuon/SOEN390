@@ -70,6 +70,17 @@ const getUserValues = async (id: string) => {
   return snapshot.val()
 }
 
+const addToNotifications = async (userId: string, message: string, timestamp: number = Date.now()) => {
+  const notificationsRef = db.ref(`users/${userId}/notifications`);
+  const newNotificationRef = notificationsRef.push();
+  await newNotificationRef.set({
+    message,
+    timestamp
+  });
+  return newNotificationRef.key; // Returns the key of the new notification
+}
+
+
 export {
   getIdFromToken,
   updateUserValuesDB,
@@ -78,5 +89,6 @@ export {
   addToPropertiesOwned,
   addToPropertyFiles,
   addFinancialsToProperty,
-  getCostEntries
+  getCostEntries,
+  addToNotifications
 }

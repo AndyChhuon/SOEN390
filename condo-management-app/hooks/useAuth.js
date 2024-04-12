@@ -18,7 +18,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
-import { set } from "firebase/database";
+import { ref, push, set } from 'firebase/database';
 
 const AuthContext = createContext({});
 
@@ -294,6 +294,41 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  
+  const addNotification = async (message) => {
+    if (!user) {
+      console.error("No user is logged in!");
+      return;
+    }
+  
+    try {
+      const tokenId = await getIdToken(user); // Assuming authentication token is needed
+  
+      const response = await fetch(herokuBackendUrl + "/addNotification", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenId}`
+        },
+        body: JSON.stringify({
+          userId: user.uid, // Pass user ID if needed
+          message: message,
+          timestamp: Date.now() // Include timestamp if handled by frontend
+        })
+      });
+  
+      if (response.ok) {
+        console.log("Notification added successfully!");
+      } else {
+        throw new Error('Failed to send notification');
+      }
+    } catch (error) {
+      console.error("Failed to add notification:", error);
+    }
+  };
+  
+  
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -306,6 +341,7 @@ export const AuthProvider = ({ children }) => {
       updatePropertyFinancials,
       generatePdf,
       generateChatResponse,
+      addNotification,
     }),
     [user, userValues]
   );

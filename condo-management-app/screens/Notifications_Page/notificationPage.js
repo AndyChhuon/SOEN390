@@ -70,6 +70,27 @@ const [notifs, setNotifs] = useState(notifications);
     );
   };
 
+  const { addNotification } = useAuth();
+  const [newMessage, setNewMessage] = useState('');
+
+  const addNewNotification = () => {
+    if (newMessage.trim().length === 0) {
+        // Optionally handle the empty message case, such as displaying an error message
+        alert("Please enter a message for the notification.");
+        return;
+    }
+    const newNotification = {
+        id: (Math.max(...notifs.map(n => parseInt(n.id)), 0) + 1).toString(),  // Generate a new ID
+        message: newMessage,
+        timestamp: new Date().toLocaleTimeString(),
+    };
+    addNotification(newMessage);
+    setNotifs(currentNotifications => [...currentNotifications, newNotification]);
+
+    setNewMessage(''); // Clear the input after adding
+};
+
+
 
  useEffect(() => {
   const onChange = ({ window }) => {
@@ -104,6 +125,7 @@ const [notifs, setNotifs] = useState(notifications);
       }}
      >
       {Title()}
+      {AddNotificationForm()}
       {NotificationList()}
      </View>
     </KeyboardAvoidingView>
@@ -151,6 +173,24 @@ const [notifs, setNotifs] = useState(notifications);
   );
  }
 
+ function AddNotificationForm() {
+    return (
+        <View style={{ padding: 20 }}>
+            <TextInput
+                style={styles.input}
+                onChangeText={setNewMessage}
+                value={newMessage}
+                placeholder="Enter new notification message"
+                placeholderTextColor="#888"
+            />
+            <TouchableOpacity onPress={addNewNotification} style={styles.addButton}>
+                <Text style={styles.addButtonText}>Add Notification</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
+
  if (Platform.OS === "web") {
   return content;
  } else {
@@ -175,5 +215,24 @@ function createStyles(height) {
    height: height,
    padding: 10,
   },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+},
+addButton: {
+    backgroundColor: Colors.primary,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+},
+addButtonText: {
+    color: 'white',
+    fontSize: 16,
+},
  });
 }

@@ -2,6 +2,7 @@
 // Runs on http://localhost:8080
 
 import { type Request, type Response } from 'express'
+import { addToNotifications } from './firebase/firebase'
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -16,6 +17,7 @@ const {
 } = require('./firebase/financialService')
 const { generateResponse } = require('./openai/chat')
 const { parseJSONOrString } = require('./utils/utils')
+const { addNotification } = require('./firebase/notificationService')
 
 app.use(express.json())
 app.use(cors())
@@ -116,5 +118,12 @@ app.post('/addProperty', async (req: Request, res: Response) => {
     res.status(400).send('Invalid request')
   }
 })
+
+app.post('/addNotification', async (req: Request, res: Response) => {
+  const { userId, message, timestamp } = req.body;
+  await addToNotifications(userId, message, timestamp || Date.now());
+});
+
+
 
 export { app }
