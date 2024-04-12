@@ -26,7 +26,7 @@ const PropertyScreen = ({ route, navigation }) => {
 
   const propertyId = route?.params?.propertyId;
 
-  const propertyDetails = null;
+  const propertyDetails = route?.params?.propertyDetails;
 
   useEffect(() => {
     const onChange = ({ window }) => {
