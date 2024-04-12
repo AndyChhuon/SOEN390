@@ -19,6 +19,7 @@ const userValuesAllowedKeys = [
   "profileUrl",
   "propertiesOwned",
   "renting",
+  "userType",
 ];
 
 const defaultUserValues = {
@@ -31,6 +32,8 @@ const defaultUserValues = {
   streetAddress: "",
   userEmail: "",
   profileUrl: "",
+  userType: "renter",
+
 };
 
 const userValueKeysAreValid = (userValues: Object) => {
