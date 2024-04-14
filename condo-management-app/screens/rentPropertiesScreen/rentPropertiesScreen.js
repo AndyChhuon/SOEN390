@@ -105,7 +105,7 @@ const rentPropertiesScreen = ({ navigation }) => {
          marginHorizontal: 30,
          alignSelf: "center",
          width: 300,
-         height: 250,
+         height: 300,
          resizeMode: "cover",
          borderRadius: 10,
          elevation: 5,
@@ -149,7 +149,6 @@ const rentPropertiesScreen = ({ navigation }) => {
          fontSize: 16,
          fontWeight: "600",
          color: "white",
-         marginRight: 10,
         }}
        >
         Property ID: {propertyId}
@@ -166,7 +165,7 @@ const rentPropertiesScreen = ({ navigation }) => {
          type="primary"
          raiseLevel={2}
          borderRadius={10}
-         width={width > 900 ? width * 0.2 : width * 0.8}
+         width={width > 900 ? width * 0.2 : width * 0.7}
          style={{
           alignSelf: "flex-start",
           borderRadius: 5,
@@ -201,7 +200,7 @@ const rentPropertiesScreen = ({ navigation }) => {
          type="primary"
          raiseLevel={2}
          borderRadius={10}
-         width={width > 900 ? width * 0.2 : width * 0.8}
+         width={width > 900 ? width * 0.2 : width * 0.7}
          style={{
           alignSelf: "flex-start",
           borderRadius: 5,

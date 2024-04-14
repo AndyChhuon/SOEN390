@@ -66,7 +66,7 @@ const myRentedProperties = ({ navigation }) => {
      flexDirection: "row",
      flexWrap: "wrap",
      justifyContent: "flex-start",
-     padding: 10,
+     padding: 5,
     }}
    >
     {Object.keys(properties).map((propertyId) => (
@@ -82,13 +82,19 @@ const myRentedProperties = ({ navigation }) => {
        shadowRadius: 10,
        shadowColor: "black",
        shadowOffset: { width: 2, height: 2 },
-       width: width > 900 ? "23%" : "100%",
+       width: width > 900 ? "23%" : "auto",
        marginBottom: 10,
        marginRight: width > 900 ? "1%" : 0,
        marginLeft: width > 900 ? "1%" : 0,
       }}
      >
-      <View style={{ justifyContent: "center", flexWrap: "wrap", marginVertical: 15 }}>
+      <View
+       style={{
+        justifyContent: "center",
+        flexWrap: "wrap",
+        marginVertical: 15,
+       }}
+      >
        <Image
         source={{
          uri:
@@ -96,10 +102,10 @@ const myRentedProperties = ({ navigation }) => {
           "../../assets/images/condo_placeholder.png",
         }}
         style={{
-         marginHorizontal: 30,
+         marginHorizontal: 10,
          alignSelf: "center",
-         width: 300,
-         height: 250,
+         width: width > 900 ? 250 : 250,
+         height: width > 900 ? 250 : 250,
          resizeMode: "cover",
          borderRadius: 10,
          elevation: 5,
@@ -153,6 +159,7 @@ const myRentedProperties = ({ navigation }) => {
         style={{
          marginVertical: 10,
          flexDirection: "column",
+         margin: "auto",
         }}
        >
         <ThemedButton
@@ -160,11 +167,11 @@ const myRentedProperties = ({ navigation }) => {
          type="primary"
          raiseLevel={2}
          borderRadius={10}
-         width={width > 900 ? width * 0.2 : width * 0.8}
+         width={width > 900 ? width * 0.2 : width * 0.7}
          style={{
           alignSelf: "flex-start",
           borderRadius: 5,
-          padding: 10,
+          padding: 5,
           marginVertical: 5,
          }}
          onPress={() =>
@@ -194,11 +201,11 @@ const myRentedProperties = ({ navigation }) => {
          type="primary"
          raiseLevel={2}
          borderRadius={10}
-         width={width > 900 ? width * 0.2 : width * 0.8}
+         width={width > 900 ? width * 0.2 : width * 0.7}
          style={{
           alignSelf: "flex-start",
           borderRadius: 5,
-          padding: 10,
+          padding: 5,
          }}
          onPress={() =>
           navigation.navigate("Reservation", {
@@ -338,14 +345,14 @@ function createStyles(height) {
   },
 
   sizingUnderline: {
-   fontSize: 18,
+   fontSize: 16,
    color: "white",
    marginRight: 6,
    textDecorationLine: "underline",
   },
 
   content: {
-   fontSize: 18,
+   fontSize: 16,
    color: "white",
   },
  });

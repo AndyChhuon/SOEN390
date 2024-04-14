@@ -20,7 +20,7 @@ import ChatPage from "./Request/ChatPage";
 import RentPropertiesScreen from "./rentPropertiesScreen/rentPropertiesScreen";
 import myRentedProperties from "./myRentedProperties/myRentedProperties";
 import reservationScreen from "./reservationScreen/reservationScreen";
-import Reserve from "./Reservation/reserve";
+import Reserve from "./Reservation/Reserve";
 
 const Stack = createStackNavigator();
 

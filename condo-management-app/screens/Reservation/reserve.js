@@ -16,7 +16,7 @@ import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Reserve = (route) => {
+const Reserve = ({ route }) => {
  const navigation = useNavigation();
  const propertyId = route?.params?.propertyId;
  const [windowDimensions, setWindowDimensions] = useState(
@@ -29,22 +29,16 @@ const Reserve = (route) => {
   const onChange = ({ window }) => {
    setWindowDimensions(window);
   };
-
   Dimensions.addEventListener("change", onChange);
   return () => Dimensions.removeEventListener("change", onChange);
  }, []);
 
- const goBack = () => {
-  navigation.goBack("PropertyScreen");
- };
-
- //dummy values , will be fetched from backend depending on each property id.
  const facilities = [
   {
    id: 1,
    name: "Swimming Pool",
    description:
-    "Enjoy our Olympic standard swimming pool. We have swimming lessons, diving lessons for people looking to learn. We also have a kids pool for your smaller children to enjoy.",
+    "Enjoy our Olympic standard swimming pool with lessons and a kids' pool.",
    image: require("../../assets/images/swimming.png"),
    activity: "pool",
   },
@@ -52,7 +46,7 @@ const Reserve = (route) => {
    id: 2,
    name: "Gym",
    description:
-    "Gain access to our Gym with 10+ treadmills and bicycles. We are well equipped with weights, barbell, dumbbells, etc so that everyone can perform their excercises without having to wait. We also have a free sauna to relac yourselves after your hard work!",
+    "Our gym features modern equipment and a free sauna for relaxation post-workout.",
    image: require("../../assets/images/gym.png"),
    activity: "gym",
   },
@@ -60,14 +54,16 @@ const Reserve = (route) => {
    id: 3,
    name: "Spa",
    description:
-    "Welcome to our Spa! We have available sauna, whirlpool, jet bath, steam room,massage,mud bath,salt scrub, clay or herbal body masks, waxing for your relaxation.Our Spa also offers nail services, such as manicure, predicures and paraffin treatments",
+    "Our Spa offers a range of services including massages and beauty treatments.",
    image: require("../../assets/images/spa.png"),
    activity: "spa",
   },
  ];
 
- const renderFacilityCards = () => {
-  return facilities.map((facility) => (
+ const renderFacilityCards = () =>
+ console.log(propertyId);
+
+  facilities.map((facility) => (
    <TouchableOpacity
     key={facility.id}
     style={styles.facilityCard}
@@ -82,37 +78,24 @@ const Reserve = (route) => {
     <Text style={styles.facilityDescription}>{facility.description}</Text>
     <TouchableOpacity
      style={styles.reserveButton}
-     onPress={() => {
+     onPress={() =>
       navigation.navigate("reservationScreen", {
        propertyId,
        activity: facility.activity,
-      });
-     }}
+      })
+     }
     >
      <Text style={styles.reserveButtonText}>Reserve</Text>
     </TouchableOpacity>
    </TouchableOpacity>
   ));
- };
 
  const content = (
   <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2, flex: 1 }}>
-   <View style={{ paddingHorizontal: 20 }}>
-    <TouchableOpacity onPress={goBack} style={styles.goBackButton}>
-     <MaterialIcons name="arrow-back" style={styles.goBackButtonIcon} />
-    </TouchableOpacity>
-    <Text
-     style={{
-      ...Fonts.whiteColor20SemiBold,
-      textAlign: "center",
-      marginVertical: 10,
-     }}
-    >
-     Reserve Facilities
-    </Text>
-   </View>
    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-    <View style={styles.centeredContainer}>
+    <View style={{ paddingHorizontal: 20 }}>
+     {backArrow()}
+     <Text style={styles.pageTitle}>Reserve Facilities</Text>
      <View style={styles.facilityContainer}>{renderFacilityCards()}</View>
     </View>
    </ScrollView>
@@ -135,43 +118,39 @@ const Reserve = (route) => {
 const createStyles = (width, height) => {
  const isSmallScreen = width < 600;
  const cardWidthPercentage = isSmallScreen ? 90 : 30;
- const cardWidth = (width * cardWidthPercentage) / 100;
+ const cardMargin = isSmallScreen ? 10 : 20;
 
  return StyleSheet.create({
-  centeredContainer: {
-   flex: 1,
-   justifyContent: "center",
-   alignItems: "center",
-  },
   facilityContainer: {
    flexDirection: "row",
-   justifyContent: "space-between",
    flexWrap: "wrap",
+   justifyContent: "space-around",
    alignItems: "center",
   },
   facilityCard: {
-   width: cardWidth,
+   width: `80%`,
    backgroundColor: Colors.cardmaincolor,
-   borderRadius: Sizes.cardRadius,
+   borderRadius: 10,
    padding: Sizes.cardPadding,
-   marginHorizontal: 2,
-   marginBottom: 10,
+   margin: cardMargin,
+   shadowColor: "#000",
+   shadowOffset: { width: 0, height: 2 },
+   shadowOpacity: 0.25,
+   shadowRadius: 3.84,
+   elevation: 5,
   },
   facilityTitle: {
    ...Fonts.whiteColor20SemiBold,
    marginBottom: 10,
-   padding: 11,
   },
   facilityImage: {
    width: "100%",
-   height: 150,
+   height: 200, // Fixed height for consistent image display
    marginBottom: 10,
-   resizeMode: "cover",
   },
   facilityDescription: {
    ...Fonts.whiteColor16Medium,
-   height: 100,
-   padding: 10,
+   minHeight: 60, // Ensures all cards are of the same height
    marginBottom: 10,
   },
   reserveButton: {
@@ -179,27 +158,23 @@ const createStyles = (width, height) => {
    paddingVertical: 8,
    paddingHorizontal: 20,
    borderRadius: 5,
-   marginTop: 10,
-   marginBottom: 10,
    alignSelf: "center",
-   alignItems: "center",
   },
   reserveButtonText: {
    ...Fonts.whiteColor16Medium,
   },
-  goBackButton: {
-   position: "absolute",
-   top: 20,
-   left: 20,
+  pageTitle: {
+   ...Fonts.whiteColor30SemiBold,
+   marginTop: 20,
+   marginBottom: 20,
+   textAlign: "center",
   },
-  goBackButtonIcon: {
-   color: Colors.whiteColor,
-   fontSize: 24,
-  },
-
   scrollViewContent: {
    flexGrow: 1,
-   paddingVertical: 20,
+   paddingBottom: 20,
+  },
+  backArrowWrapStyle: {
+   margin: 10,
   },
  });
 };
