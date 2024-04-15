@@ -73,6 +73,7 @@ const RequestPage = ({ navigation }) => {
               </View>
               <Text style={styles.label}>Message:</Text>
               <TextInput
+                id="request_msg"
                 style={styles.input}
                 placeholder="Enter your request message"
                 multiline={true}
@@ -80,7 +81,7 @@ const RequestPage = ({ navigation }) => {
                 onChangeText={setRequestMessage}
               />
               <TouchableOpacity style={styles.button} onPress={handleRequest}>
-                <Text style={styles.buttonText}>Send</Text>
+                <Text id="send_btn" style={styles.buttonText}>Send</Text>
               </TouchableOpacity>
             </View>
           </View>
