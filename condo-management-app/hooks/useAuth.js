@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }) => {
   const navigation = useNavigation();
   const [userValues, setUserValues] = useState({});
   const herokuBackendUrl =
-    //"http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; 
-    "http://localhost:8080";
+    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; 
+    // "http://localhost:8080";
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -328,10 +328,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+  const convertTimestamp = (timestamp) => {
+    // Assuming the timestamp is in milliseconds
+    return new Date(timestamp).toLocaleString(); // Adjust the string format as needed
+  };
+
   const retrieveNotifications = async () => {
     if (!user) {
       console.error("No user is logged in!");
-      return;
+      return [];
     }
 
     try {
@@ -344,29 +350,63 @@ export const AuthProvider = ({ children }) => {
         }
       });
 
-
       if (response.ok) {
         const notifications = await response.json();
         console.log("Retrieved notifications:", notifications);
-        return notifications;
+
+        let notificationsArray = Object.keys(notifications).map(key => ({
+          id: key,
+          ...notifications[key],
+          timestamp: convertTimestamp(notifications[key].timestamp),
+        }));
+
+        // Sort by timestamp in descending order, assuming convertTimestamp returns a Date object
+        notificationsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        return notificationsArray;
       } else {
         throw new Error('Failed to retrieve notifications');
       }
     } catch (error) {
       console.error("Failed to retrieve notifications:", error);
+      return [];
+    }
+  }
+
+
+  const updateNotificationReadStatus = async (userId, notificationId, readStatus) => {
+    if (!user) {
+      console.error("No user ID provided!");
+      return;
     }
 
-    let notificationsArray = Object.keys(responseData).map(key => ({
-      id: key,
-      ...responseData[key],
-      timestamp: convertTimestamp(responseData[key].timestamp),
-    }));
+    try {
+      const tokenId = await getIdToken(user);
 
-    // Sort by timestamp in descending order
-    notificationsArray.sort((a, b) => b.timestamp - a.timestamp);
+      const response = await fetch(`${herokuBackendUrl}/updateNotification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenId}`
+          // Include the 'Authorization' header if your API requires authentication
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          notificationId: notificationId,
+          read: readStatus,
+        }),
+      });
 
-    return notificationsArray;
-  }
+      if (response.ok) {
+        console.log("Notification read status updated successfully!");
+      } else {
+        throw new Error('Failed to update notification read status');
+      }
+    } catch (error) {
+      console.error("Error updating notification read status:", error);
+    }
+  };
+
 
 
 
@@ -384,6 +424,7 @@ export const AuthProvider = ({ children }) => {
       generateChatResponse,
       addNotification,
       retrieveNotifications,
+      updateNotificationReadStatus,
     }),
     [user, userValues]
   );

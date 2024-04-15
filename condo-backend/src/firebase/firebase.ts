@@ -79,7 +79,8 @@ const addToNotifications = async (userId: string, message: string, timestamp: nu
   const newNotificationRef = notificationsRef.push();
   await newNotificationRef.set({
     message,
-    timestamp
+    timestamp,
+    read: true,
   });
   return newNotificationRef.key; // Returns the key of the new notification
 }
@@ -89,6 +90,19 @@ const getNotifications = async (userId: string) => {
   const snapshot = await notificationsRef.once('value');
   return snapshot.val();
 }
+
+type NotificationUpdate = {
+  read: boolean;
+};
+
+const updateNotification = async (userId: string, notificationId: string, read: boolean) => {
+  const notificationRef = db.ref(`notifications/${userId}/${notificationId}`);
+  const updates: NotificationUpdate = { read };
+  updates.read = read;
+
+  await notificationRef.update(updates);
+}
+  
 
 
 export {
@@ -101,5 +115,6 @@ export {
   addFinancialsToProperty,
   getCostEntries,
   addToNotifications,
-  getNotifications
+  getNotifications,
+  updateNotification,
 }

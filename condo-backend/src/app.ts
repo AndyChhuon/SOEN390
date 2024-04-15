@@ -2,7 +2,7 @@
 // Runs on http://localhost:8080
 
 import { type Request, type Response } from 'express'
-import { addToNotifications, getNotifications } from './firebase/firebase'
+import { addToNotifications, getNotifications, updateNotification } from './firebase/firebase'
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -137,6 +137,22 @@ app.get('/getNotifications', async (req: Request, res: Response) => {
     res.status(500).send('Failed to retrieve notifications');
   }
 });
+
+
+
+
+app.post('/updateNotification', async (req: Request, res: Response) => {
+  const { userId, notificationId, read } = req.body;
+  try {
+    await updateNotification(userId, notificationId, read);
+    res.status(200).send({ message: 'Notification updated successfully' });
+  } catch (error) {
+    console.error('Failed to update notification:', error);
+    res.status(500).send({ error: 'Failed to update notification' });
+  }
+});
+
+
 
 
 

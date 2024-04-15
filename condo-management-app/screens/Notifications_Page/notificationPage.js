@@ -63,7 +63,20 @@ const NotificationPage = () => {
         );
     };
 
-    const { addNotification, retrieveNotifications } = useAuth();
+    const handleToggleReadStatus = (id, currentStatus) => {
+        // Optimistically update the local state
+        setNotifs((currentNotifications) =>
+            currentNotifications.map((notif) =>
+                notif.id === id ? { ...notif, read: !notif.read } : notif
+            )
+        );
+        // Call the function from useAuth
+        updateNotificationReadStatus(userValues.userId, id, !currentStatus);
+    };
+
+
+
+    const { addNotification, retrieveNotifications, updateNotificationReadStatus } = useAuth();
     const [newMessage, setNewMessage] = useState('');
 
     const addNewNotification = () => {
@@ -76,9 +89,10 @@ const NotificationPage = () => {
             id: (Math.max(...notifs.map(n => parseInt(n.id)), 0) + 1).toString(),  // Generate a new ID
             message: newMessage,
             timestamp: new Date().toLocaleTimeString(),
+            read: true,
         };
         addNotification(newMessage);
-        setNotifs(currentNotifications => [...currentNotifications, newNotification]);
+        setNotifs(currentNotifications => [newNotification, ...currentNotifications]);
 
         setNewMessage(''); // Clear the input after adding
     };
@@ -87,7 +101,7 @@ const NotificationPage = () => {
         // Assuming the timestamp is in milliseconds
         return new Date(timestamp).toLocaleString(); // Adjust the string format as needed
     };
-    
+
 
     const retrieveAllNotifications = async () => {
         try {
@@ -98,10 +112,10 @@ const NotificationPage = () => {
                     ...fetchedNotifications[key],
                     timestamp: convertTimestamp(fetchedNotifications[key].timestamp),
                 }));
-    
+
                 // Sort by timestamp in descending order
                 notificationsArray = notificationsArray.sort((a, b) => b.timestamp - a.timestamp);
-    
+
                 setNotifs(notificationsArray);
             } else {
                 console.log('No notifications received');
@@ -110,11 +124,6 @@ const NotificationPage = () => {
             console.error('Error retrieving notifications:', error);
         }
     };
-    
-    
-
-
-
 
 
     useEffect(() => {
@@ -131,6 +140,8 @@ const NotificationPage = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        console.log(userValues); // See what's inside userValues
+
         setIsLoading(true);
         retrieveAllNotifications().then(() => setIsLoading(false)).catch(err => {
             setError('Failed to load notifications');
@@ -153,6 +164,13 @@ const NotificationPage = () => {
     if (isLoading) return <Text>Loading notifications...</Text>;
     if (error) return <Text>{error}</Text>;
 
+    const countUnreadNotifications = (notifications) => {
+        return notifications.filter(notification => notification.read).length;
+    };
+
+    const unreadCount = countUnreadNotifications(notifs);
+
+
     const content = (
         <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1, height: height * 0.92 }}>
@@ -173,7 +191,7 @@ const NotificationPage = () => {
                         }}
                     >
                         {Title()}
-                        {AddNotificationForm()}
+                        {/* {AddNotificationForm()} */}
                         {NotificationList()}
                     </View>
                 </KeyboardAvoidingView>
@@ -182,9 +200,20 @@ const NotificationPage = () => {
     );
 
     function Title() {
+        const notificationMessage = unreadCount === 0
+            ? "No new notifications"
+            : `You have ${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}`;
+
         return (
             <View>
+                
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                    source={{
+                        uri: `https://eu.ui-avatars.com/api/?name=${state.firstName[0]}+${state.lastName[0]}`,
+                    }}
+                    style={{ width: 75, height: 75, borderRadius: 50, margin: 10 }}
+                />
                     <View
                         style={{
                             flex: 1,
@@ -195,7 +224,7 @@ const NotificationPage = () => {
                     >
                         <Text style={[{ ...Fonts.whiteColor26SemiBold }]}>Notifications</Text>
                         <Text style={{ ...Fonts.whiteColor14Medium }}>
-                            {"You have notifications"} {state.firstName}
+                            {notificationMessage} {state.firstName}
                         </Text>
                     </View>
                 </View>
@@ -204,10 +233,8 @@ const NotificationPage = () => {
     }
 
     function NotificationList() {
-
         return (
             <View style={{ marginVertical: 50 }}>
-
                 <FlatList
                     data={notifs}
                     keyExtractor={(item) => item.id}
@@ -215,13 +242,16 @@ const NotificationPage = () => {
                         <NotificationComponent
                             message={item.message}
                             timestamp={item.timestamp}
-                            onDelete={() => deleteNotification(item.id)}
+                            read={item.read}
+                            onToggleReadStatus={() => handleToggleReadStatus(item.id, item.read)}
+                        // onDelete={() => deleteNotification(item.id)}
                         />
                     )}
                 />
             </View>
         );
     }
+
 
     function AddNotificationForm() {
         return (

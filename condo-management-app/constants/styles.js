@@ -212,6 +212,11 @@ export const Fonts = {
     fontSize: 25,
     fontFamily: "Sigmar_Regular",
   },
+  BlackColor16Regular: {
+    color: "#000000",
+    fontSize: 16,
+    fontFamily: "SF_Compact_Display_Regular",
+  },
   blackTooltipText: {
     fontSize: 21,
     fontFamily: "SF_Compact_Display_Bold",
