@@ -30,6 +30,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
   );
   const { width, height } = windowDimensions;
   const styles = createStyles(height);
+  
   const [state, setState] = useState({
     feePerSquareFoot: "",
     feePerParkingSpot: "",

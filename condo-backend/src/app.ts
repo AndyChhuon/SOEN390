@@ -2,6 +2,7 @@
 // Runs on http://localhost:8080
 
 import { type Request, type Response } from 'express'
+import { addToNotifications, getNotifications, updateNotification } from './firebase/firebase'
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -23,6 +24,7 @@ const {
 } = require('./firebase/rentingService')
 const { generateResponse } = require('./openai/chat')
 const { parseJSONOrString } = require('./utils/utils')
+//const { addNotification } = require('./firebase/notificationService')
 
 app.use(express.json())
 app.use(cors())
@@ -124,6 +126,43 @@ app.post('/addProperty', async (req: Request, res: Response) => {
   }
 })
 
+
+app.post('/addNotification', async (req: Request, res: Response) => {
+  const { userId, message, timestamp } = req.body;
+  await addToNotifications(userId, message, timestamp || Date.now());
+});
+
+app.get('/getNotifications', async (req: Request, res: Response) => {
+  const userId = req.query.userId; // Change from req.body to req.query
+  if (!userId) {
+    return res.status(400).send('User ID is required');
+  }
+  
+  try {
+    const notifications = await getNotifications(userId.toString());
+    res.status(200).json(notifications);
+  } catch (error) {
+    res.status(500).send('Failed to retrieve notifications');
+  }
+});
+
+
+
+
+app.post('/updateNotification', async (req: Request, res: Response) => {
+  const { userId, notificationId, read } = req.body;
+  try {
+    await updateNotification(userId, notificationId, read);
+    res.status(200).send({ message: 'Notification updated successfully' });
+  } catch (error) {
+    console.error('Failed to update notification:', error);
+    res.status(500).send({ error: 'Failed to update notification' });
+  }
+});
+
+
+
+
 app.post('/addRenter', async (req: Request, res: Response) => {
   if (req.body.tokenId && req.body.propertyId) {
     try {
@@ -217,5 +256,6 @@ app.post('/getPropertyAvailableTimes', async (req: Request, res: Response) => {
     res.status(400).send('Invalid request')
   }
 })
+
 
 export { app }

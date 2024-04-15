@@ -2,9 +2,13 @@ const admin = require('firebase-admin')
 const dotenv = require('dotenv')
 dotenv.config()
 
+console.log(process.env.SERVICE_ACCOUNT_KEYS);
+// console.log(serviceAccount);
+
+
 const serviceAccount = process.env.SERVICE_ACCOUNT_KEYS
   ? JSON.parse(process.env.SERVICE_ACCOUNT_KEYS)
-  : {}
+  : null;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -135,6 +139,38 @@ const getUserValues = async (id: string) => {
   return snapshot.val()
 }
 
+
+const addToNotifications = async (userId: string, message: string, timestamp: number = Date.now()) => {
+  const notificationsRef = db.ref(`notifications/${userId}`);
+  const newNotificationRef = notificationsRef.push();
+  await newNotificationRef.set({
+    message,
+    timestamp,
+    read: true,
+  });
+  return newNotificationRef.key; // Returns the key of the new notification
+}
+
+const getNotifications = async (userId: string) => {
+  const notificationsRef = db.ref(`notifications/${userId}`);
+  const snapshot = await notificationsRef.once('value');
+  return snapshot.val();
+}
+
+type NotificationUpdate = {
+  read: boolean;
+};
+
+const updateNotification = async (userId: string, notificationId: string, read: boolean) => {
+  const notificationRef = db.ref(`notifications/${userId}/${notificationId}`);
+  const updates: NotificationUpdate = { read };
+  updates.read = read;
+
+  await notificationRef.update(updates);
+}
+  
+
+
 const addScheduledActivity = async (
   id: string,
   propertyID: string,
@@ -178,6 +214,7 @@ const getPropertyAvailableTimes = async (
   return availableTimes
 }
 
+
 export {
   getIdFromToken,
   updateUserValuesDB,
@@ -187,6 +224,9 @@ export {
   addToPropertyFiles,
   addFinancialsToProperty,
   getCostEntries,
+  addToNotifications,
+  getNotifications,
+  updateNotification,
   addToRenting,
   getRentableProperties,
   getRentedProperties,

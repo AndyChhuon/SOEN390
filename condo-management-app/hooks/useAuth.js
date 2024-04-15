@@ -18,6 +18,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+
 import { get, set } from "firebase/database";
 import { Alert } from "react-native";
 
@@ -30,7 +31,8 @@ export const AuthProvider = ({ children }) => {
   const [newRentInitiated, setNewRentInitiated] = useState(false);
   const [userValues, setUserValues] = useState({});
   const herokuBackendUrl =
-    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; // localhost:8080
+    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; 
+    // "http://localhost:8080";
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -298,6 +300,121 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+
+  const addNotification = async (message) => {
+    if (!user) {
+      console.error("No user is logged in!");
+      return;
+    }
+
+    try {
+      const tokenId = await getIdToken(user); // Assuming authentication token is needed
+
+      const response = await fetch(herokuBackendUrl + "/addNotification", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenId}`
+        },
+        body: JSON.stringify({
+          userId: user.uid, // Pass user ID if needed
+          message: message,
+          timestamp: Date.now() // Include timestamp if handled by frontend
+        })
+      });
+
+      if (response.ok) {
+        console.log("Notification added successfully!");
+      } else {
+        throw new Error('Failed to send notification');
+      }
+    } catch (error) {
+      console.error("Failed to add notification:", error);
+    }
+  };
+
+
+  const convertTimestamp = (timestamp) => {
+    // Assuming the timestamp is in milliseconds
+    return new Date(timestamp).toLocaleString(); // Adjust the string format as needed
+  };
+
+  const retrieveNotifications = async () => {
+    if (!user) {
+      console.error("No user is logged in!");
+      return [];
+    }
+
+    try {
+      const tokenId = await getIdToken(user); // Assuming authentication token is needed
+
+      const response = await fetch(`${herokuBackendUrl}/getNotifications?userId=${user.uid}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokenId}`
+        }
+      });
+
+      if (response.ok) {
+        const notifications = await response.json();
+        console.log("Retrieved notifications:", notifications);
+
+        let notificationsArray = Object.keys(notifications).map(key => ({
+          id: key,
+          ...notifications[key],
+          timestamp: convertTimestamp(notifications[key].timestamp),
+        }));
+
+        // Sort by timestamp in descending order, assuming convertTimestamp returns a Date object
+        notificationsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        return notificationsArray;
+      } else {
+        throw new Error('Failed to retrieve notifications');
+      }
+    } catch (error) {
+      console.error("Failed to retrieve notifications:", error);
+      return [];
+    }
+  }
+
+
+  const updateNotificationReadStatus = async (userId, notificationId, readStatus) => {
+    if (!user) {
+      console.error("No user ID provided!");
+      return;
+    }
+
+    try {
+      const tokenId = await getIdToken(user);
+
+      const response = await fetch(`${herokuBackendUrl}/updateNotification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenId}`
+          // Include the 'Authorization' header if your API requires authentication
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          notificationId: notificationId,
+          read: readStatus,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Notification read status updated successfully!");
+      } else {
+        throw new Error('Failed to update notification read status');
+      }
+    } catch (error) {
+      console.error("Error updating notification read status:", error);
+    }
+  };
+
+
+
+
   const getRentableProperties = async (setProperties) => {
     const tokenId = await getIdToken(user);
 
@@ -425,6 +542,7 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -437,6 +555,10 @@ export const AuthProvider = ({ children }) => {
       updatePropertyFinancials,
       generatePdf,
       generateChatResponse,
+      addNotification,
+      retrieveNotifications,
+      updateNotificationReadStatus,
+
       getRentableProperties,
       startRenting,
       getRentedProperties,
