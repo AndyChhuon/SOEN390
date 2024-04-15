@@ -15,6 +15,13 @@ const {
   addPropertyFinancials,
   generateReport
 } = require('./firebase/financialService')
+const {
+  addUserRenter,
+  getUserRentableProperties,
+  getUserRentedProperties,
+  addUserScheduledActivity,
+  getUserPropertyAvailableTimes
+} = require('./firebase/rentingService')
 const { generateResponse } = require('./openai/chat')
 const { parseJSONOrString } = require('./utils/utils')
 //const { addNotification } = require('./firebase/notificationService')
@@ -119,6 +126,7 @@ app.post('/addProperty', async (req: Request, res: Response) => {
   }
 })
 
+
 app.post('/addNotification', async (req: Request, res: Response) => {
   const { userId, message, timestamp } = req.body;
   await addToNotifications(userId, message, timestamp || Date.now());
@@ -154,6 +162,100 @@ app.post('/updateNotification', async (req: Request, res: Response) => {
 
 
 
+
+app.post('/addRenter', async (req: Request, res: Response) => {
+  if (req.body.tokenId && req.body.propertyId) {
+    try {
+      console.log('Calling addRenter endpoint')
+      await addUserRenter(req.body.tokenId, req.body.propertyId, res)
+    } catch (e) {
+      console.log(e)
+      res.status(500).send('Internal server error')
+    }
+  } else {
+    res.status(400).send('Invalid request')
+  }
+})
+
+app.post('/getRentableProperties', async (req: Request, res: Response) => {
+  if (req.body.tokenId) {
+    try {
+      console.log('Calling getRentableProperties endpoint')
+      await getUserRentableProperties(req.body.tokenId, res)
+    } catch (e) {
+      console.log(e)
+      res.status(500).send('Internal server error')
+    }
+  } else {
+    res.status(400).send('Invalid request')
+  }
+})
+
+app.post('/getRentedProperties', async (req: Request, res: Response) => {
+  if (req.body.tokenId) {
+    try {
+      console.log('Calling getRentedProperties endpoint')
+      await getUserRentedProperties(req.body.tokenId, res)
+    } catch (e) {
+      console.log(e)
+      res.status(500).send('Internal server error')
+    }
+  } else {
+    res.status(400).send('Invalid request')
+  }
+})
+
+app.post('/addScheduledActivity', async (req: Request, res: Response) => {
+  if (
+    req.body.tokenId &&
+    req.body.propertyId &&
+    req.body.activity &&
+    req.body.date &&
+    req.body.timeArr
+  ) {
+    try {
+      console.log('Calling addScheduledActivity endpoint')
+      await addUserScheduledActivity(
+        req.body.tokenId,
+        req.body.propertyId,
+        req.body.activity,
+        req.body.date,
+        req.body.timeArr,
+        res
+      )
+    } catch (e) {
+      console.log(e)
+      res.status(500).send('Internal server error')
+    }
+  } else {
+    res.status(400).send('Invalid request')
+  }
+})
+
+app.post('/getPropertyAvailableTimes', async (req: Request, res: Response) => {
+  if (
+    req.body.tokenId &&
+    req.body.propertyId &&
+    req.body.activity &&
+    req.body.date
+  ) {
+    try {
+      console.log('Calling getPropertyAvailableTimes endpoint')
+      await getUserPropertyAvailableTimes(
+        req.body.tokenId,
+        req.body.propertyId,
+        req.body.activity,
+        req.body.date,
+        res
+      )
+    } catch (e) {
+      console.log(e)
+      res.status(500).send('Internal server error')
+    }
+  } else {
+    res.status(400).send('Invalid request')
+  }
+})
 
 
 export { app }

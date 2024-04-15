@@ -237,3 +237,97 @@ describe("Test generateResponse with correct values", () => {
     expect(response.statusCode).toBe(200);
   });
 });
+
+describe("Test addScheduledActivity with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/addScheduledActivity");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test addScheduledActivity with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/addScheduledActivity").send({
+      tokenId,
+      propertyId: "-NvDYsO-lS7VUWIq43ju",
+      activity: "gym",
+      date: "2021-11-11",
+      timeArr: ["12:00", "13:00"],
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test getPropertyAvailableTimes with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/getPropertyAvailableTimes");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test addScheduledActivity with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/getPropertyAvailableTimes").send({
+      tokenId,
+      propertyId: "-NvDYsO-lS7VUWIq43ju",
+      activity: "gym",
+      date: "2021-11-11",
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test addRenter with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/addRenter");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test addRenter with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/addRenter").send({
+      tokenId,
+      propertyId: "-NvDYsO-lS7VUWIq43ju",
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test getRentableProperties with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/getRentableProperties");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test getRentableProperties with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/getRentableProperties").send({
+      tokenId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test getRentedProperties with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/getRentedProperties");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test getRentedProperties with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/getRentedProperties").send({
+      tokenId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+

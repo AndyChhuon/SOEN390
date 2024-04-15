@@ -18,6 +18,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
 import PropertyScreen from "../screens/propertyPage/propertyPage";
 import RequestPage from "../screens/Request/RequestPage";
+import rentPropertiesScreen from "../screens/rentPropertiesScreen/rentPropertiesScreen";
+import myRentedProperties from "../screens/myRentedProperties/myRentedProperties";
 
 const Tab = createBottomTabNavigator();
 
@@ -76,13 +78,16 @@ const TabNavigator = ({ route }) => {
           tabBarActiveTintColor: Colors.goldColor,
           tabBarInactiveTintColor: "#f9ac46",
           tabBarStyle: { ...styles.tabBarStyle },
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
+          tabBarLabelPosition: 'below-icon'
+
         }}
       >
         <Tab.Screen
           name={"Profile"}
           component={ProfileScreen}
           options={{
+            tabBarLabel: "Profile",
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
                 icon: require("../assets/images/icons/user.png"),
@@ -91,10 +96,39 @@ const TabNavigator = ({ route }) => {
               }),
           }}
         />
+
+        <Tab.Screen
+          name={"myRentedProperties"}
+          component={myRentedProperties}
+          options={{
+            tabBarLabel: "My Rented Properties",
+            tabBarIcon: ({ color, focused }) =>
+              tabIconSort({
+                icon: require("../assets/images/icons/home.png"),
+                focused: focused,
+                size: 32,
+              }),
+          }}
+        />
+
+        <Tab.Screen
+          name={"rentPropertiesScreen"}
+          component={rentPropertiesScreen}
+          options={{
+            tabBarLabel: "Rent a property",
+            tabBarIcon: ({ color, focused }) =>
+              tabIconSort({
+                icon: require("../assets/images/icons/finance.png"),
+                focused: focused,
+                size: 32,
+              }),
+          }}
+        />
         <Tab.Screen
           name={"propertyProfile"}
           component={PropertyProfileScreen}
           options={{
+            tabBarLabel: "Property Profiles",
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
                 icon: require("../assets/images/icons/home.png"),
@@ -121,6 +155,7 @@ const TabNavigator = ({ route }) => {
           name={"Request"}
           component={RequestPage}
           options={{
+            tabBarLabel: "Make a Request",
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
                 icon: require("../assets/images/icons/request.png"),

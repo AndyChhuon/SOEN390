@@ -88,17 +88,18 @@ const ChatPage = () => {
             </ScrollView>
             <View style={styles.inputContainer}>
               <TextInput
+                id="chat_msg_space"
                 style={styles.input}
                 value={inputMessage}
                 onChangeText={(text) => setInputMessage(text)}
                 placeholder="Type your message..."
               />
               <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                <Text style={styles.sendButtonText}>Send</Text>
+                <Text id="chat_send_btn" style={styles.sendButtonText}>Send</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.endChatButton} onPress={handleEndChat}>
-              <Text style={styles.endChatButtonText}>End Chat</Text>
+              <Text id="end_chat_btn" style={styles.endChatButtonText}>End Chat</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>

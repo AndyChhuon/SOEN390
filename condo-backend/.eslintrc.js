@@ -29,5 +29,6 @@ module.exports = {
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "no-async-promise-executor": "off",
+    "no-prototype-builtins": "off",
   },
 };
