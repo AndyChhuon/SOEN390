@@ -60,35 +60,34 @@ const Reserve = ({ route }) => {
   },
  ];
 
- const renderFacilityCards = () =>
- console.log(propertyId);
-
-  facilities.map((facility) => (
-   <TouchableOpacity
-    key={facility.id}
-    style={styles.facilityCard}
-    onPress={() => {}}
-   >
-    <Text style={styles.facilityTitle}>{facility.name}</Text>
-    <Image
-     source={facility.image}
-     style={styles.facilityImage}
-     resizeMode="contain"
-    />
-    <Text style={styles.facilityDescription}>{facility.description}</Text>
-    <TouchableOpacity
-     style={styles.reserveButton}
-     onPress={() =>
-      navigation.navigate("reservationScreen", {
-       propertyId,
-       activity: facility.activity,
-      })
-     }
-    >
-     <Text style={styles.reserveButtonText}>Reserve</Text>
-    </TouchableOpacity>
-   </TouchableOpacity>
-  ));
+  const renderFacilityCards = () => {
+    return facilities.map((facility) => (
+      <TouchableOpacity
+        key={facility.id}
+        style={styles.facilityCard}
+        onPress={() => {}}
+      >
+        <Text style={styles.facilityTitle}>{facility.name}</Text>
+        <Image
+          source={facility.image}
+          style={styles.facilityImage}
+          resizeMode="contain"
+        />
+        <Text style={styles.facilityDescription}>{facility.description}</Text>
+        <TouchableOpacity
+          style={styles.reserveButton}
+          onPress={() =>
+            navigation.navigate("reservationScreen", {
+              propertyId,
+              activity: facility.activity,
+            })
+          }
+        >
+          <Text style={styles.reserveButtonText}>Reserve</Text>
+        </TouchableOpacity>
+      </TouchableOpacity>
+    ));
+  };
 
  const content = (
   <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2, flex: 1 }}>
