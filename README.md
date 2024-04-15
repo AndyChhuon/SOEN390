@@ -2,6 +2,10 @@
 
 SOEN 390 Project Winter 2024. Condo Management Application.
 
+## Hosted Url
+
+https://6618a9aa4a5f6c75ae8b9886--neon-lebkuchen-4543ff.netlify.app/
+
 ## Objective
 
 Build a condo management application
@@ -38,7 +42,6 @@ Build a condo management application
 We are using ESLint and prettier for coding style and static analysis.
 ![image](https://github.com/AndyChhuon/SOEN390/assets/43625453/f47b623c-7bd0-4cdb-962d-293603f6f346)
 
-
 ## Setup
 
 ### Backend Setup
@@ -57,7 +60,6 @@ We are using ESLint and prettier for coding style and static analysis.
 4. Run the app: `npm start`
 5. Scan the QR code on mobile to run the app
 6. Optionally, press `w` in terminal to open the app on web
-
 
 #### Backend: How to add end point
 
