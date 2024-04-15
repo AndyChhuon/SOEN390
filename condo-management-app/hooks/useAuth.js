@@ -27,7 +27,8 @@ export const AuthProvider = ({ children }) => {
   const navigation = useNavigation();
   const [userValues, setUserValues] = useState({});
   const herokuBackendUrl =
-    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; // localhost:8080
+    //"http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; 
+    "http://localhost:8080";
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -294,16 +295,16 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  
+
   const addNotification = async (message) => {
     if (!user) {
       console.error("No user is logged in!");
       return;
     }
-  
+
     try {
       const tokenId = await getIdToken(user); // Assuming authentication token is needed
-  
+
       const response = await fetch(herokuBackendUrl + "/addNotification", {
         method: 'POST',
         headers: {
@@ -316,7 +317,7 @@ export const AuthProvider = ({ children }) => {
           timestamp: Date.now() // Include timestamp if handled by frontend
         })
       });
-  
+
       if (response.ok) {
         console.log("Notification added successfully!");
       } else {
@@ -326,8 +327,48 @@ export const AuthProvider = ({ children }) => {
       console.error("Failed to add notification:", error);
     }
   };
-  
-  
+
+  const retrieveNotifications = async () => {
+    if (!user) {
+      console.error("No user is logged in!");
+      return;
+    }
+
+    try {
+      const tokenId = await getIdToken(user); // Assuming authentication token is needed
+
+      const response = await fetch(`${herokuBackendUrl}/getNotifications?userId=${user.uid}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokenId}`
+        }
+      });
+
+
+      if (response.ok) {
+        const notifications = await response.json();
+        console.log("Retrieved notifications:", notifications);
+        return notifications;
+      } else {
+        throw new Error('Failed to retrieve notifications');
+      }
+    } catch (error) {
+      console.error("Failed to retrieve notifications:", error);
+    }
+
+    let notificationsArray = Object.keys(responseData).map(key => ({
+      id: key,
+      ...responseData[key],
+      timestamp: convertTimestamp(responseData[key].timestamp),
+    }));
+
+    // Sort by timestamp in descending order
+    notificationsArray.sort((a, b) => b.timestamp - a.timestamp);
+
+    return notificationsArray;
+  }
+
+
 
   const memoedValue = useMemo(
     () => ({
@@ -342,6 +383,7 @@ export const AuthProvider = ({ children }) => {
       generatePdf,
       generateChatResponse,
       addNotification,
+      retrieveNotifications,
     }),
     [user, userValues]
   );

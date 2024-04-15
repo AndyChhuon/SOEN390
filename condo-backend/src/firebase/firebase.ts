@@ -2,9 +2,13 @@ const admin = require('firebase-admin')
 const dotenv = require('dotenv')
 dotenv.config()
 
+console.log(process.env.SERVICE_ACCOUNT_KEYS);
+// console.log(serviceAccount);
+
+
 const serviceAccount = process.env.SERVICE_ACCOUNT_KEYS
   ? JSON.parse(process.env.SERVICE_ACCOUNT_KEYS)
-  : {}
+  : null;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -71,13 +75,19 @@ const getUserValues = async (id: string) => {
 }
 
 const addToNotifications = async (userId: string, message: string, timestamp: number = Date.now()) => {
-  const notificationsRef = db.ref(`users/${userId}/notifications`);
+  const notificationsRef = db.ref(`notifications/${userId}`);
   const newNotificationRef = notificationsRef.push();
   await newNotificationRef.set({
     message,
     timestamp
   });
   return newNotificationRef.key; // Returns the key of the new notification
+}
+
+const getNotifications = async (userId: string) => {
+  const notificationsRef = db.ref(`notifications/${userId}`);
+  const snapshot = await notificationsRef.once('value');
+  return snapshot.val();
 }
 
 
@@ -90,5 +100,6 @@ export {
   addToPropertyFiles,
   addFinancialsToProperty,
   getCostEntries,
-  addToNotifications
+  addToNotifications,
+  getNotifications
 }
