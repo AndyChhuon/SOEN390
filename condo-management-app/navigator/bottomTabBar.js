@@ -20,6 +20,7 @@ import PropertyScreen from "../screens/propertyPage/propertyPage";
 import RequestPage from "../screens/Request/RequestPage";
 import rentPropertiesScreen from "../screens/rentPropertiesScreen/rentPropertiesScreen";
 import myRentedProperties from "../screens/myRentedProperties/myRentedProperties";
+import EmployeeRoleManagementPage from "../screens/EmployeeRoleManagementPage/EmployeeRoleManagementPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -154,6 +155,20 @@ const TabNavigator = ({ route }) => {
         <Tab.Screen
           name={"Request"}
           component={RequestPage}
+          options={{
+            tabBarLabel: "Make a Request",
+            tabBarIcon: ({ color, focused }) =>
+              tabIconSort({
+                icon: require("../assets/images/icons/request.png"),
+                focused: focused,
+                size: 32,
+              }),
+          }}
+        />
+
+        <Tab.Screen
+          name={"EmplyeeRoleManagementPage"}
+          component={EmployeeRoleManagementPage}
           options={{
             tabBarLabel: "Make a Request",
             tabBarIcon: ({ color, focused }) =>

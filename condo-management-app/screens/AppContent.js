@@ -21,6 +21,7 @@ import ChatPage from "./Request/ChatPage";
 import RentPropertiesScreen from "./rentPropertiesScreen/rentPropertiesScreen";
 import myRentedProperties from "./myRentedProperties/myRentedProperties";
 import reservationScreen from "./reservationScreen/reservationScreen";
+import EmployeeRoleManagementPage from "./EmployeeRoleManagementPage/EmployeeRoleManagementPage";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,7 @@ const AppContent = () => {
 
         <Stack.Screen name="Request" component={RequestPage} />
         <Stack.Screen name="ChatPage" component={ChatPage} />
+        <Stack.Screen name="EmployeeRoleManagementPage" component={EmployeeRoleManagementPage} />
       </Stack.Navigator>
     </>
   );

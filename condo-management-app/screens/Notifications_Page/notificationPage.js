@@ -206,14 +206,14 @@ const NotificationPage = () => {
 
         return (
             <View>
-                
+
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                    source={{
-                        uri: `https://eu.ui-avatars.com/api/?name=${state.firstName[0]}+${state.lastName[0]}`,
-                    }}
-                    style={{ width: 75, height: 75, borderRadius: 50, margin: 10 }}
-                />
+                    <Image
+                        source={{
+                            uri: `https://eu.ui-avatars.com/api/?name=${state.firstName[0]}+${state.lastName[0]}`,
+                        }}
+                        style={{ width: 75, height: 75, borderRadius: 50, margin: 10 }}
+                    />
                     <View
                         style={{
                             flex: 1,
