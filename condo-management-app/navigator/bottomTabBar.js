@@ -170,10 +170,10 @@ const TabNavigator = ({ route }) => {
           name={"EmplyeeRoleManagementPage"}
           component={EmployeeRoleManagementPage}
           options={{
-            tabBarLabel: "Make a Request",
+            tabBarLabel: "Employee Roles ",
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
-                icon: require("../assets/images/icons/request.png"),
+                icon: require("../assets/images/icons/user.png"),
                 focused: focused,
                 size: 32,
               }),

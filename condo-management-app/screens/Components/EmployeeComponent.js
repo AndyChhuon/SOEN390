@@ -5,7 +5,8 @@ import { Colors, Fonts, Sizes } from "../../constants/styles";
 const EmployeeComponent = ({ employee, onEdit, onDelete }) => {
   return (
     <View style={styles.employeeContainer}>
-      <Text style={styles.employeeName}>{employee.name}</Text>
+      <Text style={styles.employeeID}>{employee.id}</Text>
+      <Text style={styles.employeeName}>{`${employee.firstname} ${employee.lastname}`}</Text>
       <Text style={styles.employeeRole}>{employee.role}</Text>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity onPress={() => onEdit(employee.id)} style={styles.editButton}>
@@ -29,16 +30,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  employeeID: {
+    flex: 0.5,
+    fontSize: 14,
+    color: '#333',
+    ...Fonts.BlackColor16Regular,
+  },
   employeeName: {
     flex: 0.5,
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
     ...Fonts.BlackColor16Regular,
   },
   employeeRole: {
     flex: 0.3,
     fontSize: 14,
-    color: '#666',
+    color: '#333',
+    ...Fonts.BlackColor16Regular,
   },
   buttonsContainer: {
     flex: 0.2,
@@ -47,17 +55,21 @@ const styles = StyleSheet.create({
   },
   editButton: {
     padding: 5,
-    backgroundColor: 'blue',
+    backgroundColor: "rgba(255,255,255,0.05)",
     borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   deleteButton: {
     padding: 5,
-    backgroundColor: 'red',
+    backgroundColor: "rgba(255,255,255,0.05)",
     borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
-    color: 'white',
-    fontSize: 12,
+    color: 'black',
+    fontSize: 14,
   },
 });
 
