@@ -22,6 +22,10 @@ import { useNavigation } from "@react-navigation/native";
 import { get, set } from "firebase/database";
 import { Alert } from "react-native";
 
+import { onAuthStateChanged,} from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+import { get, set, ref, update } from "firebase/database";
+
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -30,6 +34,12 @@ export const AuthProvider = ({ children }) => {
   const [newPropertyCreated, setNewPropertyCreated] = useState(false);
   const [newRentInitiated, setNewRentInitiated] = useState(false);
   const [userValues, setUserValues] = useState({});
+
+  // Holds the definitions of the roles
+  const [roles, setRoles] = useState({});
+  // Holds the mappings of the different employees to the different roles
+  const [employeeRoles, setEmployeeRoles] = useState({});
+
   const herokuBackendUrl =
     "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; 
     // "http://localhost:8080";
@@ -540,6 +550,37 @@ export const AuthProvider = ({ children }) => {
         });
       }
     });
+
+    // Function to add a new role
+    const addRole = (roleName, permissions) => {
+      // Here, we're assuming roles are stored at the 'roles' key in Firebase
+      const roleRef = ref(db, `roles/${roleName}`);
+      set(roleRef, permissions).then(() => {
+        // On success, we update our state
+        setRoles((prevRoles) => ({
+          ...prevRoles,
+          [roleName]: permissions,
+        }));
+      }).catch((error) => {
+        console.error("Failed to add role:", error);
+      });
+    };
+
+    const assignRoleToEmployee = (employeeId, roleName) => {
+      // Here, we're assuming employee roles are stored at 'employeeRoles' key in Firebase
+      const employeeRolesRef = ref(db, `employeeRoles/${employeeId}`);
+      update(employeeRolesRef, { roleName }).then(() => {
+        // On success, we update our state
+        setEmployeeRoles((prevEmployeeRoles) => ({
+          ...prevEmployeeRoles,
+          [employeeId]: roleName,
+        }));
+      }).catch((error) => {
+        console.error("Failed to assign role:", error);
+      });
+    };
+
+
   };
 
 
@@ -566,8 +607,13 @@ export const AuthProvider = ({ children }) => {
       addScheduledActivity,
       newPropertyCreated,
       newRentInitiated,
+
+      addRole,
+      assignRoleToEmployee,
+      roles,
+      employeeRoles      
     }),
-    [user, userValues, newPropertyCreated, newRentInitiated]
+    [user, userValues, newPropertyCreated, newRentInitiated, roles, employeeRoles]
   );
 
   return (
