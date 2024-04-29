@@ -12,6 +12,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Image,
+  Keyboard,
 } from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -21,7 +22,7 @@ import { set } from "firebase/database";
 const ChatPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { assigneeName, initialMessage, assigneeImage } = route.params; 
+  const { assigneeName, initialMessage, assigneeImage } = route.params;
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const screenHeight = Dimensions.get("window").height;
@@ -58,14 +59,58 @@ const ChatPage = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, height: screenHeight }}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1, justifyContent: "flex-start" }}
-        >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {Platform.OS === "ios" || Platform.OS === "android" ? (
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            style={{ flex: 1 }}
+          >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.container}>
+                <View style={styles.header}>
+                  {assigneeImage && (
+                    <Image source={assigneeImage} style={styles.assigneeImage} />
+                  )}
+                  <Text style={styles.assigneeName}>{assigneeName}</Text>
+                </View>
+                <ScrollView contentContainerStyle={styles.chatContainer}>
+                  {messages.map((message, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        styles.messageBubble,
+                        {
+                          alignSelf:
+                            message.role === "user" ? "flex-end" : "flex-start",
+                          backgroundColor: "#BFBFBF",
+                        },
+                      ]}
+                    >
+                      <Text style={styles.messageText}>{message.content}</Text>
+                    </View>
+                  ))}
+                </ScrollView>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    value={inputMessage}
+                    onChangeText={(text) => setInputMessage(text)}
+                    placeholder="Type your message..."
+                  />
+                  <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+                    <Text style={styles.sendButtonText}>Send</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.endChatButton} onPress={handleEndChat}>
+                  <Text style={styles.endChatButtonText}>End Chat</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        ) : (
           <View style={styles.container}>
             <View style={styles.header}>
-              {assigneeImage && ( // Render image if available
+              {assigneeImage && (
                 <Image source={assigneeImage} style={styles.assigneeImage} />
               )}
               <Text style={styles.assigneeName}>{assigneeName}</Text>
@@ -77,7 +122,8 @@ const ChatPage = () => {
                   style={[
                     styles.messageBubble,
                     {
-                      alignSelf: message.role === "user" ? "flex-end" : "flex-start",
+                      alignSelf:
+                        message.role === "user" ? "flex-end" : "flex-start",
                       backgroundColor: "#BFBFBF",
                     },
                   ]}
@@ -88,26 +134,24 @@ const ChatPage = () => {
             </ScrollView>
             <View style={styles.inputContainer}>
               <TextInput
-                id="chat_msg_space"
                 style={styles.input}
                 value={inputMessage}
                 onChangeText={(text) => setInputMessage(text)}
                 placeholder="Type your message..."
               />
               <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                <Text id="chat_send_btn" style={styles.sendButtonText}>Send</Text>
+                <Text style={styles.sendButtonText}>Send</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.endChatButton} onPress={handleEndChat}>
-              <Text id="end_chat_btn" style={styles.endChatButtonText}>End Chat</Text>
+              <Text style={styles.endChatButtonText}>End Chat</Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
