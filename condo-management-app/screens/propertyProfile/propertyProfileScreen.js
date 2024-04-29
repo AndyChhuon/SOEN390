@@ -45,6 +45,21 @@ const PropertyProfileScreen = ({ navigation }) => {
     Address: "",
   });
 
+
+  //Employee: manager can see everything, finance only see financial button.
+  const roles = {
+    manager: ["viewListing", "uploadFiles", "viewFinancials", "AddProperty"],
+    condo_owner: ["viewListing", "uploadFiles", "viewFinancials", "AddProperty"],
+    finance: ["viewFinancials"],
+  };
+
+  const userRole = "condo_owner"; //Dummy value, should get actual values from backend. change it to finance to see changes.
+
+  //used this function as a wrapper for buttons for RBAC.
+  const hasPermission = (permission) => {
+    return roles[userRole]?.includes(permission);
+  };
+
   //clears db entries if undefined
   const CleanUndefinedEntries = (obj) => {
     Object.keys(obj).forEach((key) => {
@@ -250,6 +265,8 @@ const PropertyProfileScreen = ({ navigation }) => {
               alignContent: "center",
             }}
           >
+
+{hasPermission("viewListing") && (
             <ThemedButton
               name="bruce"
               type="primary"
@@ -283,8 +300,9 @@ const PropertyProfileScreen = ({ navigation }) => {
               >
                 View Listing
               </Text>
-            </ThemedButton>
+            </ThemedButton>)}
 
+            {hasPermission("uploadFiles") && (
             <ThemedButton
               name="bruce"
               type="primary"
@@ -317,7 +335,8 @@ const PropertyProfileScreen = ({ navigation }) => {
               >
                 Upload Files
               </Text>
-            </ThemedButton>
+            </ThemedButton>)}
+            {hasPermission("viewFinancials") && (
             <ThemedButton
               name="bruce"
               type="primary"
@@ -347,7 +366,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               >
                 Financials
               </Text>
-            </ThemedButton>
+            </ThemedButton>)}
           </View>
         </View>
       </View>
@@ -363,6 +382,7 @@ const PropertyProfileScreen = ({ navigation }) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
+          {hasPermission("AddProperty") && (
           <View style={{ margin: 10, alignContent: "center" }}>
             <View
               style={{
@@ -380,6 +400,7 @@ const PropertyProfileScreen = ({ navigation }) => {
               >
                 Manage Your Properties
               </Text>
+
               <ThemedButton
                 name="bruce"
                 type="primary"
@@ -610,7 +631,7 @@ const PropertyProfileScreen = ({ navigation }) => {
                 </View>
               </Animated.View>
             </TouchableOpacity>
-          </View>
+          </View>)}
 
           <View
             style={{
@@ -701,3 +722,4 @@ function createStyles(height) {
     },
   });
 }
+
