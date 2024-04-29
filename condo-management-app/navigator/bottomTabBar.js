@@ -24,8 +24,10 @@ import myRentedProperties from "../screens/myRentedProperties/myRentedProperties
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = ({ route }) => {
-  const { reloadUser, isWaitingOnEmailVerification } = useAuth();
+  const { reloadUser, isWaitingOnEmailVerification, } = useAuth();
 
+  const user = { role: "renter" }; //Dummy values, change it to owner to see what owner see. 
+  //user role needs to be fetched from backend from useAuth.
   const { height, width } = Dimensions.get("window");
 
   const [windowDimensions, setWindowDimensions] = useState(
@@ -97,6 +99,7 @@ const TabNavigator = ({ route }) => {
           }}
         />
 
+{user.role === "renter" &&(
         <Tab.Screen
           name={"myRentedProperties"}
           component={myRentedProperties}
@@ -110,7 +113,9 @@ const TabNavigator = ({ route }) => {
               }),
           }}
         />
+)}
 
+     {user.role === "renter" &&(
         <Tab.Screen
           name={"rentPropertiesScreen"}
           component={rentPropertiesScreen}
@@ -123,7 +128,8 @@ const TabNavigator = ({ route }) => {
                 size: 32,
               }),
           }}
-        />
+        />)}
+        {user.role === "owner" && (
         <Tab.Screen
           name={"propertyProfile"}
           component={PropertyProfileScreen}
@@ -136,7 +142,7 @@ const TabNavigator = ({ route }) => {
                 size: 38,
               }),
           }}
-        />
+        />)}
 
         <Tab.Screen
           name={"Notification"}
@@ -231,3 +237,4 @@ function createStyles(height) {
   });
 }
 export default TabNavigator;
+
