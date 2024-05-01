@@ -1,7 +1,7 @@
 describe("add property", () => {
   it("Should add a new property", () => {
     cy.visit("/")
-    cy.get('#email_add').type("someone@example.com")
+    cy.get('#email_add').type("1someone@example.com")
     cy.get("#user_pass").type("somepassword")
     cy.get('#register_button').type('{enter}');
     cy.on('uncaught:exception', (err, runnable) => {

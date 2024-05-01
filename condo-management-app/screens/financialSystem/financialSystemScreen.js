@@ -506,6 +506,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
             onPress={() => input.current.focus()}
           ></TouchableOpacity>
           <TextInput
+            id="cost_ammount_id"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateTempState({ costAmount: value })}
@@ -534,6 +535,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
             onPress={() => input.current.focus()}
           ></TouchableOpacity>
           <TextInput
+            id="cost_desc_id"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) =>
@@ -565,6 +567,7 @@ const FinancialSystemScreen = ({ route, navigation }) => {
             onPress={() => input.current.focus()}
           ></TouchableOpacity>
           <TextInput
+            id="tenant_id"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateTempState({ TenantID: value })}
