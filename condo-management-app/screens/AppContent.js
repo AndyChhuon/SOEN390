@@ -6,20 +6,20 @@ import {
 
 import LoginScreen from "./auth/loginScreen";
 import SignupScreen from "./auth/signupScreen";
-import ProfileScreen from "./profile/profileScreen";
+import ProfileScreen from "./Profile/profileScreen";
 // import NotificationPage from "./Notifications_Page/notificationPage__";
 import NotificationPage from "./Notifications_Page/notificationPage";
 import ownerDashboard from "./Dashboard/ownerDashboard";
 import BottomTabBarScreen from "../navigator/bottomTabBar";
 import PropertyProfileScreen from "./propertyProfile/propertyProfileScreen";
-import financialSystemScreen from "./financialSystem/financialSystemScreen";
+import financialSystemScreen from "./FinancialSystem/financialSystemScreen";
 import PropertyScreen from "./propertyPage/propertyPage";
 import LandingPage from "./LandingPage/landingPage";
 import Terms from "./Terms/Terms";
 import RequestPage from "./Request/RequestPage";
 import ChatPage from "./Request/ChatPage";
 import RentPropertiesScreen from "./rentPropertiesScreen/rentPropertiesScreen";
-import myRentedProperties from "./myRentedProperties/myRentedProperties";
+import myRentedProperties from "./MyRentedProperties/myRentedProperties";
 import reservationScreen from "./reservationScreen/reservationScreen";
 import signupScreenOwner from "./auth/signupScreenOwner";
 import signupScreenCompany from "./auth/signupScreenCompany";

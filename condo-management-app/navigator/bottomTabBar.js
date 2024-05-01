@@ -9,17 +9,17 @@ import {
 } from "react-native";
 import { Colors, Sizes, Fonts } from "../constants/styles";
 import NotificationPage from "../screens/Notifications_Page/notificationPage";
-import ProfileScreen from "../screens/profile/profileScreen";
+import ProfileScreen from "../screens/Profile/profileScreen";
 import ownerDashboard from "../screens/Dashboard/ownerDashboard";
 import PropertyProfileScreen from "../screens/propertyProfile/propertyProfileScreen";
-import financialSystemScreen from "../screens/financialSystem/financialSystemScreen";
+import financialSystemScreen from "../screens/FinancialSystem/financialSystemScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
 import PropertyScreen from "../screens/propertyPage/propertyPage";
 import RequestPage from "../screens/Request/RequestPage";
 import rentPropertiesScreen from "../screens/rentPropertiesScreen/rentPropertiesScreen";
-import myRentedProperties from "../screens/myRentedProperties/myRentedProperties";
+import myRentedProperties from "../screens/MyRentedProperties/myRentedProperties";
 
 const Tab = createBottomTabNavigator();
 

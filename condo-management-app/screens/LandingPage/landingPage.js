@@ -57,7 +57,6 @@ const LandingPage = ({ navigation }) => {
  function card() {
   return (
    <View style={styles.card}>
-    <Text style={styles.title}>The Condo Management Company</Text>
     <View style={styles.buttonContainer}>
      <TouchableOpacity
       style={styles.button}
@@ -85,36 +84,19 @@ const LandingPage = ({ navigation }) => {
  function backgroundImage() {
   return (
    <Image
-    source={require("./landing.png")}
+    source={require("./TCMC2.png")}
     style={{
      width: "30%",
      height: "30%",
      margin: 40,
      alignSelf: "center",
      resizeMode: "center",
+     tintColor: "white",
     }}
    />
   );
  }
 
- function loginTitle() {
-  return (
-   <View
-    style={{
-     marginVertical: (Sizes.fixPadding * 4.0 * height) / 880,
-     alignItems: "center",
-     zIndex: 1,
-     margin: "auto",
-     marginLeft: "auto",
-     marginRight: "auto",
-    }}
-   >
-    <Text style={{ ...Fonts.whiteColor50SemiBold }}>
-     The Condo Management Company
-    </Text>
-   </View>
-  );
- }
 };
 
 function createStyles(width, height) {
@@ -126,13 +108,8 @@ function createStyles(width, height) {
    backgroundColor: Colors.bodyBackColor2,
   },
   card: {
-   backgroundColor: Colors.bodyBackColor,
    borderRadius: 20,
    padding: 20,
-   shadowColor: "#000",
-   shadowOffset: { width: 0, height: 2 },
-   shadowOpacity: 0.25,
-   shadowRadius: 3.84,
    elevation: 5,
    width: "90%",
    alignItems: "center",
@@ -144,11 +121,11 @@ function createStyles(width, height) {
    color: "white",
   },
   buttonContainer: {
-   width: "50%",
+   width: "20%",
    marginBottom: 20,
   },
   button: {
-   backgroundColor: "#1E88E5",
+   backgroundColor: Colors.darkBlue,
    padding: 15,
    borderRadius: 10,
    marginBottom: 10,
