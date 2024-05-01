@@ -22,7 +22,9 @@ import useAuth from "../../hooks/useAuth";
 
 const RegisterScreen = ({ navigation }) => {
  const { emailSignup } = useAuth();
+
  const [error, setError] = useState(null);
+
  const [emailError, setEmailError] = useState(null);
  const [passwordError, setPasswordError] = useState(null);
  const [agreeError, setAgreeError] = useState(null);
@@ -175,7 +177,7 @@ const RegisterScreen = ({ navigation }) => {
  function backgroundImage() {
   return (
    <Image
-    source={require("./image_2.png")}
+    source={require("./signupowner.png")}
     style={{
      width: "80%",
      height: "80%",
@@ -452,11 +454,9 @@ const RegisterScreen = ({ navigation }) => {
     }}
    >
     <Text style={{ ...Fonts.whiteColor26SemiBold }}>
-     Let’s get you started.
+     Renting Your Condo Has Never Been Easier
     </Text>
-    <Text style={{ ...Fonts.whiteColor14Medium }}>
-     Your condo management begins here!
-    </Text>
+    <Text style={{ ...Fonts.whiteColor14Medium }}>Let’s get you started.</Text>
    </View>
   );
  }
