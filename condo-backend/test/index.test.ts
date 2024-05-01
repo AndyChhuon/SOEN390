@@ -21,7 +21,7 @@ const userValues = {
   streetAddress: "test",
   userEmail: "test",
   profileUrl: "test",
-  userType: "admin",
+  userType: "employee",
 };
 
 const data = JSON.stringify({
@@ -38,6 +38,8 @@ const config = {
   },
   data,
 };
+
+const employeeId = "cjtHGCAVNqRKXGBKDCjmixZessg2";
 
 beforeAll(async () => {
   try {
@@ -331,3 +333,112 @@ describe("Test getRentedProperties with correct values", () => {
   });
 });
 
+describe("Test getRentedProperties with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/getRentedProperties");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test getRentedProperties with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/getRentedProperties").send({
+      tokenId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test getEmployeeIds with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/getEmployeeIds");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test getRentedProperties with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/getEmployeeIds").send({
+      tokenId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test getEmployedUsers with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/getEmployedUsers");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test getEmployedUsers with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/getEmployedUsers").send({
+      tokenId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test addNewEmployment with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/addNewEmployment");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test addNewEmployment with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/addNewEmployment").send({
+      tokenId,
+      employeeId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test removeEmployee with no tokenId", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/removeEmployee");
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toBe("Invalid request");
+  });
+});
+
+describe("Test removeEmployee with correct values", () => {
+  test("It should return a valid request", async () => {
+    const response = await request.post("/removeEmployee").send({
+      tokenId,
+      employeeId,
+    });
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("Test updateNotification with no body", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.post("/updateNotification");
+    expect(response.statusCode).toBe(500);
+  });
+});
+
+describe("Test getNotifications with no body", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.get("/getNotifications?userId=");
+    expect(response.statusCode).toBe(400);
+  });
+});
+
+describe("Test getNotifications with no body", () => {
+  test("It should return an invalid request", async () => {
+    const response = await request.get(
+      "/getNotifications?userId=" + employeeId
+    );
+    expect(response.statusCode).toBe(200);
+  });
+});
