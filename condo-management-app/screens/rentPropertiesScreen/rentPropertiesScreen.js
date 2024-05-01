@@ -26,7 +26,7 @@ import {
 import * as DocumentPicker from "expo-document-picker";
 import useAuth from "../../hooks/useAuth";
 
-const rentPropertiesScreen = ({ navigation }) => {
+const RentPropertiesScreen = ({ navigation }) => {
   const { getRentableProperties, startRenting, newPropertyCreated } = useAuth();
   const [properties, setProperties] = useState([]);
   const [windowDimensions, setWindowDimensions] = useState(
@@ -271,6 +271,7 @@ const rentPropertiesScreen = ({ navigation }) => {
               }}
             >
               {properties && displayProperties()}
+              {/* {propList()} */}
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
@@ -287,9 +288,18 @@ const rentPropertiesScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   }
+
+  function propList() {
+    return (
+      <SafeAreaView>
+        {/* Other UI elements */}
+        <PropertyList properties={properties} navigation={navigation} />
+      </SafeAreaView>
+    );
+  }
 };
 
-export default rentPropertiesScreen;
+export default RentPropertiesScreen;
 
 function createStyles(height) {
   return StyleSheet.create({

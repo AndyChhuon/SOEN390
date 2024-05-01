@@ -44,6 +44,15 @@ const getUserRentableProperties = async (
   }
 }
 
+const getPublicRentableProperties = async (response: Response) => {
+  try {
+    const rentableProperties = await getRentableProperties() // Assuming getRentableProperties does not need an argument or handle it internally if needed.
+    response.status(200).send(rentableProperties);
+  } catch (e) {
+    console.error("Failed to fetch rentable properties:", e);
+    response.status(500).send("Failed to fetch properties");
+  }
+}
 const getUserRentedProperties = async (tokenId: string, response: Response) => {
   const id = await getIdFromToken(tokenId)
   if (await userExists(id)) {
@@ -98,5 +107,6 @@ export {
   getUserRentableProperties,
   getUserRentedProperties,
   addUserScheduledActivity,
-  getUserPropertyAvailableTimes
+  getUserPropertyAvailableTimes,
+  getPublicRentableProperties
 }

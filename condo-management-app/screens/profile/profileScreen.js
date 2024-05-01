@@ -27,6 +27,11 @@ import { ThemedButton } from "react-native-really-awesome-button";
 import useAuth from "../../hooks/useAuth";
 import PropertyCard from "../Components/Property";
 
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";  // Adjust path as necessary for your firebase config
+//import { auth } from "../../config/firebase";  // Adjust path as necessary for your firebase config
+//import { auth } from "../../config/firebaseConfig";  // Adjust path as necessary for your firebase config
+
 const Profile = ({ navigation }) => {
   const { user, userValues, updateProfileInfo } = useAuth();
 
@@ -52,6 +57,7 @@ const Profile = ({ navigation }) => {
     { label: "admin", value: "admin" },
     { label: "employee", value: "employee" },
     { label: "CMC", value: "CMC" },
+    { label: "owner", value: "owner"}
   ];
   const data = [
     { label: "English", value: "1" },
@@ -68,6 +74,16 @@ const Profile = ({ navigation }) => {
     });
     return obj;
   };
+
+  const handleSignOut = async () => {
+    try {
+        await signOut(auth);
+        navigation.navigate("LandingPage"); // Adjust the navigation as necessary
+    } catch (error) {
+        console.error("Failed to sign out: ", error);
+    }
+};
+
 
   //saves profile data to db
   const saveProfileData = () => {
@@ -142,9 +158,11 @@ const Profile = ({ navigation }) => {
             {PostalCode()}
             {Province()}
             {City()}
+            {SignOutButton()}
             {DropdownUser()}
             {SaveProfileButton()}
             {DropdownC()}
+            
             <View
               style={{
                 alignSelf: "flex-start",
@@ -262,6 +280,35 @@ const Profile = ({ navigation }) => {
             }}
           >
             Change Password
+          </Text>
+        </ThemedButton>
+      </View>
+    );
+  }
+
+  function SignOutButton() {
+    return (
+      <View id="signout_btn" style={{ width: "100%" }}>
+        <ThemedButton
+          name="bruce"
+          type="primary"
+          raiseLevel={2}
+          borderRadius={10}
+          onPress={() => handleSignOut()}
+        >
+          <MaterialIcon
+            style={{ marginRight: 15 }}
+            name="signout"
+            size={26}
+            color="#fff"
+          />
+          <Text
+            style={{
+              ...Fonts.primaryColor16SemiBold,
+              color: Colors.whiteColor,
+            }}
+          >
+            Sign Out
           </Text>
         </ThemedButton>
       </View>
@@ -666,6 +713,40 @@ const Profile = ({ navigation }) => {
     );
   }
 };
+
+function SignOutButtonTest() {
+  return (
+      <View style={{ margin: 15 }}>
+          <ThemedButton
+              name="bruce"
+              type="primary"
+              raiseLevel={2}
+              borderRadius={10}
+              style={{
+                  borderRadius: 5,
+                  padding: 10,
+              }}
+              onPress={handleSignOut}
+          >
+              <FontAwesome5
+                  style={{ marginRight: 15 }}
+                  name="sign-out-alt"
+                  size={26}
+                  color="#fff"
+              />
+              <Text
+                  style={{
+                      ...Fonts.primaryColor16SemiBold,
+                      color: Colors.whiteColor,
+                  }}
+              >
+                  Sign Out
+              </Text>
+          </ThemedButton>
+      </View>
+  );
+}
+
 
 function createStyles(height) {
   return StyleSheet.create({

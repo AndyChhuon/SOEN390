@@ -48,6 +48,7 @@ const addToRenting = async (id: string, propertyId: string) => {
 };
 
 const getRentableProperties = async (id: string) => {
+  console.log("Getting rentable properties" + id);
   const snapshot = await db.ref("properties").once("value");
   const renting = await db
     .ref("users")

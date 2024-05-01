@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const [newRentInitiated, setNewRentInitiated] = useState(false);
   const [userValues, setUserValues] = useState({});
   const herokuBackendUrl =
-    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com";
+     "http://sleepy-bastion-87226-0172f309845e.herokuapp.com";
   // "http://localhost:8080";
 
   useEffect(() => {
@@ -482,6 +482,22 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const getPublicProperties = async (setProperties) => {
+    await fetch(herokuBackendUrl + "/getPublicProperties", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setProperties(data);
+          return data;
+        });
+      }
+    });
+  }
+
   const getPropertyAvailableTimes = async (
     propertyId,
     activity,
@@ -659,6 +675,7 @@ export const AuthProvider = ({ children }) => {
       updateNotificationReadStatus,
 
       getRentableProperties,
+      getPublicProperties,
       startRenting,
       getRentedProperties,
       getPropertyAvailableTimes,
