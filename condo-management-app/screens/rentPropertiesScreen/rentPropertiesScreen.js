@@ -271,6 +271,7 @@ const RentPropertiesScreen = ({ navigation }) => {
               }}
             >
               {properties && displayProperties()}
+              {/* {propList()} */}
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
@@ -284,6 +285,15 @@ const RentPropertiesScreen = ({ navigation }) => {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor2 }}>
         {content}
+      </SafeAreaView>
+    );
+  }
+
+  function propList() {
+    return (
+      <SafeAreaView>
+        {/* Other UI elements */}
+        <PropertyList properties={properties} navigation={navigation} />
       </SafeAreaView>
     );
   }

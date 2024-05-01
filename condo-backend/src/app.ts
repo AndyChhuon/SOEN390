@@ -25,6 +25,7 @@ const {
   getUserRentedProperties,
   addUserScheduledActivity,
   getUserPropertyAvailableTimes,
+  getPublicRentableProperties,
 } = require("./firebase/rentingService");
 const {
   obtainEmployeeIds,
@@ -191,6 +192,16 @@ app.post("/getRentableProperties", async (req: Request, res: Response) => {
     }
   } else {
     res.status(400).send("Invalid request");
+  }
+});
+
+app.get("/getPublicProperties", async (req: Request, res: Response) => {
+  try {
+    console.log("Calling getPublicProperties endpoint");
+    await getPublicRentableProperties(res);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Internal server error");
   }
 });
 
