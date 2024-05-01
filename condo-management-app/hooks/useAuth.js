@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
         getUservalues(user);
         navigation.navigate("BottomNavigator");
       } else {
-        navigation.navigate("Register");
+        navigation.navigate("LandingPage");
         //check purchases was initialized
         if (userValues) {
           setUserValues({});
@@ -112,10 +112,10 @@ export const AuthProvider = ({ children }) => {
       });
   }
 
-  const emailSignup = (setError, email, password) => {
+  const emailSignup = (setError, email, password, userType) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in successfully
+        user.userType = userType
       })
       .catch((error) => {
         // An error occurred during sign in

@@ -22,7 +22,9 @@ import useAuth from "../../hooks/useAuth";
 
 const RegisterScreen = ({ navigation }) => {
  const { emailSignup } = useAuth();
+
  const [error, setError] = useState(null);
+
  const [emailError, setEmailError] = useState(null);
  const [passwordError, setPasswordError] = useState(null);
  const [agreeError, setAgreeError] = useState(null);
@@ -175,7 +177,7 @@ const RegisterScreen = ({ navigation }) => {
  function backgroundImage() {
   return (
    <Image
-    source={require("./image_2.png")}
+    source={require("./signupcompany.png")}
     style={{
      width: "80%",
      height: "80%",
@@ -452,10 +454,10 @@ const RegisterScreen = ({ navigation }) => {
     }}
    >
     <Text style={{ ...Fonts.whiteColor26SemiBold }}>
-     Let’s get you started.
+     Set Up Your Condo Management Company Here
     </Text>
     <Text style={{ ...Fonts.whiteColor14Medium }}>
-     Your condo management begins here!
+     Let's get started by creating your account
     </Text>
    </View>
   );
