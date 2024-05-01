@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
   const [newRentInitiated, setNewRentInitiated] = useState(false);
   const [userValues, setUserValues] = useState({});
   const herokuBackendUrl =
-    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com"; 
-    // "http://localhost:8080";
+    "http://sleepy-bastion-87226-0172f309845e.herokuapp.com";
+  // "http://localhost:8080";
 
   useEffect(() => {
     var unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -300,7 +300,6 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-
   const addNotification = async (message) => {
     if (!user) {
       console.error("No user is logged in!");
@@ -311,28 +310,27 @@ export const AuthProvider = ({ children }) => {
       const tokenId = await getIdToken(user); // Assuming authentication token is needed
 
       const response = await fetch(herokuBackendUrl + "/addNotification", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tokenId}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenId}`,
         },
         body: JSON.stringify({
           userId: user.uid, // Pass user ID if needed
           message: message,
-          timestamp: Date.now() // Include timestamp if handled by frontend
-        })
+          timestamp: Date.now(), // Include timestamp if handled by frontend
+        }),
       });
 
       if (response.ok) {
         console.log("Notification added successfully!");
       } else {
-        throw new Error('Failed to send notification');
+        throw new Error("Failed to send notification");
       }
     } catch (error) {
       console.error("Failed to add notification:", error);
     }
   };
-
 
   const convertTimestamp = (timestamp) => {
     // Assuming the timestamp is in milliseconds
@@ -348,38 +346,46 @@ export const AuthProvider = ({ children }) => {
     try {
       const tokenId = await getIdToken(user); // Assuming authentication token is needed
 
-      const response = await fetch(`${herokuBackendUrl}/getNotifications?userId=${user.uid}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${tokenId}`
+      const response = await fetch(
+        `${herokuBackendUrl}/getNotifications?userId=${user.uid}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${tokenId}`,
+          },
         }
-      });
+      );
 
       if (response.ok) {
         const notifications = await response.json();
         console.log("Retrieved notifications:", notifications);
 
-        let notificationsArray = Object.keys(notifications).map(key => ({
+        let notificationsArray = Object.keys(notifications).map((key) => ({
           id: key,
           ...notifications[key],
           timestamp: convertTimestamp(notifications[key].timestamp),
         }));
 
         // Sort by timestamp in descending order, assuming convertTimestamp returns a Date object
-        notificationsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        notificationsArray.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
 
         return notificationsArray;
       } else {
-        throw new Error('Failed to retrieve notifications');
+        throw new Error("Failed to retrieve notifications");
       }
     } catch (error) {
       console.error("Failed to retrieve notifications:", error);
       return [];
     }
-  }
+  };
 
-
-  const updateNotificationReadStatus = async (userId, notificationId, readStatus) => {
+  const updateNotificationReadStatus = async (
+    userId,
+    notificationId,
+    readStatus
+  ) => {
     if (!user) {
       console.error("No user ID provided!");
       return;
@@ -389,10 +395,10 @@ export const AuthProvider = ({ children }) => {
       const tokenId = await getIdToken(user);
 
       const response = await fetch(`${herokuBackendUrl}/updateNotification`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tokenId}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenId}`,
           // Include the 'Authorization' header if your API requires authentication
         },
         body: JSON.stringify({
@@ -405,15 +411,12 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         console.log("Notification read status updated successfully!");
       } else {
-        throw new Error('Failed to update notification read status');
+        throw new Error("Failed to update notification read status");
       }
     } catch (error) {
       console.error("Error updating notification read status:", error);
     }
   };
-
-
-
 
   const getRentableProperties = async (setProperties) => {
     const tokenId = await getIdToken(user);
@@ -542,6 +545,102 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const getEmployableIds = async (setEmployableArray) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/getEmployeeIds", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setEmployableArray(data);
+          return data;
+        });
+      }
+    });
+  };
+
+  const getEmployedUsers = async (setemployees) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/getEmployedUsers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setemployees(data);
+          return data;
+        });
+      }
+    });
+  };
+
+  const addNewEmployment = async (
+    employeeId,
+    setemployees,
+    setEmployableArray
+  ) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/addNewEmployment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        employeeId: employeeId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json().then((data) => {
+          setemployees((employees) => [...employees, data]);
+          setEmployableArray((employable) =>
+            employable.filter((id) => id !== employeeId)
+          );
+          return data;
+        });
+      }
+    });
+  };
+
+  const removeEmployee = async (
+    employeeId,
+    setemployees,
+    setEmployableArray
+  ) => {
+    const tokenId = await getIdToken(user);
+
+    fetch(herokuBackendUrl + "/removeEmployee", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tokenId: tokenId,
+        employeeId: employeeId,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        setemployees((employees) =>
+          employees.filter((employee) => employee.id !== employeeId)
+        );
+        setEmployableArray((employable) => [...employable, employeeId]);
+      }
+    });
+  };
 
   const memoedValue = useMemo(
     () => ({
@@ -564,8 +663,12 @@ export const AuthProvider = ({ children }) => {
       getRentedProperties,
       getPropertyAvailableTimes,
       addScheduledActivity,
+      getEmployableIds,
       newPropertyCreated,
       newRentInitiated,
+      getEmployedUsers,
+      addNewEmployment,
+      removeEmployee,
     }),
     [user, userValues, newPropertyCreated, newRentInitiated]
   );

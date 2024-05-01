@@ -5,6 +5,7 @@ const {
   updateUserValuesDB,
   userExists,
   getUserValues,
+  addToEmployees,
 } = require("./firebase");
 
 const userValuesAllowedKeys = [
@@ -33,7 +34,6 @@ const defaultUserValues = {
   userEmail: "",
   profileUrl: "",
   userType: "renter",
-
 };
 
 const userValueKeysAreValid = (userValues: Object) => {
@@ -52,6 +52,11 @@ const updateUserValues = async (
   } else if (await userExists(id)) {
     // user exists and userValues are valid, update userValues
     updateUserValuesDB(id, userValues);
+
+    if ("userType" in userValues && userValues["userType"] === "employee") {
+      addToEmployees(id);
+    }
+
     response.status(200).send({
       message: "User values updated successfully",
       userValues,
