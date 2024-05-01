@@ -20,6 +20,7 @@ import PropertyScreen from "../screens/propertyPage/propertyPage";
 import RequestPage from "../screens/Request/RequestPage";
 import rentPropertiesScreen from "../screens/rentPropertiesScreen/rentPropertiesScreen";
 import myRentedProperties from "../screens/myRentedProperties/myRentedProperties";
+import employeeManagementScreen from "../screens/employeeManagement/employeeManagementScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -79,8 +80,7 @@ const TabNavigator = ({ route }) => {
           tabBarInactiveTintColor: "#f9ac46",
           tabBarStyle: { ...styles.tabBarStyle },
           tabBarShowLabel: true,
-          tabBarLabelPosition: 'below-icon'
-
+          tabBarLabelPosition: "below-icon",
         }}
       >
         <Tab.Screen
@@ -129,6 +129,20 @@ const TabNavigator = ({ route }) => {
           component={PropertyProfileScreen}
           options={{
             tabBarLabel: "Property Profiles",
+            tabBarIcon: ({ color, focused }) =>
+              tabIconSort({
+                icon: require("../assets/images/icons/home.png"),
+                focused: focused,
+                size: 38,
+              }),
+          }}
+        />
+
+        <Tab.Screen
+          name={"employeeManagement"}
+          component={employeeManagementScreen}
+          options={{
+            tabBarLabel: "Employee Management",
             tabBarIcon: ({ color, focused }) =>
               tabIconSort({
                 icon: require("../assets/images/icons/home.png"),

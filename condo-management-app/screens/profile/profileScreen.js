@@ -44,14 +44,20 @@ const Profile = ({ navigation }) => {
     postalcode: user.postalCode || "",
     stateProvince: user.stateProvince || "",
     city: user.city || "",
+    userType: user.userType || "admin",
   });
 
+  const userTypes = [
+    { label: "renter", value: "renter" },
+    { label: "admin", value: "admin" },
+    { label: "employee", value: "employee" },
+    { label: "CMC", value: "CMC" },
+  ];
   const data = [
     { label: "English", value: "1" },
     { label: "French", value: "2" },
     { label: "Spanish", value: "3" },
   ];
-
   const [selectedValue, setSelectedValue] = useState("");
   //clears db entries if undefined
   const CleanUndefinedEntries = (obj) => {
@@ -107,55 +113,57 @@ const Profile = ({ navigation }) => {
 
   const content = (
     <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, height: height*0.92 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, height: height * 0.92 }}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1, justifyContent: "center"}}
+          style={{ flex: 1, justifyContent: "center" }}
         >
-          
-              <View
+          <View
+            style={{
+              alignSelf: "center",
+              flex: 1,
+              flexDirection: "column",
+              alignContent: "center",
+              width: width * 0.95,
+              height: height,
+              padding: 10,
+              marginVertical: "5%",
+            }}
+          >
+            {Title()}
+            {ManageProfileText()}
+            {FirstNameTextField()}
+            {LastNameTextField()}
+            {userEmailTextField()}
+            {PhoneNumberTextField()}
+            {StreetAddressTextField()}
+            {PostalCode()}
+            {Province()}
+            {City()}
+            {DropdownUser()}
+            {SaveProfileButton()}
+            {DropdownC()}
+            <View
+              style={{
+                alignSelf: "flex-start",
+                flexDirection: "column",
+                alignContent: "flex-start",
+                margin: 15,
+                zIndex: 0,
+              }}
+            >
+              <Text
                 style={{
-                  alignSelf: "center",
-                  flex: 1,
-                  flexDirection: "column",
-                  alignContent: "center",
-                  width: width * 0.95,
-                  height: height,
-                  padding: 10,
-                  marginVertical: "5%",
+                  ...Fonts.whiteColor22Bold,
                 }}
               >
-                {Title()}
-                {ManageProfileText()}
-                {FirstNameTextField()}
-                {LastNameTextField()}
-                {userEmailTextField()}
-                {PhoneNumberTextField()}
-                {StreetAddressTextField()}
-                {PostalCode()}
-                {Province()}
-                {City()}
-                {SaveProfileButton()}
-                {DropdownC()}
-                <View
-                  style={{
-                    alignSelf: "flex-start",
-                    flexDirection: "column",
-                    alignContent: "flex-start",
-                    margin: 15,
-                    zIndex: 0,
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...Fonts.whiteColor22Bold,
-                    }}
-                  >
-                    Reset Your Password
-                  </Text>
-                    {ChangePassword()}
-                </View>
-              </View>
+                Reset Your Password
+              </Text>
+              {ChangePassword()}
+            </View>
+          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -193,12 +201,7 @@ const Profile = ({ navigation }) => {
   }
   function ManageProfileText() {
     return (
-      <Text
-        style={[
-          Fonts.whiteColor22Bold,
-          { margin: 15},
-        ]}
-      >
+      <Text style={[Fonts.whiteColor22Bold, { margin: 15 }]}>
         Manage Your Profile
       </Text>
     );
@@ -207,15 +210,9 @@ const Profile = ({ navigation }) => {
   function DropdownC() {
     return (
       <View>
-        <Text
-        style={[
-          Fonts.whiteColor22Bold,
-          { margin: 15},
-
-        ]}
-      >
-        Language Preferences
-      </Text>
+        <Text style={[Fonts.whiteColor22Bold, { margin: 15 }]}>
+          Language Preferences
+        </Text>
         <Dropdown
           data={data}
           onSelect={(item) => setSelectedValue(item.value)}
@@ -225,9 +222,26 @@ const Profile = ({ navigation }) => {
     );
   }
 
+  function DropdownUser() {
+    console.log("state.userType", state.userType);
+    return (
+      <View>
+        <Text style={[Fonts.whiteColor22Bold, { margin: 15 }]}>user Type</Text>
+        <Dropdown
+          data={userTypes}
+          value={
+            userTypes.find((item) => item.value === state.userType) || null
+          }
+          onSelect={(item) => updateState({ userType: item.value })}
+          dropdownText={"Select UserType"}
+        />
+      </View>
+    );
+  }
+
   function ChangePassword() {
     return (
-      <View id="change_pass_btn" style={{ width: "100%"}}>
+      <View id="change_pass_btn" style={{ width: "100%" }}>
         <ThemedButton
           name="bruce"
           type="primary"
@@ -468,7 +482,7 @@ const Profile = ({ navigation }) => {
             <FaHouseChimneyUser style={{ color: Colors.whiteColor }} />
           </TouchableOpacity>
           <TextInput
-          id="p_code"
+            id="p_code"
             ref={input}
             width={0.9 * width}
             onChangeText={(value) => updateState({ postalcode: value })}
