@@ -52,6 +52,13 @@ const myRentedProperties = ({ navigation }) => {
   const displayProperties = () => {
     console.log(properties);
     return Object.keys(properties).map((propertyId) => {
+
+      const property = properties[propertyId];
+        if (!property) {
+            // Early return or handling for null properties
+            console.error("Property data is null for propertyId:", propertyId);
+            return null;
+        }
       return (
         <View
           key={propertyId}

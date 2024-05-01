@@ -52,6 +52,7 @@ const Profile = ({ navigation }) => {
     { label: "admin", value: "admin" },
     { label: "employee", value: "employee" },
     { label: "CMC", value: "CMC" },
+    { label: "owner", value: "owner"}
   ];
   const data = [
     { label: "English", value: "1" },
