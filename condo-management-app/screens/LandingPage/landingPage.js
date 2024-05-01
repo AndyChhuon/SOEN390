@@ -1,29 +1,30 @@
-import React, { useRef, useState, useEffect, useFocusEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
  SafeAreaView,
  View,
- Image,
- Keyboard,
+ ScrollView,
+ TouchableOpacity,
  Dimensions,
  StyleSheet,
- Text,
- TextInput,
- TouchableOpacity,
- KeyboardAvoidingView,
  TouchableWithoutFeedback,
  Platform,
+ Image,
+ Modal,
+ Button,
 } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constants/styles";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Text } from "react-native";
 import { ThemedButton } from "react-native-really-awesome-button";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+
 import useAuth from "../../hooks/useAuth";
 
 const LandingPage = ({ navigation }) => {
- const { height, width } = Dimensions.get("window");
- const styles = createStyles(height);
+ const [modalVisible, setModalVisible] = useState(false);
  const [windowDimensions, setWindowDimensions] = useState(
   Dimensions.get("window")
  );
+ const { width, height } = windowDimensions;
 
  useEffect(() => {
   const onChange = ({ window }) => {
@@ -34,11 +35,81 @@ const LandingPage = ({ navigation }) => {
   return () => Dimensions.removeEventListener("change", onChange);
  }, []);
 
- const content = (
-  <SafeAreaView style={styles.container}>
-   {backgroundImage()}
+ const handlePressOutsideTextBox = () => {
+  console.log("Dismiss keyboard or other interaction");
+ };
 
-   {card()}
+ const content = (
+  <SafeAreaView style={{ backgroundColor: Colors.bodyBackColor2, flex: 1 }}>
+   <ScrollView style={{ backgroundColor: Colors.bodyBackColor2 }}>
+    {Header()}
+
+    <Modal
+     animationType="slide"
+     transparent={true}
+     visible={modalVisible}
+     onRequestClose={() => {
+      Alert.alert("Modal has been closed.");
+      setModalVisible(!modalVisible);
+     }}
+    >
+     <View style={styles.centeredView}>
+      <View style={styles.modalView}>
+       <Text style={Fonts.whiteColor22Bold}>What do you want to do?</Text>
+       <View style={{ padding: 10, margin: 10, flexDirection: "column" }}>
+        <View style={{ margin: 20, alignSelf: "center" }}>
+         <MaterialIcon
+          name="key"
+          style={{ alignSelf: "center" }}
+          size={45}
+          color="#fff"
+          onPress={() => {
+           setModalVisible(!modalVisible);
+           navigation.navigate("Register");
+          }}
+         />
+         <Text style={Fonts.whiteColor14Regular}>Rent</Text>
+        </View>
+        <View style={{ margin: 20, alignSelf: "center" }}>
+         <MaterialIcon
+          style={{ alignSelf: "center" }}
+          name="business"
+          size={45}
+          color="#fff"
+          onPress={() => {
+           setModalVisible(!modalVisible);
+           navigation.navigate("signupScreenOwner");
+          }}
+         />
+         <Text style={Fonts.whiteColor14Regular}>Rent Your Property</Text>
+        </View>
+        <View style={{ margin: 20, alignSelf: "center" }}>
+         <MaterialIcon
+          style={{ alignSelf: "center" }}
+          name="business-center"
+          size={45}
+          color="#fff"
+          onPress={() => {
+           setModalVisible(!modalVisible);
+           navigation.navigate("signupScreenCompany");
+          }}
+         />
+         <Text style={Fonts.whiteColor14Regular}>Start Your Company</Text>
+        </View>
+        <View style={{ margin: 20, alignSelf: "center" }}>
+         <TouchableOpacity
+          onPress={() => {
+           setModalVisible(!modalVisible);
+          }}
+         >
+          <Text style={Fonts.grayColor12Medium}>Go Back</Text>
+         </TouchableOpacity>
+        </View>
+       </View>
+      </View>
+     </View>
+    </Modal>
+   </ScrollView>
   </SafeAreaView>
  );
 
@@ -54,107 +125,80 @@ const LandingPage = ({ navigation }) => {
   );
  }
 
- function card() {
+ function Header() {
   return (
-   <View style={styles.card}>
-    <View style={styles.buttonContainer}>
-     <TouchableOpacity
-      style={styles.button}
-      onPress={() => navigation.navigate("Register")}
-     >
-      <Text style={styles.buttonText}>Rent a Property</Text>
-     </TouchableOpacity>
-     <TouchableOpacity
-      style={styles.button}
-      onPress={() => navigation.navigate("signupScreenOwner")}
-     >
-      <Text style={styles.buttonText}>Rent Your Property</Text>
-     </TouchableOpacity>
-     <TouchableOpacity
-      style={styles.button}
-      onPress={() => navigation.navigate("signupScreenCompany")}
-     >
-      <Text style={styles.buttonText}>Start Managing Your Condos</Text>
-     </TouchableOpacity>
-    </View>
+   <View style={styles.header}>
+    <Image source={require("./TCMC2.png")} style={styles.logo} />
+    <MaterialIcon
+     style={{ margin: 20, alignSelf: "center" }}
+     name="person"
+     size={45}
+     color="#fff"
+     onPress={() => {
+      setModalVisible(true);
+     }}
+    />
    </View>
   );
  }
-
- function backgroundImage() {
-  return (
-   <Image
-    source={require("./TCMC2.png")}
-    style={{
-     width: "30%",
-     height: "30%",
-     margin: 40,
-     alignSelf: "center",
-     resizeMode: "center",
-     tintColor: "white",
-    }}
-   />
-  );
- }
-
 };
 
-function createStyles(width, height) {
+const createStyles = () => {
  return StyleSheet.create({
-  container: {
+  header: {
+   backgroundColor: Colors.primary,
+   padding: 10,
+   flexDirection: "row",
+   justifyContent: "space-between",
+   alignContent: "center",
+  },
+  logo: {
+   width: 120,
+   height: 120,
+   tintColor: "#fff",
+   marginLeft: 20,
+   resizeMode: "contain",
+  },
+
+  centeredView: {
    flex: 1,
    justifyContent: "center",
    alignItems: "center",
+   marginTop: 22,
+   backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+  },
+  modalView: {
+   margin: 20,
    backgroundColor: Colors.bodyBackColor2,
-  },
-  card: {
    borderRadius: 20,
-   padding: 20,
-   elevation: 5,
-   width: "90%",
+   padding: 35,
    alignItems: "center",
-  },
-  title: {
-   fontSize: 22,
-   fontWeight: "bold",
-   marginBottom: 20,
-   color: "white",
-  },
-  buttonContainer: {
-   width: "20%",
-   marginBottom: 20,
+   shadowColor: "#000",
+   shadowOffset: {
+    width: 0,
+    height: 2,
+   },
+   shadowOpacity: 0.25,
+   shadowRadius: 4,
+   elevation: 5,
   },
   button: {
-   backgroundColor: Colors.darkBlue,
-   padding: 15,
-   borderRadius: 10,
-   marginBottom: 10,
-   alignItems: "center",
+   borderRadius: 20,
+   margin: 10,
+   padding: 10,
+   elevation: 2,
   },
-  buttonText: {
+  buttonClose: {
+   backgroundColor: "#2196F3",
+  },
+  textStyle: {
    color: "white",
-   fontSize: 16,
-   fontWeight: "500",
-  },
-  quoteContainer: {
-   marginTop: 20,
-   borderColor: "#DDD",
-   borderTopWidth: 1,
-   paddingTop: 20,
-  },
-  quote: {
-   fontStyle: "italic",
-   textAlign: "center",
-   color: "#666",
-  },
-  author: {
-   marginTop: 10,
-   fontSize: 14,
-   color: "#333",
    fontWeight: "bold",
    textAlign: "center",
   },
  });
-}
+};
+
+const styles = createStyles();
 
 export default LandingPage;
