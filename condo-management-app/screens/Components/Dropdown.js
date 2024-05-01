@@ -1,11 +1,20 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { Colors, Fonts, Sizes, Cards } from "../../constants/styles";
 
-
-const Dropdown = ({ data, onSelect, dropdownText }) => {
+const Dropdown = ({ data, onSelect, dropdownText, value = null }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(value);
+
+  useEffect(() => {
+    setSelectedItem(value);
+  }, [value]);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
@@ -19,21 +28,25 @@ const Dropdown = ({ data, onSelect, dropdownText }) => {
         style={styles.button}
         onPress={() => setIsOpen(!isOpen)}
       >
-        <Text style={[styles.buttonText, {...Fonts.whiteColor16Bold,}]}>
+        <Text style={[styles.buttonText, { ...Fonts.whiteColor16Bold }]}>
           {selectedItem ? selectedItem.label : dropdownText}
         </Text>
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.dropdown}>
           {data.map((item, index) => (
-            <ScrollView showsVerticalScrollIndicator ={false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <TouchableOpacity
-              key={index}
-              style={styles.item}
-              onPress={() => handleSelect(item)}
-            >
-              <Text style={[styles.itemText, {...Fonts.whiteColor14Regular,}]}>{item.label}</Text>
-            </TouchableOpacity>
+                key={index}
+                style={styles.item}
+                onPress={() => handleSelect(item)}
+              >
+                <Text
+                  style={[styles.itemText, { ...Fonts.whiteColor14Regular }]}
+                >
+                  {item.label}
+                </Text>
+              </TouchableOpacity>
             </ScrollView>
           ))}
         </View>
@@ -57,7 +70,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     zIndex: 1,
-
   },
   buttonText: {
     textAlign: "center",
@@ -68,7 +80,6 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     zIndex: 2,
-
   },
   item: {
     padding: 10,
@@ -79,8 +90,6 @@ const styles = StyleSheet.create({
   itemText: {
     textAlign: "center",
     color: Colors.whiteColor,
-
-
   },
 });
 
