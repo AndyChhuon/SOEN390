@@ -4,7 +4,11 @@ SOEN 390 Project Winter 2024. Condo Management Application.
 
 ## Hosted Url
 
-https://6618a9aa4a5f6c75ae8b9886--neon-lebkuchen-4543ff.netlify.app/
+[https://6618a9aa4a5f6c75ae8b9886--neon-lebkuchen-4543ff.netlify.app/
+](https://6631cdc7b1c1fb7fa941a152--neon-lebkuchen-4543ff.netlify.app/ )
+## Android APK
+
+https://drive.google.com/file/d/1JkKXvoUood2N5JfIRNkauglzODIe2qUj/view
 
 ## Objective
 
