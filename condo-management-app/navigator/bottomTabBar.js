@@ -230,6 +230,7 @@ const TabNavigator = ({ route }) => {
       {exitInfo()}
     </>
   );
+  
 
   function tabIconSort({ icon, focused, size }) {
     return (
